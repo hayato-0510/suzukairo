@@ -6,6 +6,7 @@ public class RawComponent
 {
     public string type;
     public float value;
+    public float angle;
     public int id;
 }
 

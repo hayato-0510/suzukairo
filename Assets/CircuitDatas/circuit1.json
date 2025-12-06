@@ -4,7 +4,23 @@
   "components": [
     {
       "type": "Resistor",
-      "value": 100
+      "value": 100,
+      "angle": 90
+    },
+    {
+      "type": "Resistor",
+      "value": 100,
+      "angle": 0
+    },
+    {
+      "type": "Resistor",
+      "value": 100,
+      "angle": 90
+    },
+    {
+      "type": "Inductor",
+      "value": 100,
+      "angle": 90
     }
   ]
 }

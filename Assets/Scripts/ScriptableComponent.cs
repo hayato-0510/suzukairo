@@ -5,6 +5,7 @@ public abstract class ComponentBase : ScriptableObject
 {
     public string type;
     public float value;
+    public float angle;
 }
 
 [CreateAssetMenu(fileName = "Resistor", menuName = "Circuit/Resistor")]
