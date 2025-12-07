@@ -8,6 +8,12 @@
       "angle": 90
     },
     {
+      "type": "MOSFET",
+      "value": 100,
+      "value2": 0.1,
+      "angle": 90
+    },
+    {
       "type": "Resistor",
       "value": 100,
       "angle": 0
@@ -21,6 +27,23 @@
       "type": "Inductor",
       "value": 100,
       "angle": 90
+    },
+    {
+      "type": "RCD",
+      "value": 100,
+      "angle": 90
+    },
+    {
+      "type": "Switch",
+      "value": 100,
+      "angle": 90,
+      "id": 0
+    },
+    {
+      "type": "MOSFET",
+      "value": 100,
+      "angle": 90,
+      "interval": 0.1
     }
   ]
 }
