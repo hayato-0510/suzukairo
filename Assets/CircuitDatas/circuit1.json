@@ -9,8 +9,7 @@
     },
     {
       "type": "MOSFET",
-      "value": 100,
-      "value2": 0.1,
+      "value": 1.0,
       "angle": 90
     },
     {
@@ -25,7 +24,8 @@
     },
     {
       "type": "Inductor",
-      "value": 100,
+      "value": 0.05,
+      "value2": 0.025,
       "angle": 90
     },
     {
@@ -41,9 +41,8 @@
     },
     {
       "type": "MOSFET",
-      "value": 100,
-      "angle": 90,
-      "interval": 0.1
+      "value": 0.5,
+      "angle": 90
     }
   ]
 }

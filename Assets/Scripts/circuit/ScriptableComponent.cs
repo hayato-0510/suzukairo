@@ -5,7 +5,7 @@ public abstract class ComponentBase : ScriptableObject
 {
     public string type;
     public float value;
-    public float value2 = 0;
+    public float value2;
     public float angle;
 }
 

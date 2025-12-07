@@ -6,7 +6,7 @@ public class resistorFunction : MonoBehaviour
 {
     private componentData cData;
     private TextMeshProUGUI text;
-    public string unit;
+    private bool isPassed = false;
 
     void Start()
     {
@@ -15,12 +15,27 @@ public class resistorFunction : MonoBehaviour
 
         if (text != null)
         {
-            text.text = cData.value2.ToString();   // 表示内容を変更
+            text.text = cData.value.ToString()+"Ω";   // 表示内容を変更
         }
     }
 
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (isPassed) return;
+        if (collision.gameObject.tag == "electron")
+        {
+            isPassed = true;
+            collision.GetComponent<controller>().ampere /= 1f+cData.value*0.001f;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (isPassed) return;
+        if (collision.gameObject.tag == "electron")
+        {
+            isPassed = true;
+            collision.GetComponent<controller>().ampere -= cData.value * 0.001f;
+        }
     }
 }
