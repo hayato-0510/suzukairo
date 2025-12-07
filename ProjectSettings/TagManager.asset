@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - conductor
+  - electron
   layers:
   - Default
   - TransparentFX

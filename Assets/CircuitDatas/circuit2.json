@@ -1,0 +1,10 @@
+{
+  "circuitName": "circuit1",
+  "circuitId": 1,
+  "components": [
+    {
+      "type": "RCD",
+      "angle": 90
+    }
+  ]
+}

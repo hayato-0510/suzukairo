@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CircuitLoader : MonoBehaviour
@@ -67,26 +68,28 @@ public class CircuitLoader : MonoBehaviour
         Vector2 cursorPos = Vector2.zero;
         Vector2 direction = Vector2.right;
 
-        foreach (var comp in circuitData.components)
+        foreach (var comp in circuitData.components.Select((v, i) => new { data = v, index = i }))
         {
-            var prefabData = components.Find(c => c.type == comp.type);
+            var prefabData = components.Find(c => c.type == comp.data.type);
             if (prefabData == null)
             {
-                Debug.LogWarning($"Prefab not found for type: {comp.type}");
+                Debug.LogWarning($"Prefab not found for type: {comp.data.type}");
                 continue;
             }
 
             Transform obj = Instantiate(prefabData.prefab, (Vector3)cursorPos, Quaternion.identity, this.transform);
 
-            var data = obj.GetComponent<componentData>();
-            if (data == null) data = obj.gameObject.AddComponent<componentData>(); 
+            var compData = obj.GetComponent<componentData>();
+            if (compData == null) compData = obj.gameObject.AddComponent<componentData>(); 
 
-            data.value = comp.value;
-            data.value2 = comp.value2;
+            compData.type = comp.data.type;
+            compData.id = comp.index;
+            compData.value = comp.data.value;
+            compData.value2 = comp.data.value2;
 
-            obj.localEulerAngles = new Vector3(0f, 0f, comp.angle);
+            obj.localEulerAngles = new Vector3(0f, 0f, comp.data.angle);
 
-            float rad = comp.angle * Mathf.Deg2Rad;
+            float rad = comp.data.angle * Mathf.Deg2Rad;
             Vector2 newDir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
 
             direction = newDir.normalized;
