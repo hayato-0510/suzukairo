@@ -3,7 +3,45 @@
   "circuitId": 1,
   "components": [
     {
-      "type": "RCD",
+      "type": "Inductor",
+      "value": 0.05,
+      "value2": 0.025,
+      "angle": 90
+    },
+    {
+      "type": "Inductor",
+      "value": 0.05,
+      "value2": 0.025,
+      "angle": 90
+    },
+    {
+      "type": "Inductor",
+      "value": 0.05,
+      "value2": 0.025,
+      "angle": 90
+    },
+    {
+      "type": "Inductor",
+      "value": 0.05,
+      "value2": 0.025,
+      "angle": 90
+    },
+    {
+      "type": "Inductor",
+      "value": 0.05,
+      "value2": 0.025,
+      "angle": 90
+    },
+    {
+      "type": "Inductor",
+      "value": 0.05,
+      "value2": 0.025,
+      "angle": 90
+    },
+    {
+      "type": "Inductor",
+      "value": 0.05,
+      "value2": 0.025,
       "angle": 90
     }
   ]

@@ -36,8 +36,7 @@
     {
       "type": "Switch",
       "value": 100,
-      "angle": 90,
-      "id": 0
+      "angle": 90
     },
     {
       "type": "MOSFET",
