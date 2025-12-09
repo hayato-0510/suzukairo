@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 [System.Serializable]
@@ -8,6 +9,7 @@ public class RawComponent
     public float value;
     public float value2;
     public float angle;
+    public List<Vector2> points;
 }
 
 [System.Serializable]

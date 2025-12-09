@@ -43,6 +43,8 @@ public class CircuitLoader : MonoBehaviour
                 "RCD" => ScriptableObject.CreateInstance<RCD>(),
                 "Switch" => ScriptableObject.CreateInstance<Switch>(),
                 "MOSFET" => ScriptableObject.CreateInstance<MOSFET>(),
+                "Conductor" => ScriptableObject.CreateInstance<Conductor>(),
+                "CurvedConductor" => ScriptableObject.CreateInstance<CurvedConductor>(),
                 _ => ScriptableObject.CreateInstance<Resistor>(),
             };
 
@@ -50,6 +52,11 @@ public class CircuitLoader : MonoBehaviour
             c.value = rc.value;
             c.value2 = rc.value2;
             c.angle = rc.angle;
+
+            if (c is CurvedConductor cc)
+            {
+                cc.points = rc.points;
+            }
 
             circuit.components.Add(c);
         }
@@ -68,6 +75,35 @@ public class CircuitLoader : MonoBehaviour
         Vector2 cursorPos = Vector2.zero;
         Vector2 direction = Vector2.right;
 
+        var batteryPrefab = components.Find(c => c.type == "Battery");
+        if (batteryPrefab != null)
+        {
+            Transform battery = Instantiate(
+                batteryPrefab.prefab,
+                (Vector3)cursorPos,
+                Quaternion.identity,
+                this.transform
+            );
+
+            // ID の例として -1 を付ける（Json 由来の部品と区別しやすい）
+            var data = battery.GetComponent<componentData>();
+            if (data == null) data = battery.gameObject.AddComponent<componentData>();
+            data.type = "Battery";
+            data.id = -1;
+            data.value = 0;
+            data.value2 = 0;
+
+            // バッテリーの向きは固定ならここで指定しても OK
+            battery.localEulerAngles = Vector3.zero;
+
+            // バッテリーぶんだけ位置を進める
+            cursorPos += direction * batteryPrefab.endPoint;
+        }
+        else
+        {
+            Debug.LogWarning("Battery prefab not found in components list.");
+        }
+
         foreach (var comp in circuitData.components.Select((v, i) => new { data = v, index = i }))
         {
             var prefabData = components.Find(c => c.type == comp.data.type);
@@ -75,6 +111,12 @@ public class CircuitLoader : MonoBehaviour
             {
                 Debug.LogWarning($"Prefab not found for type: {comp.data.type}");
                 continue;
+            }
+
+            float ePoint = prefabData.endPoint;
+            if (comp.data.type == "Conductor"|| comp.data.type == "CurvedConductor")
+            {
+                ePoint = comp.data.value;
             }
 
             Transform obj = Instantiate(prefabData.prefab, (Vector3)cursorPos, Quaternion.identity, this.transform);
@@ -87,6 +129,11 @@ public class CircuitLoader : MonoBehaviour
             compData.value = comp.data.value;
             compData.value2 = comp.data.value2;
 
+            if (comp.data is CurvedConductor cc)
+            {
+                compData.points = cc.points;
+            }
+
             obj.localEulerAngles = new Vector3(0f, 0f, comp.data.angle);
 
             float rad = comp.data.angle * Mathf.Deg2Rad;
@@ -94,7 +141,7 @@ public class CircuitLoader : MonoBehaviour
 
             direction = newDir.normalized;
 
-            cursorPos += direction * prefabData.endPoint;
+            cursorPos += direction * ePoint;
         }
     }
 

@@ -33,3 +33,14 @@ public class Switch : ComponentBase
 public class MOSFET : ComponentBase
 {
 }
+
+[CreateAssetMenu(fileName = "Conductor", menuName = "Circuit/Conductor")]
+public class Conductor : ComponentBase
+{
+}
+
+[CreateAssetMenu(fileName = "CurvedConductor", menuName = "Circuit/CurvedConductor")]
+public class CurvedConductor : ComponentBase
+{
+    public List<Vector2> points;
+}
