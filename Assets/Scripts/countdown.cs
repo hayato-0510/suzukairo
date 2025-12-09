@@ -59,7 +59,7 @@ public class countdown : MonoBehaviour
     private void Timer()
     {
         timerText.text = time.ToString();
+        if (time <= 0) CancelInvoke(nameof(Timer));
         time--;
-        if(time<=0)CancelInvoke(nameof(Timer));
     }
 }
