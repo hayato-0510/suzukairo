@@ -1,0 +1,40 @@
+.full-screen {
+    width: 100%;
+    height: 100%;
+    background-color: #050505;
+}
+
+.overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.vignette {
+    /* radial-gradient はエラーになるので削除 */
+    /* 代わりに単色半透明などで妥協するか、C#で描画します */
+    background-color: rgba(0,0,0, 0.3); 
+}
+
+.scanlines {
+    /* linear-gradient も削除 */
+    /* スキャンラインはC#で描く方が綺麗で軽いです */
+    background-color: transparent;
+}
+
+.content-container {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-text {
+    font-size: 40px;
+    color: white;
+    -unity-font-style: bold;
+    opacity: 0.8;
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+}
