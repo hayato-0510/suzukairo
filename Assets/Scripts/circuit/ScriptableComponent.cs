@@ -44,3 +44,8 @@ public class CurvedConductor : ComponentBase
 {
     public List<Vector2> points;
 }
+
+[CreateAssetMenu(fileName = "Checkpoint", menuName = "Circuit/Checkpoint")]
+public class Checkpoint : ComponentBase
+{
+}

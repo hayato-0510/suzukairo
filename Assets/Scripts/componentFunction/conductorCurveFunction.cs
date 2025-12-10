@@ -2,17 +2,20 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(LineRenderer))]
+[RequireComponent(typeof(PolygonCollider2D))]
 public class conductorCurveFunction : MonoBehaviour
 {
+    public float lineWidth = 0.2f;
+
     private LineRenderer line;
     private componentData cData;
-
-    private List<CapsuleCollider2D> colliders = new List<CapsuleCollider2D>();
+    private PolygonCollider2D poly;
 
     void Start()
     {
         line = GetComponent<LineRenderer>();
         cData = GetComponent<componentData>();
+        poly = GetComponent<PolygonCollider2D>();
 
         BuildCurve();
     }
@@ -21,41 +24,70 @@ public class conductorCurveFunction : MonoBehaviour
     {
         if (line == null) line = GetComponent<LineRenderer>();
         if (cData == null) cData = GetComponent<componentData>();
+        if (poly == null) poly = GetComponent<PolygonCollider2D>();
 
         List<Vector2> pts = cData.points;
         if (pts == null || pts.Count < 2) return;
 
         line.useWorldSpace = false;
+        line.startWidth = lineWidth;
+        line.endWidth = lineWidth;
         line.positionCount = pts.Count;
 
         for (int i = 0; i < pts.Count; i++)
-            line.SetPosition(i, new Vector3(pts[i].x, pts[i].y, 0));
+            line.SetPosition(i, pts[i]);
 
-        foreach (var c in colliders) Destroy(c);
-        colliders.Clear();
+        float halfW = lineWidth * 0.5f;
 
-        float radius = line.startWidth * 0.5f;
+        List<Vector2> left = new List<Vector2>();
+        List<Vector2> right = new List<Vector2>();
 
-        for (int i = 0; i < pts.Count - 1; i++)
+        for (int i = 0; i < pts.Count; i++)
         {
-            Vector2 p1 = pts[i];
-            Vector2 p2 = pts[i + 1];
-            Vector2 dir = p2 - p1;
-            float length = dir.magnitude;
+            Vector2 p = pts[i];
 
-            CapsuleCollider2D capsule = gameObject.AddComponent<CapsuleCollider2D>();
-            capsule.isTrigger = true;
-            capsule.direction = CapsuleDirection2D.Horizontal;
-            capsule.size = new Vector2(length, radius * 2f);
+            Vector2 dirPrev;
+            Vector2 dirNext;
 
-            capsule.offset = (p1 + p2) * 0.5f;
+            if (i == 0)
+            {
+                dirPrev = (pts[i + 1] - p).normalized;
+                dirNext = dirPrev;
+            }
+            else if (i == pts.Count - 1)
+            {
+                dirNext = (p - pts[i - 1]).normalized;
+                dirPrev = dirNext;
+            }
+            else
+            {
+                dirPrev = (p - pts[i - 1]).normalized;
+                dirNext = (pts[i + 1] - p).normalized;
+            }
 
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            capsule.transform.localRotation = Quaternion.Euler(0, 0, angle);
+            Vector2 normalPrev = new Vector2(-dirPrev.y, dirPrev.x);
+            Vector2 normalNext = new Vector2(-dirNext.y, dirNext.x);
 
-            colliders.Add(capsule);
+            // ジョイントの法線方向（ミター方式）
+            Vector2 miter = (normalPrev + normalNext).normalized;
+
+            // ミタースケール = 1 / dot(miter, normalPrev)
+            float scale = halfW / Vector2.Dot(miter, normalPrev);
+
+            left.Add(p + miter * scale);
+            right.Add(p - miter * scale);
         }
 
-        Debug.Log($"{name}: Built {pts.Count} points / {colliders.Count} colliders");
+        right.Reverse();
+
+        List<Vector2> polyPts = new List<Vector2>();
+        polyPts.AddRange(left);
+        polyPts.AddRange(right);
+
+        poly.pathCount = 1;
+        poly.SetPath(0, polyPts.ToArray());
+        poly.isTrigger = true;
+
+        Debug.Log($"{name}: Perfect miter join poly collider generated!");
     }
 }
