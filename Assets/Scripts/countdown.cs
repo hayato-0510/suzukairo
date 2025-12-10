@@ -7,6 +7,8 @@ public class countdown : MonoBehaviour
     public TextMeshProUGUI countDownText;
     public TextMeshProUGUI timerText;
     public int timeLimit=90;
+    public controller controller;
+    public GameObject finishText;
 
     private int time;
 
@@ -50,7 +52,7 @@ public class countdown : MonoBehaviour
                 yield return null;
             }
         }
-
+        controller.canMove = true;
         countDownText.text = "";
         time = timeLimit;
         InvokeRepeating(nameof(Timer), 0f,1f);
@@ -59,7 +61,12 @@ public class countdown : MonoBehaviour
     private void Timer()
     {
         timerText.text = time.ToString();
-        if (time <= 0) CancelInvoke(nameof(Timer));
+        if (time <= 0) 
+        { 
+            CancelInvoke(nameof(Timer)); 
+            controller.canMove = false;
+            finishText.SetActive(true);
+        }
         time--;
     }
 }

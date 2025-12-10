@@ -27,6 +27,9 @@ public class controller : MonoBehaviour
     private bool isOnConductor=false;
     private Vector3 startScale;
 
+    [HideInInspector]
+    public bool canMove=false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -37,6 +40,7 @@ public class controller : MonoBehaviour
     private void FixedUpdate()
     {
         transform.localScale = ampere/startAmpere*startScale;
+        if (!canMove) return;
         float forward = 0f;
         if (Input.GetKey(MoveFront))
         {

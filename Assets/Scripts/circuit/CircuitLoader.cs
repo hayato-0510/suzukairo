@@ -35,6 +35,7 @@ public class CircuitLoader : MonoBehaviour
         Circuit circuit = ScriptableObject.CreateInstance<Circuit>();
         circuit.circuitName = raw.circuitName;
         circuit.circuitId = raw.circuitId;
+        circuit.lapNum = raw.lapNum;
 
         circuit.components = new List<ComponentBase>();
 

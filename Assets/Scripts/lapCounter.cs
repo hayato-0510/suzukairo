@@ -1,53 +1,59 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
 public class LapCounter : MonoBehaviour
 {
-    public CircuitLoader loader;               // Loader を参照
-    private List<int> checkpointOrder;  // Loader の checkpoint ID の順序
-    private int nextIndex = 0;          // 次に通るべきチェックポイントのインデックス
-    public int lap = 0;                 // 現在のラップ数
+    public CircuitLoader loader;
+    private List<int> checkpointOrder;
+    private int nextIndex = 0;
+    public int lap = 0;
+    public TextMeshProUGUI lapText;
+    private int lapNum;
+    public controller controller;
+    public GameObject finishText;
 
     private void Start()
     {
-        // Loader からチェックポイントの順序を取得
         checkpointOrder = loader.checkPointIds;
         nextIndex = 0;
+        lapNum = loader.circuitData.lapNum;
+        lapText.text = "0/" + lapNum.ToString();
+        finishText.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // ---------- Checkpoint ----------
         if (other.CompareTag("checkpoint"))
         {
-            Debug.Log("A");
             componentData cp = other.GetComponent<componentData>();
             if (cp == null) return;
 
             int cpId = cp.id;
 
-            // 順番通り？
             if (cpId == checkpointOrder[nextIndex])
             {
                 nextIndex++;
 
-                // 最後のチェックポイントまで行った？
                 if (nextIndex >= checkpointOrder.Count)
                 {
-                    nextIndex = 0; // ゴールに行けばラップ加算できる状態
+                    nextIndex = 0;
                 }
             }
             return;
         }
 
-        // ---------- Goal ----------
         if (other.CompareTag("goal"))
         {
-            // 全チェックポイントを通り終えた状態でのみラップ加算
             if (nextIndex == 0)
             {
                 lap++;
-                Debug.Log("Lap: " + lap);
+                lapText.text=lap.ToString()+"/"+lapNum;
+                if (lap >= lapNum) 
+                { 
+                    controller.canMove = false;
+                    finishText.SetActive(true);
+                }
             }
         }
     }
