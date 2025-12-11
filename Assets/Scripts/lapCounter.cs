@@ -37,7 +37,7 @@ public class LapCounter : MonoBehaviour
 
                 if (nextIndex >= checkpointOrder.Count)
                 {
-                    nextIndex = 0;
+                    nextIndex = -1;
                 }
             }
             return;
@@ -45,7 +45,7 @@ public class LapCounter : MonoBehaviour
 
         if (other.CompareTag("goal"))
         {
-            if (nextIndex == 0)
+            if (nextIndex == -1)
             {
                 lap++;
                 lapText.text=lap.ToString()+"/"+lapNum;
@@ -54,6 +54,7 @@ public class LapCounter : MonoBehaviour
                     controller.canMove = false;
                     finishText.SetActive(true);
                 }
+                nextIndex = 0;
             }
         }
     }
