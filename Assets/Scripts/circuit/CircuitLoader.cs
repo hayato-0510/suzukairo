@@ -177,7 +177,7 @@ public class CircuitLoader : MonoBehaviour
 
         Vector2 p1;
 
-        if (viaX < viaY)
+        if (viaX > viaY)
             p1 = new Vector2(p2.x, p0.y);   // èc Å® â°
         else
             p1 = new Vector2(p0.x, p2.y);   // â° Å® èc

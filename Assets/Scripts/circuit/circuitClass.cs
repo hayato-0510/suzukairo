@@ -29,3 +29,8 @@ public class Circuit : ScriptableObject
     public int lapNum;
     public List<ComponentBase> components = new List<ComponentBase>();
 }
+
+public interface IResettableComponent
+{
+    void ResetComponent();
+}

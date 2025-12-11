@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using static UnityEngine.Rendering.DebugUI;
 
-public class resistorFunction : MonoBehaviour
+public class resistorFunction : MonoBehaviour,IResettableComponent
 {
     private componentData cData;
     private TextMeshProUGUI text;
@@ -18,6 +18,12 @@ public class resistorFunction : MonoBehaviour
             text.text = cData.value.ToString()+"É∂";   // ï\é¶ì‡óeÇïœçX
         }
     }
+
+    public void ResetComponent()
+    {
+        isPassed = false;
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

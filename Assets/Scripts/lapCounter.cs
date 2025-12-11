@@ -6,6 +6,7 @@ public class LapCounter : MonoBehaviour
 {
     public CircuitLoader loader;
     private List<int> checkpointOrder;
+    [SerializeField]
     private int nextIndex = 0;
     public int lap = 0;
     public TextMeshProUGUI lapText;
@@ -31,6 +32,8 @@ public class LapCounter : MonoBehaviour
 
             int cpId = cp.id;
 
+            if (nextIndex >= checkpointOrder.Capacity) return;
+            if (nextIndex < 0) return;
             if (cpId == checkpointOrder[nextIndex])
             {
                 nextIndex++;
@@ -49,12 +52,26 @@ public class LapCounter : MonoBehaviour
             {
                 lap++;
                 lapText.text=lap.ToString()+"/"+lapNum;
+                ResetAllComponents();
                 if (lap >= lapNum) 
                 { 
                     controller.canMove = false;
                     finishText.SetActive(true);
                 }
                 nextIndex = 0;
+            }
+        }
+    }
+
+    private void ResetAllComponents()
+    {
+        var all = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
+
+        foreach (var comp in all)
+        {
+            if (comp is IResettableComponent resettable)
+            {
+                resettable.ResetComponent();
             }
         }
     }

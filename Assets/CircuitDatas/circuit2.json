@@ -4,9 +4,9 @@
   "lapNum": 3,
   "components": [
     {
-      "type": "Inductor",
-      "value": 2,
-      "value2": 0.1,
+      "type": "RCD",
+      "value": 0.01,
+      "value2": 0.001,
       "angle": -90
     },
     {
@@ -17,6 +17,11 @@
       "type": "Inductor",
       "value": 2,
       "value2": 0.1,
+      "angle": 180
+    },
+    {
+      "type": "MOSFET",
+      "value": 1,
       "angle": 180
     }
   ]
