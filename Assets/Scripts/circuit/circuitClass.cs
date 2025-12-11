@@ -17,6 +17,7 @@ public class RawCircuit
 {
     public string circuitName;
     public int circuitId;
+    public int lapNum;
     public List<RawComponent> components;
 }
 
@@ -25,5 +26,6 @@ public class Circuit : ScriptableObject
 {
     public string circuitName;
     public int circuitId;
+    public int lapNum;
     public List<ComponentBase> components = new List<ComponentBase>();
 }

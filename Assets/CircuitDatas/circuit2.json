@@ -1,34 +1,23 @@
 {
   "circuitName": "circuit1",
   "circuitId": 1,
+  "lapNum": 3,
   "components": [
     {
-      "type": "CurvedConductor",
-      "value": 3.0,
-      "value2": 0,
-      "angle": 0,
-      "points": [
-        {
-          "x": 0,
-          "y": 0
-        },
-        {
-          "x": 0,
-          "y": 0
-        },
-        {
-          "x": 1.0,
-          "y": 1.5
-        },
-        {
-          "x": 2.0,
-          "y": 1.0
-        },
-        {
-          "x": 3.0,
-          "y": 0
-        }
-      ]
+      "type": "Inductor",
+      "value": 2,
+      "value2": 0.1,
+      "angle": -90
+    },
+    {
+      "type": "Checkpoint",
+      "value": 2
+    },
+    {
+      "type": "Inductor",
+      "value": 2,
+      "value2": 0.1,
+      "angle": 180
     }
   ]
 }

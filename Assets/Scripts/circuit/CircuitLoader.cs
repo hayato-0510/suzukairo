@@ -7,6 +7,10 @@ public class CircuitLoader : MonoBehaviour
 {
     public TextAsset json;
     public Circuit circuitData;
+    public float width = 1.2f;
+    public Color returnColor;
+    public int checkpointNum = 0;
+    public List<int> checkPointIds = new List<int>();
 
     [System.Serializable]
     public class ComponentPrefabs
@@ -31,6 +35,7 @@ public class CircuitLoader : MonoBehaviour
         Circuit circuit = ScriptableObject.CreateInstance<Circuit>();
         circuit.circuitName = raw.circuitName;
         circuit.circuitId = raw.circuitId;
+        circuit.lapNum = raw.lapNum;
 
         circuit.components = new List<ComponentBase>();
 
@@ -45,6 +50,7 @@ public class CircuitLoader : MonoBehaviour
                 "MOSFET" => ScriptableObject.CreateInstance<MOSFET>(),
                 "Conductor" => ScriptableObject.CreateInstance<Conductor>(),
                 "CurvedConductor" => ScriptableObject.CreateInstance<CurvedConductor>(),
+                "Checkpoint" => ScriptableObject.CreateInstance<Checkpoint>(),
                 _ => ScriptableObject.CreateInstance<Resistor>(),
             };
 
@@ -118,6 +124,9 @@ public class CircuitLoader : MonoBehaviour
             {
                 ePoint = comp.data.value;
             }
+            else if (comp.data.type == "Checkpoint") {
+                checkPointIds.Add(comp.index);
+            }
 
             Transform obj = Instantiate(prefabData.prefab, (Vector3)cursorPos, Quaternion.identity, this.transform);
 
@@ -132,6 +141,10 @@ public class CircuitLoader : MonoBehaviour
             if (comp.data is CurvedConductor cc)
             {
                 compData.points = cc.points;
+                compData.points.Insert(0, new Vector2(0, 0));
+                compData.points.Insert(0, new Vector2(0, 0));
+                compData.points.Add(new Vector2(compData.value, 0));
+                compData.points.Add(new Vector2(compData.value, 0));
             }
 
             obj.localEulerAngles = new Vector3(0f, 0f, comp.data.angle);
@@ -143,6 +156,68 @@ public class CircuitLoader : MonoBehaviour
 
             cursorPos += direction * ePoint;
         }
+        CreateReturnLine(cursorPos);
     }
 
+    private void CreateReturnLine(Vector2 endPos)
+    {
+        Vector2 p0 = endPos;
+        Vector2 p2 = Vector2.zero;
+
+        // x=0 or y=0 のときは直線
+        if (Mathf.Approximately(p0.x, 0f) || Mathf.Approximately(p0.y, 0f))
+        {
+            CreateFatLine("Return_0", p0, p2, returnColor);
+            return;
+        }
+
+        // --- L字の折れ点 p1 を決める ---
+        float viaX = Mathf.Abs(p0.x - p2.x);
+        float viaY = Mathf.Abs(p0.y - p2.y);
+
+        Vector2 p1;
+
+        if (viaX < viaY)
+            p1 = new Vector2(p2.x, p0.y);   // 縦 → 横
+        else
+            p1 = new Vector2(p0.x, p2.y);   // 横 → 縦
+
+        // 直角ラインを2本生成
+        CreateFatLine("Return_A", p0, p1, returnColor);
+        CreateFatLine("Return_B", p1, p2, returnColor);
+    }
+
+    private void CreateFatLine(string name, Vector2 p0, Vector2 p1, Color col)
+    {
+        GameObject lineObj = new GameObject(name);
+        lineObj.transform.parent = this.transform;
+        lineObj.tag = "conductor";
+
+        LineRenderer lr = lineObj.AddComponent<LineRenderer>();
+        lr.positionCount = 2;
+        lr.useWorldSpace = true;
+        lr.startWidth = width;
+        lr.endWidth = width;
+        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.startColor = col;
+        lr.endColor = col;
+
+        lr.SetPosition(0, p0);
+        lr.SetPosition(1, p1);
+
+        // ------- PolygonCollider2D（長方形） -------
+        PolygonCollider2D poly = lineObj.AddComponent<PolygonCollider2D>();
+        poly.isTrigger = true;
+
+        Vector2 dir = (p1 - p0).normalized;
+        Vector2 normal = new Vector2(-dir.y, dir.x);
+        float halfW = width / 2f;
+
+        Vector2 v0 = p0 + normal * halfW;
+        Vector2 v1 = p1 + normal * halfW;
+        Vector2 v2 = p1 - normal * halfW;
+        Vector2 v3 = p0 - normal * halfW;
+
+        poly.points = new Vector2[] { v0, v1, v2, v3 };
+    }
 }

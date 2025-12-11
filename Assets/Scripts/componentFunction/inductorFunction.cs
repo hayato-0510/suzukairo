@@ -36,7 +36,6 @@ public class inductorFunction : MonoBehaviour
         if (incrementAmpere >= cData.value) return;
         if (collision.gameObject.tag == "electron")
         {
-            Debug.Log(incrementAmpere);
             if (Input.GetKey(MoveFront) || Input.GetKey(MoveBack))
             {
                 if (incrementAmpere + cData.value2 * Time.deltaTime >= cData.value)
