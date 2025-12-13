@@ -5,16 +5,15 @@
   "batteryVoltage": 5,
   "components": [
     {
-      "type": "RCD",
-      "value": 0.01,
-      "value2": 0.001,
+      "type": "Conductor",
+      "value": 15,
       "angle": -90
     },
     {
-      "type": "Checkpoint",
-      "value": 1
+      "type": "Conductor",
+      "value": 2,
+      "angle": 180
     },
-
     {
       "type": "Parallel",
       "parallel": {
@@ -48,6 +47,10 @@
       "value": 0.01,
       "value2": 0.001,
       "angle": 180
+    },
+    {
+      "type": "Checkpoint",
+      "value": 3
     }
   ]
 }

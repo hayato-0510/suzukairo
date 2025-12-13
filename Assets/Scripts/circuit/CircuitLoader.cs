@@ -177,11 +177,11 @@ public class CircuitLoader : MonoBehaviour
     }
 
     private Vector2 BuildSingleComponent(
-        ComponentBase comp,
-        Vector2 cursorPos,
-        ref Vector2 direction,
-        int id
-    )
+    ComponentBase comp,
+    Vector2 cursorPos,
+    ref Vector2 direction,
+    int id
+)
     {
         var prefab = components.Find(c => c.type == comp.type);
         if (prefab == null) return cursorPos;
@@ -198,6 +198,18 @@ public class CircuitLoader : MonoBehaviour
         );
 
         UpdateBounds(obj);
+
+        var data = obj.GetComponent<componentData>();
+        if (data != null)
+        {
+            data.type = comp.type;
+            data.id = id;
+            data.value = comp.value;
+            data.value2 = comp.value2;
+
+            if (comp is CurvedConductor cc)
+                data.points = new List<Vector2>(cc.points);
+        }
 
         float rad = comp.angle * Mathf.Deg2Rad;
         direction = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)).normalized;
@@ -237,68 +249,50 @@ public class CircuitLoader : MonoBehaviour
 
         return false;
     }
-
-    private bool IsAxisAligned(Vector2 a, Vector2 b)
-    {
-        return Mathf.Abs(a.x - b.x) < 0.001f ||
-               Mathf.Abs(a.y - b.y) < 0.001f;
-    }
-
+    
     private void CreateReturnLine(Vector2 endPos)
     {
         Vector2 origin = Vector2.zero;
         float margin = width * 2f;
 
-        if (IsAxisAligned(endPos, origin) &&
-            !IntersectsBounds(endPos, origin, circuitBounds))
+        Vector2 diff = origin - endPos;
+
+        Vector2 mid;
+
+        // diff.x > 0 → origin は左, diff.x < 0 → origin は右
+        // diff.y > 0 → origin は上, diff.y < 0 → origin は下
+
+        if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
         {
-            CreateFatLine("Return_Straight", endPos, origin, returnColor);
+            // X方向の距離が長い → 横を先に移動 → mid の Y は endPos.y
+            mid = new Vector2(origin.x, endPos.y);
+        }
+        else
+        {
+            // Y方向の距離が長い → 縦を先に移動 → mid の X は endPos.x
+            mid = new Vector2(endPos.x, origin.y);
+        }
+
+        // 障害物チェック
+        if (IntersectsBounds(endPos, mid, circuitBounds) || IntersectsBounds(mid, origin, circuitBounds))
+        {
+            // 外周ルートにフォールバック
+            float minX = circuitBounds.min.x - margin;
+            float minY = circuitBounds.min.y - margin;
+
+            Vector2 p1 = new Vector2(endPos.x, minY);
+            Vector2 p2 = new Vector2(minX, minY);
+            Vector2 p3 = new Vector2(minX, origin.y);
+
+            CreateFatLine("Return_U_A", endPos, p1, returnColor);
+            CreateFatLine("Return_U_B", p1, p2, returnColor);
+            CreateFatLine("Return_U_C", p2, p3, returnColor);
+            CreateFatLine("Return_U_D", p3, origin, returnColor);
             return;
         }
 
-        Vector2 lA = new Vector2(origin.x, endPos.y); // 横→縦
-        Vector2 lB = new Vector2(endPos.x, origin.y); // 縦→横
-
-        bool aOK =
-            !IntersectsBounds(endPos, lA, circuitBounds) &&
-            !IntersectsBounds(lA, origin, circuitBounds);
-
-        bool bOK =
-            !IntersectsBounds(endPos, lB, circuitBounds) &&
-            !IntersectsBounds(lB, origin, circuitBounds);
-
-        if (aOK || bOK)
-        {
-            Vector2 mid;
-
-            if (aOK && bOK)
-            {
-                float distA = Vector2.Distance(endPos, lA) + Vector2.Distance(lA, origin);
-                float distB = Vector2.Distance(endPos, lB) + Vector2.Distance(lB, origin);
-                mid = distA <= distB ? lA : lB;
-            }
-            else
-            {
-                mid = aOK ? lA : lB;
-            }
-
-            CreateFatLine("Return_L_A", endPos, mid, returnColor);
-            CreateFatLine("Return_L_B", mid, origin, returnColor);
-            return;
-        }
-
-        // ---------- 3. 外周（最終手段・必ず回避） ----------
-        float minX = circuitBounds.min.x - margin;
-        float minY = circuitBounds.min.y - margin;
-
-        Vector2 p1 = new Vector2(endPos.x, minY);
-        Vector2 p2 = new Vector2(minX, minY);
-        Vector2 p3 = new Vector2(minX, origin.y);
-
-        CreateFatLine("Return_U_A", endPos, p1, returnColor);
-        CreateFatLine("Return_U_B", p1, p2, returnColor);
-        CreateFatLine("Return_U_C", p2, p3, returnColor);
-        CreateFatLine("Return_U_D", p3, origin, returnColor);
+        CreateFatLine("Return_L_A", endPos, mid, returnColor);
+        CreateFatLine("Return_L_B", mid, origin, returnColor);
     }
 
     private void UpdateBounds(Transform obj)
@@ -314,18 +308,19 @@ public class CircuitLoader : MonoBehaviour
 
     private void CreateFatLine(string name, Vector2 p0, Vector2 p1, Color col)
     {
-        GameObject lineObj = new GameObject(name);
-        lineObj.transform.parent = transform;
-
-        LineRenderer lr = lineObj.AddComponent<LineRenderer>();
-        lr.positionCount = 2;
-        lr.useWorldSpace = true;
-        lr.startWidth = width;
-        lr.endWidth = width;
-        lr.material = new Material(Shader.Find("Sprites/Default"));
-        lr.startColor = col;
-        lr.endColor = col;
-        lr.SetPosition(0, p0);
-        lr.SetPosition(1, p1);
+        GameObject lineObj = new GameObject(name); 
+        lineObj.transform.parent = this.transform; lineObj.tag = "conductor"; 
+        LineRenderer lr = lineObj.AddComponent<LineRenderer>(); lr.positionCount = 2; 
+        lr.useWorldSpace = true; lr.startWidth = width; lr.endWidth = width; 
+        lr.material = new Material(Shader.Find("Sprites/Default")); lr.startColor = col; 
+        lr.endColor = col; lr.SetPosition(0, p0); lr.SetPosition(1, p1); 
+        // ------- PolygonCollider2D（長方形） -------
+        PolygonCollider2D poly = lineObj.AddComponent<PolygonCollider2D>(); 
+        poly.isTrigger = true; Vector2 dir = (p1 - p0).normalized; Vector2 normal = new Vector2(-dir.y, dir.x); 
+        float halfW = width / 2f; Vector2 v0 = p0 + normal * halfW; 
+        Vector2 v1 = p1 + normal * halfW; 
+        Vector2 v2 = p1 - normal * halfW; 
+        Vector2 v3 = p0 - normal * halfW; 
+        poly.points = new Vector2[] { v0, v1, v2, v3 }; 
     }
 }
