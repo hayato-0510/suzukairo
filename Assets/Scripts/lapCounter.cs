@@ -13,6 +13,7 @@ public class LapCounter : MonoBehaviour
     private int lapNum;
     public controller controller;
     public GameObject finishText;
+    private float batteryVoltage;
 
     private void Start()
     {
@@ -21,6 +22,8 @@ public class LapCounter : MonoBehaviour
         lapNum = loader.circuitData.lapNum;
         lapText.text = "0/" + lapNum.ToString();
         finishText.SetActive(false);
+        batteryVoltage = loader.circuitData.batteryVoltage;
+        controller.voltage = batteryVoltage;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -53,6 +56,7 @@ public class LapCounter : MonoBehaviour
                 lap++;
                 lapText.text=lap.ToString()+"/"+lapNum;
                 ResetAllComponents();
+                controller.voltage+=batteryVoltage;
                 if (lap >= lapNum) 
                 { 
                     controller.canMove = false;
