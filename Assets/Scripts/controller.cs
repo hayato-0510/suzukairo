@@ -56,7 +56,16 @@ public class controller : MonoBehaviour
         voltageText.text = voltage.ToString("f"+1)+"V";
         if (Input.GetKeyDown(BoostKey))
         {
-            boostVelocity += (Vector2)transform.up * boostSpeed;
+            if (voltage >= 1)
+            {
+                boostVelocity += (Vector2)transform.up * boostSpeed;
+                voltage--;
+            }
+            else if(voltage>0)
+            {
+                boostVelocity += (Vector2)transform.up * boostSpeed * voltage;
+                voltage = 0;
+            }
         }
     }
 
