@@ -189,6 +189,10 @@ public class CircuitLoader : MonoBehaviour
         float len = prefab.endPoint;
         if (comp.type == "Conductor" || comp.type == "CurvedConductor")
             len = comp.value;
+        else if (comp.type == "Checkpoint")
+        {
+            checkPointIds.Add(id);
+        }
 
         Transform obj = Instantiate(
             prefab.prefab,
