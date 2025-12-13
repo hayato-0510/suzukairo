@@ -573,6 +573,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -3888481672020999207, guid: bb52ec697f62d7d43b2f917a81d9f328, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1556619581}
+    - targetCorrespondingSourceObject: {fileID: -3888481672020999207, guid: bb52ec697f62d7d43b2f917a81d9f328, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1556619584}
+    - targetCorrespondingSourceObject: {fileID: -3888481672020999207, guid: bb52ec697f62d7d43b2f917a81d9f328, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1556619583}
   m_SourcePrefab: {fileID: 7243324766535440047, guid: bb52ec697f62d7d43b2f917a81d9f328, type: 3}
 --- !u!1 &980864573
 GameObject:
@@ -977,6 +983,33 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_SortAtRoot: 0
+--- !u!114 &1556619583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556619575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47480816719ba4c46a5eedb3aec72fd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serialHandler: {fileID: 1556619584}
+--- !u!114 &1556619584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556619575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9f64a3ec616147778f00e2a95c80c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portName: /dev/cu.usbserial-110
+  baudRate: 115200
 --- !u!1 &1957534169
 GameObject:
   m_ObjectHideFlags: 0
