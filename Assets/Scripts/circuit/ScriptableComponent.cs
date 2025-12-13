@@ -44,3 +44,15 @@ public class CurvedConductor : ComponentBase
 {
     public List<Vector2> points;
 }
+
+[CreateAssetMenu(fileName = "Checkpoint", menuName = "Circuit/Checkpoint")]
+public class Checkpoint : ComponentBase
+{
+}
+
+[CreateAssetMenu(fileName = "Parallel", menuName = "Circuit/Parallel")]
+public class ParallelComponent : ComponentBase
+{
+    public float parallelSpacing;
+    public List<List<ComponentBase>> branches;
+}

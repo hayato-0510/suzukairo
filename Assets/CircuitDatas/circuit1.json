@@ -1,47 +1,56 @@
 {
-  "circuitName": "circuit1",
+  "circuitName": "circuit_parallel_test",
   "circuitId": 1,
+  "lapNum": 3,
+  "batteryVoltage": 5,
   "components": [
     {
-      "type": "Resistor",
-      "value": 100,
-      "angle": 90
+      "type": "Conductor",
+      "value": 15,
+      "angle": -90
     },
     {
-      "type": "MOSFET",
-      "value": 1.0,
-      "angle": 90
+      "type": "Conductor",
+      "value": 2,
+      "angle": 180
     },
     {
-      "type": "Resistor",
-      "value": 100,
-      "angle": 0
-    },
-    {
-      "type": "Resistor",
-      "value": 100,
-      "angle": 90
+      "type": "Parallel",
+      "parallel": {
+        "parallelSpacing": 10,
+        "branches": [
+          {
+            "components": [
+              {
+                "type": "Inductor",
+                "value": 2,
+                "value2": 0.1,
+                "angle": 180
+              }
+            ]
+          },
+          {
+            "components": [
+              {
+                "type": "Inductor",
+                "value": 1,
+                "value2": 0.05,
+                "angle": 180
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "type": "Inductor",
-      "value": 0.05,
-      "value2": 0.025,
-      "angle": 90
+      "value": 0.01,
+      "value2": 0.001,
+      "angle": 180
     },
     {
-      "type": "RCD",
-      "value": 100,
-      "angle": 90
-    },
-    {
-      "type": "Switch",
-      "value": 100,
-      "angle": 90
-    },
-    {
-      "type": "MOSFET",
-      "value": 0.5,
-      "angle": 90
+      "type": "Checkpoint",
+      "value": 3
     }
   ]
 }

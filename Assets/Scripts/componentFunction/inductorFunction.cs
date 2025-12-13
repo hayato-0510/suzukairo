@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class inductorFunction : MonoBehaviour
+public class inductorFunction : MonoBehaviour,IResettableComponent
 {
     private componentData cData;
+    [SerializeField]
     private float incrementAmpere=0;
     public KeyCode MoveFront = KeyCode.W;
     public KeyCode MoveBack = KeyCode.S;
@@ -11,6 +12,12 @@ public class inductorFunction : MonoBehaviour
     {
         cData = GetComponent<componentData>();
     }
+
+    public void ResetComponent()
+    {
+        incrementAmpere = 0;
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -36,7 +43,6 @@ public class inductorFunction : MonoBehaviour
         if (incrementAmpere >= cData.value) return;
         if (collision.gameObject.tag == "electron")
         {
-            Debug.Log(incrementAmpere);
             if (Input.GetKey(MoveFront) || Input.GetKey(MoveBack))
             {
                 if (incrementAmpere + cData.value2 * Time.deltaTime >= cData.value)

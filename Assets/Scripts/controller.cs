@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class controller : MonoBehaviour
 {
@@ -15,10 +16,17 @@ public class controller : MonoBehaviour
     public float rotateSpeed = 90f;
     public float conducutorMoveSpeed = 2f;
     public float nonconductorMoveSpeed = 0.5f;
+    public float moveDecay = 3f;
+    private Vector2 moveVelocity;
 
     [Header("電流")]
     public float startAmpere = 0.1f;
     public float ampere=0.1f;
+
+    [Header("電圧")]
+    public float voltage=5.0f;
+    public TextMeshProUGUI voltageText;
+
     [Header("放熱スピード")]
     public float radiationSpeed=1.0f;
 
@@ -27,6 +35,15 @@ public class controller : MonoBehaviour
     private bool isOnConductor=false;
     private Vector3 startScale;
 
+    [HideInInspector]
+    public bool canMove=false;
+
+    [Header("Boost")]
+    public float boostSpeed = 100f;
+    public float boostDecay = 3f;
+    private Vector2 boostVelocity;
+    public KeyCode BoostKey = KeyCode.Space;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -34,28 +51,61 @@ public class controller : MonoBehaviour
         startScale = transform.localScale;
     }
 
+    private void Update()
+    {
+        voltageText.text = voltage.ToString("f"+1)+"V";
+        if (Input.GetKeyDown(BoostKey))
+        {
+            if (voltage >= 1)
+            {
+                boostVelocity += (Vector2)transform.up * boostSpeed;
+                voltage--;
+            }
+            else if(voltage>0)
+            {
+                boostVelocity += (Vector2)transform.up * boostSpeed * voltage;
+                voltage = 0;
+            }
+        }
+    }
+
     private void FixedUpdate()
     {
-        transform.localScale = ampere/startAmpere*startScale;
+        transform.localScale = ampere / startAmpere * startScale;
+        if (!canMove) return;
+
         float forward = 0f;
+
         if (Input.GetKey(MoveFront))
         {
-            forward = 1f; //前に移動
-            if(!isOnConductor)ampere /= 1f + Time.deltaTime * radiationSpeed;
+            forward = 1f;
+            if (!isOnConductor) ampere /= 1f + Time.deltaTime * radiationSpeed;
         }
-        if (Input.GetKey(MoveBack)) 
+        if (Input.GetKey(MoveBack))
         {
-            forward = -1f; //後ろに移動
-            if(!isOnConductor)ampere /= 1f + Time.deltaTime * radiationSpeed;
+            forward = -1f;
+            if (!isOnConductor) ampere /= 1f + Time.deltaTime * radiationSpeed;
         }
 
-        Vector2 move = transform.up * forward * moveSpeed * (ampere*10);
+        if (forward != 0)
+        {
+            Vector2 target = transform.up * forward * moveSpeed * (ampere * 10);
+            moveVelocity = target;
+        }
+        else
+        {
+            moveVelocity = Vector2.Lerp(moveVelocity, Vector2.zero, Time.fixedDeltaTime * moveDecay);
+        }
 
-        rb.linearVelocity = move;
+        boostVelocity = Vector2.Lerp(boostVelocity, Vector2.zero, Time.fixedDeltaTime * boostDecay);
 
+        rb.linearVelocity = moveVelocity + boostVelocity;
+
+
+        // 回転
         float turn = 0f;
-        if (Input.GetKey(RotateRight)) turn = -1f; // 右回転
-        if (Input.GetKey(RotateLeft)) turn = 1f;  // 左回転
+        if (Input.GetKey(RotateRight)) turn = -1f;
+        if (Input.GetKey(RotateLeft)) turn = 1f;
 
         rb.MoveRotation(rb.rotation + turn * rotateSpeed * Time.fixedDeltaTime);
     }
