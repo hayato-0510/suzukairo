@@ -9,13 +9,14 @@ public class countdown : MonoBehaviour
     public int timeLimit=90;
     public controller controller;
     public GameObject finishText;
+    public CircuitLoader cl;
 
     private int time;
 
     void Start()
     {
         StartCoroutine(CountDown());
-
+        timeLimit=cl.circuitData.timeLimit;
     }
 
     IEnumerator CountDown()

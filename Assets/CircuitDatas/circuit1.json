@@ -3,7 +3,13 @@
   "circuitId": 1,
   "lapNum": 3,
   "batteryVoltage": 5,
+  "timeLimit": 180,
   "components": [
+    {
+      "type": "DCDC",
+      "value": 5,
+      "angle": -90
+    },
     {
       "type": "Conductor",
       "value": 15,
