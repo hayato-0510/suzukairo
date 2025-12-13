@@ -49,3 +49,10 @@ public class CurvedConductor : ComponentBase
 public class Checkpoint : ComponentBase
 {
 }
+
+[CreateAssetMenu(fileName = "Parallel", menuName = "Circuit/Parallel")]
+public class ParallelComponent : ComponentBase
+{
+    public float parallelSpacing;
+    public List<List<ComponentBase>> branches;
+}
