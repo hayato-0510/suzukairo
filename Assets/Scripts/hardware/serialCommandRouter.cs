@@ -3,6 +3,13 @@ using UnityEngine;
 public class SerialCommandRouter : MonoBehaviour
 {
     [SerializeField] private SerialHandler serialHandler;
+    public float turn ;
+    public float move ;
+
+    public float turbo;
+
+    public int mapID = 0;
+
 
     void Awake()
     {
@@ -17,16 +24,54 @@ public class SerialCommandRouter : MonoBehaviour
 
     private void HandleSerialData(string data)
     {
-        Debug.Log($"Received: {data}");
+        //Debug.Log($"Received: {data}");
         string[] commands = data.Split(' ');
         switch (commands[0])
         {
             case "sw":
+                if(commands[1] == "1")
+                    move = 1f;
+                else
+                    move = 0f;
+
+                if(commands[2] == "1")
+                    turn = -1f;
+                else 
+                    turn = 0f;
+
+                if(commands[3] == "1")
+                    turn = 1f;
+                else
+                    turn = 0f;
+
+                if(commands[4] == "1")
+                    turbo = 1f;
+                else
+                    turbo = 0f;
+                break;
             case "pad":
-                //移動の処理
+                if(commands[1] == "1")
+                    turn = 1f;
+                else
+                    turn = 0f;
+
+                if(commands[2] == "1")
+                    move = 1f;
+                else 
+                    move = 0f;
+
+                if(commands[3] == "1")
+                    turn = -1f;
+                else
+                    turn = 0f;
+
+                if(commands[4] == "1")
+                    turbo = 1f;
+                else
+                    turbo = 0f;
                 break;
             case "map":
-                //マップ変更の処理
+                mapID = int.Parse(commands[1]);
                 break;
             case "health":
                 Debug.Log("[Serial] health check");
