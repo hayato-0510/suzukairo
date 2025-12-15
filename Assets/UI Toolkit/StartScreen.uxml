@@ -1,9 +1,7 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEngine.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/StartScreen.uss?fileID=7433441132597879392&amp;guid=82c0f271371fa4424822ec59ffcf8c64&amp;type=3#StartScreen" />
-    <CyberCircuit.CircuitBackground name="CircuitBg" class="full-screen">
-        <ui:VisualElement name="Vignette" picking-mode="Ignore" class="overlay vignette" />
-        <ui:VisualElement name="Scanlines" picking-mode="Ignore" class="overlay scanlines" />
-    </CyberCircuit.CircuitBackground>
-    <CyberCircuit.CircuitBackground />
-    <CyberCircuit.CircuitBackground />
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement name="Background" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);"> 
+        
+        <ui:Image name="LogoImagePlaceholder" style="..." />
+
+    </ui:VisualElement>
 </ui:UXML>
