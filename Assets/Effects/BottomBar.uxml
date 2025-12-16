@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+  <ui:Style src="./BottomBar.uss" />
+  <ui:VisualElement name="Root" class="root">
+    <ui:VisualElement name="game" class="game" />
+    <ui:VisualElement name="bottom" class="bottom">
+      <ui:VisualElement name="bottom-left" class="bottom-left bar">
+        <ui:Label name="LeftText" text="こんにちは！" />
+      </ui:VisualElement>
+      <ui:VisualElement name="bottom-center" class="bottom-center bar">
+        <ui:Label name="CenterText" text="こんにちは！" />
+      </ui:VisualElement>
+      <ui:VisualElement name="bottom-right" class="bottom-right bar">
+        <ui:Label name="RightText" text="こんにちは！" />
+      </ui:VisualElement>
+    </ui:VisualElement>
+  </ui:VisualElement>
+</ui:UXML>
