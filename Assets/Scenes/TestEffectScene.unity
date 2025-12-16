@@ -273,7 +273,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &338601035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,7 +577,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 0}
+  m_BackGroundColor: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -902,6 +902,7 @@ GameObject:
   - component: {fileID: 980864576}
   - component: {fileID: 980864577}
   - component: {fileID: 980864578}
+  - component: {fileID: 980864579}
   m_Layer: 0
   m_Name: gameManager
   m_TagString: Untagged
@@ -1009,6 +1010,22 @@ MonoBehaviour:
   vignetteMin: 0.3
   vignetteMax: 0.6
   vignetteSpeed: 0.2
+--- !u!114 &980864579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980864573}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cce0f695c2ec74b89a2ac203bdf4c331, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCamera: {fileID: 519420031}
+  ps: {fileID: 2075765309373432239, guid: 52e0f43ebfbd445db9ab882fbf5412b6, type: 3}
+  planeZ: 0
+  particlesPerSecond: 20
 --- !u!4 &1003932968 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6990979261286933283, guid: 1ea587b73c0014c29bc68d713fed6e35, type: 3}
