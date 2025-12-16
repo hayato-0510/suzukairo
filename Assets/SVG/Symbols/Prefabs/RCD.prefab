@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 8050340939452743963}
   - component: {fileID: 4095018574879123713}
   - component: {fileID: 4299757424824440239}
+  - component: {fileID: 1135913112213289886}
   - component: {fileID: 6638315748830535780}
+  - component: {fileID: 694332666597989643}
   m_Layer: 5
   m_Name: RCD
   m_TagString: Untagged
@@ -89,7 +91,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &4299757424824440239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,6 +109,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1135913112213289886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8449063425167743114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0468d1ac17238b9418f8d405e4b58820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  decrementAmpere: 0
+  MoveFront: 119
+  MoveBack: 115
 --- !u!114 &6638315748830535780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,6 +140,103 @@ MonoBehaviour:
   id: 0
   value: 0
   value2: 0
+  points: []
+--- !u!60 &694332666597989643
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8449063425167743114}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 5.58125, y: 0.6403194}
+      - {x: -0.0084453225, y: 0.59428084}
+      - {x: -0.042063177, y: -0.6229754}
+      - {x: 5.5861053, y: -0.68498915}
+      - {x: 5.602356, y: -1.8649031}
+      - {x: 14.652616, y: -1.911458}
+      - {x: 14.612341, y: -0.6175974}
+      - {x: 18.729654, y: -0.6074174}
+      - {x: 18.748228, y: -2.925852}
+      - {x: 19.954418, y: -2.9392219}
+      - {x: 19.95126, y: -0.67082214}
+      - {x: 20.88382, y: -0.6281553}
+      - {x: 20.928385, y: -2.9138246}
+      - {x: 22.13696, y: -2.90084}
+      - {x: 22.136421, y: -0.680145}
+      - {x: 27.165873, y: -0.621434}
+      - {x: 27.150084, y: -2.8196478}
+      - {x: 30.899473, y: -0.7982392}
+      - {x: 30.857084, y: -2.1152241}
+      - {x: 31.795702, y: -2.1157298}
+      - {x: 31.795177, y: -0.6071132}
+      - {x: 35.915794, y: -0.61893237}
+      - {x: 35.89142, y: 0.5971818}
+      - {x: 31.82818, y: 0.60908294}
+      - {x: 31.846964, y: 2.184984}
+      - {x: 30.88068, y: 2.2234874}
+      - {x: 30.852324, y: 0.9570268}
+      - {x: 27.176758, y: 2.8292017}
+      - {x: 27.03536, y: 0.69656324}
+      - {x: 27.12218, y: 0.659355}
+      - {x: 22.136126, y: 0.53570163}
+      - {x: 22.112093, y: 2.8793125}
+      - {x: 20.85072, y: 2.8720164}
+      - {x: 20.903973, y: 0.58527565}
+      - {x: 19.97713, y: 0.5725588}
+      - {x: 19.951035, y: 2.7987683}
+      - {x: 18.702164, y: 2.842329}
+      - {x: 18.725483, y: 0.6475644}
+      - {x: 14.611504, y: 0.6390626}
+      - {x: 14.51726, y: 1.9493016}
+      - {x: 5.5896955, y: 2.0702114}
+    - - {x: 13.336033, y: 0.66188955}
+      - {x: 6.9259324, y: 0.62298274}
+      - {x: 6.8727813, y: -0.65908575}
+      - {x: 13.360421, y: -0.7292886}
+    - - {x: 29.470669, y: 0.54217243}
+      - {x: 28.0416, y: 1.3017864}
+      - {x: 28.125181, y: -1.3282142}
+      - {x: 29.436457, y: -0.6622292}
+  m_UseDelaunayMesh: 0
 --- !u!1001 &50151029404640861
 PrefabInstance:
   m_ObjectHideFlags: 0

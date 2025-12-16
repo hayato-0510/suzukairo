@@ -6,6 +6,8 @@ TagManager:
   tags:
   - conductor
   - electron
+  - checkpoint
+  - goal
   layers:
   - Default
   - TransparentFX
