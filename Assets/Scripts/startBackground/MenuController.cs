@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro; // TextMesh Proを使用するために必要
-
+using UnityEngine.SceneManagement; // シーン管理のために必要
 public class MenuController : MonoBehaviour
 {
     // --- Inspectorで設定 ---
@@ -103,12 +103,17 @@ public class MenuController : MonoBehaviour
     private void StartGame()
     {
         Debug.Log($"ゲーム開始！選択されたコース: {courseNames[selectedCourseIndex]}");
-        
-        // ★ここに実際のシーン遷移のロジックを実装します (例: SceneManager.LoadScene(courseNames[selectedCourseIndex]))
+        // 1. ロードするシーン名を取得
+        // 選択されたコース名と同じ名前のシーンをロードすると仮定します。
+        //string sceneToLoad = courseNames[selectedCourseIndex];
+        string sceneToLoad = "SampleScene"; // ★★★ 実際のシーン名に置き換えてください ★★★
         
         // 画面のテキストを最終メッセージに変更
         menuText.text = $"LOADING {courseNames[selectedCourseIndex]}...";
         // スクリプトの入力を無効化
         enabled = false;
+        // ★★★ 実際のシーン遷移を実行 ★★★
+        SceneManager.LoadScene(sceneToLoad);
+        
     }
 }

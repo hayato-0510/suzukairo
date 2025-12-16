@@ -256,13 +256,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a32d9a1624574012892ea52106b6182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuText: {fileID: 0}
+  menuText: {fileID: 1788362108}
   courseNames:
   - SUZUKA CIRCUIT
-  - FUJI SPEEDWAY
-  - AUTOPOLIS
-  nextKey: 330
-  startKey: 337
+  - CHUTORIAL
+  - MIE
+  nextKey: 275
+  startKey: 13
 --- !u!4 &713504224
 Transform:
   m_ObjectHideFlags: 0
@@ -874,8 +874,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -982,8 +982,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.47, y: 1.86}
-  m_SizeDelta: {x: 10, y: 2}
+  m_AnchoredPosition: {x: 0.47, y: 2.84}
+  m_SizeDelta: {x: 15, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1836855179
 GameObject:
