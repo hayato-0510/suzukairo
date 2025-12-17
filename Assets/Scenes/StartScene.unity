@@ -418,7 +418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logoSpherePrefab: {fileID: 864146147012698824, guid: f64e5e390235a4f8f8675f1e6d1dcdbb, type: 3}
-  numberOfSpheres: 5
+  numberOfSpheres: 10
   spawnRadius: 2
   initialForceMagnitude: 1
 --- !u!4 &894599868

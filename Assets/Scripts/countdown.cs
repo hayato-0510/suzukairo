@@ -1,21 +1,26 @@
 using TMPro;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class countdown : MonoBehaviour
 {
+    [Header("References")]
+    public CircuitLoader loader; // マップ名取得用に追加
     public TextMeshProUGUI countDownText;
     public TextMeshProUGUI timerText;
-    public int timeLimit=90;
     public controller controller;
     public GameObject finishText;
 
+    [Header("Settings")]
+    public int timeLimit = 90;
+    
+    [HideInInspector] public bool isFinished = false;
     private int time;
 
     void Start()
     {
         StartCoroutine(CountDown());
-
     }
 
     IEnumerator CountDown()
@@ -25,13 +30,10 @@ public class countdown : MonoBehaviour
         foreach (var s in seq)
         {
             countDownText.text = s;
-
-            // �������k������X�^�[�g
             float t = 0;
             countDownText.color = new Color(1, 1, 1, 0);
             countDownText.transform.localScale = Vector3.zero;
 
-            // �g��{�t�F�[�h
             while (t < 1f)
             {
                 t += Time.deltaTime * 1.5f;
@@ -40,10 +42,8 @@ public class countdown : MonoBehaviour
                 yield return null;
             }
 
-            // �����҂�
             yield return new WaitForSeconds(0.3f);
 
-            // �t�F�[�h�A�E�g
             t = 1f;
             while (t > 0f)
             {
@@ -52,21 +52,68 @@ public class countdown : MonoBehaviour
                 yield return null;
             }
         }
+        
         controller.canMove = true;
         countDownText.text = "";
         time = timeLimit;
-        InvokeRepeating(nameof(Timer), 0f,1f);
+        InvokeRepeating(nameof(Timer), 0f, 1f);
     }
 
     private void Timer()
     {
+        if (isFinished)
+        {
+            CancelInvoke(nameof(Timer));
+            return;
+        }
+
         timerText.text = time.ToString();
+        
         if (time <= 0) 
         { 
             CancelInvoke(nameof(Timer)); 
-            controller.canMove = false;
-            finishText.SetActive(true);
+            OnTimeUp();
         }
         time--;
+    }
+
+    private void OnTimeUp()
+    {
+        if (isFinished) return;
+        isFinished = true;
+
+        controller.canMove = false;
+        finishText.SetActive(true);
+
+        // --- IDベースの保存ロジック ---
+        // タイムアップでもランキングデータとして保存（順位計算に含めるため）
+        string uniqueId = System.Guid.NewGuid().ToString();
+        string mapName = (loader != null && loader.circuitData != null) 
+                         ? loader.circuitData.circuitName 
+                         : "Unknown Course";
+
+        var timeUpEntry = new RankingEntry {
+            id = uniqueId,
+            mapName = mapName,
+            playerName = "YOU",
+            timeText = "TIME UP",
+            timeInSeconds = 9999f, // ワースト記録として扱う
+            timestamp = System.DateTimeOffset.Now.ToUnixTimeSeconds()
+        };
+
+        // データベースに保存
+        RankingManager rankingMgr = new RankingManager();
+        rankingMgr.SaveRecord(timeUpEntry);
+
+        // IDをリザルト画面へ渡す
+        GameResultData.LastEntryId = uniqueId;
+
+        // 2秒後に遷移
+        Invoke(nameof(TransitionToResult), 2.0f);
+    }
+
+    private void TransitionToResult()
+    {
+        SceneManager.LoadScene(GameResultData.ResultSceneName);
     }
 }
