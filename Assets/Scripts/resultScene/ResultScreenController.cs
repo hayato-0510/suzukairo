@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
@@ -31,14 +30,73 @@ public class ResultScreenController : MonoBehaviour
         if (uiDocument == null) return;
         root = uiDocument.rootVisualElement;
 
-        // 1. 背景の初期化
-        SetBackgroundByMapName(GameResultData.MapName);
-
-        // 2. データの保存と表示
+        // 1. データの取得・判定・表示（この中で背景も設定）
         ProcessAndDisplayResults();
 
-        // 3. ボタンのイベント登録
+        // 2. ボタンのイベント登録
         SetupButtons();
+    }
+
+    private void ProcessAndDisplayResults()
+    {
+        // IDが渡されていない場合は何もしない
+        if (string.IsNullOrEmpty(GameResultData.LastEntryId))
+        {
+            Debug.LogWarning("LastEntryId is empty.");
+            return;
+        }
+
+        var rankingMgr = new RankingManager();
+        var allEntries = rankingMgr.LoadAllData().entries;
+
+        // 1. 今回のデータをIDで特定
+        var myEntry = allEntries.FirstOrDefault(e => e.id == GameResultData.LastEntryId);
+        if (myEntry == null)
+        {
+            Debug.LogError($"Entry not found: {GameResultData.LastEntryId}");
+            return;
+        }
+
+        // 2. 【背景の設定】確定した mapName を使用
+        SetBackgroundByMapName(myEntry.mapName);
+
+        // 3. 同じマップのデータだけを抽出してソート
+        var mapRanking = allEntries
+            .Where(e => e.mapName == myEntry.mapName)
+            .OrderBy(e => e.timeInSeconds)
+            .ToList();
+
+        // 4. 順位の特定
+        int myRank = mapRanking.FindIndex(e => e.id == myEntry.id) + 1;
+
+        // 5. UIへの反映
+        // タイム表示
+        var timeLabel = root.Q<Label>("TimeLabel");
+        if (timeLabel != null) timeLabel.text = $"TIME: {myEntry.timeText}";
+
+        // 順位表示
+        var rankLabel = root.Q<Label>("RankLabel");
+        if (rankLabel != null) rankLabel.text = $"RANK: #{myRank}";
+
+        // NEW RECORD! 判定
+        var newRecordLabel = root.Q<Label>("NewRecordLabel");
+        if (newRecordLabel != null)
+        {
+            bool isNewRecord = (myRank == 1);
+            newRecordLabel.style.display = isNewRecord ? DisplayStyle.Flex : DisplayStyle.None;
+            if (isNewRecord)
+            {
+                newRecordLabel.text = "NEW RECORD!";
+                newRecordLabel.style.color = new StyleColor(new Color(1f, 0.84f, 0f)); // Gold
+            }
+        }
+
+        // 6. ランキングリスト（トップ5）の描画
+        var listContainer = root.Q<VisualElement>("RankingList");
+        if (listContainer != null)
+        {
+            RenderRanking(listContainer, mapRanking.Take(5).ToList(), myEntry.id);
+        }
     }
 
     private void SetBackgroundByMapName(string mapName)
@@ -52,50 +110,11 @@ public class ResultScreenController : MonoBehaviour
         if (texture != null)
         {
             bg.style.backgroundImage = new StyleBackground(texture);
+            Debug.Log($"Background set for: {mapName}");
         }
     }
 
-    private void ProcessAndDisplayResults()
-{
-    var rankingMgr = new RankingManager();
-    float currentSeconds = ConvertTimeToSeconds(GameResultData.FinalTime);
-
-    // --- 1. NEW RECORD 判定 ---
-    var top5Before = rankingMgr.GetTop5(GameResultData.MapName);
-    bool isNewRecord = false;
-
-    // まだデータがない、もしくは今回のタイムが既存の1位より速い場合
-    if (top5Before.Count == 0 || currentSeconds < top5Before[0].timeInSeconds)
-    {
-        isNewRecord = true;
-    }
-
-    // UIに「NEW RECORD!」を表示
-    Label newRecordLabel = root.Q<Label>("NewRecordLabel"); // UXMLに作成してください
-    if (newRecordLabel != null)
-    {
-        newRecordLabel.style.display = isNewRecord ? DisplayStyle.Flex : DisplayStyle.None;
-        
-        // ちょっとしたアニメーション風の処理（簡易版）
-        if (isNewRecord) {
-            newRecordLabel.style.color = new Color(1f, 0.9f, 0f); // 金色
-        }
-    }
-
-    // --- 2. データの保存 ---
-    rankingMgr.SaveRecord(new RankingEntry {
-        mapName = GameResultData.MapName,
-        playerName = "YOU",
-        timeText = GameResultData.FinalTime,
-        timeInSeconds = currentSeconds
-    });
-
-    // --- 3. UI更新 ---
-    var top5After = rankingMgr.GetTop5(GameResultData.MapName);
-    RenderRankingList(root.Q<VisualElement>("RankingList"), top5After);
-}
-
-    private void RenderRankingList(VisualElement container, List<RankingEntry> top5)
+    private void RenderRanking(VisualElement container, List<RankingEntry> top5, string currentId)
     {
         container.Clear();
         container.Add(CreateRow("POS", "NAME", "TIME", true));
@@ -103,9 +122,8 @@ public class ResultScreenController : MonoBehaviour
         for (int i = 0; i < top5.Count; i++)
         {
             var entry = top5[i];
-            // 保存したデータが今回のタイムと一致するか（またはPlayerNameがYOUか）でハイライト
-            // ※より厳密にはTimestampなどで判定しますが、一旦これで実装
-            bool isPlayer = (entry.playerName == "YOU" && entry.timeText == GameResultData.FinalTime);
+            // IDで今回の自分かどうかを判定
+            bool isPlayer = (entry.id == currentId);
             
             container.Add(CreateRow(GetRankText(i + 1), entry.playerName, entry.timeText, false, isPlayer));
         }
@@ -129,8 +147,6 @@ public class ResultScreenController : MonoBehaviour
     {
         var label = new Label(text);
         label.AddToClassList(className);
-        // 垂直方向の微調整用（前回の修正を適用）
-        label.style.unityTextAlign = TextAnchor.MiddleLeft;
         return label;
     }
 
@@ -140,16 +156,6 @@ public class ResultScreenController : MonoBehaviour
         if (rank == 2) return "2nd";
         if (rank == 3) return "3rd";
         return $"{rank}th";
-    }
-
-    private float ConvertTimeToSeconds(string timeText)
-    {
-        try {
-            string[] parts = timeText.Split(':');
-            return (float.Parse(parts[0]) * 60f) + float.Parse(parts[1]);
-        } catch {
-            return 9999f;
-        }
     }
 
     private void SetupButtons()

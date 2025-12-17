@@ -4,10 +4,12 @@ using System.Collections.Generic;
 [Serializable]
 public class RankingEntry
 {
+    public string id;
     public string mapName;
     public string playerName;
     public string timeText;
     public float timeInSeconds;
+    public long timestamp;
 }
 
 [Serializable]

@@ -764,7 +764,6 @@ MonoBehaviour:
   circuitData: {fileID: 0}
   width: 1.2
   returnColor: {r: 0.10980392, g: 0.23529412, b: 0.33333334, a: 1}
-  checkpointNum: 0
   checkPointIds: 
   components:
   - type: Battery
@@ -1128,6 +1127,7 @@ MonoBehaviour:
   voltage: 5
   voltageText: {fileID: 19682103}
   radiationSpeed: 0.1
+  isOnConductor: 0
   canMove: 0
   boostSpeed: 5
   boostDecay: 3
