@@ -21,6 +21,9 @@ public class LapCounter : MonoBehaviour
     private bool isRacing = false;
     private bool isFinished = false;
 
+    [Header("BGM")]
+    public GameBGMManager gameBGMManager;
+
     private void Start()
     {
         if (loader == null || loader.circuitData == null)
@@ -105,6 +108,7 @@ public class LapCounter : MonoBehaviour
     }
     private void OnFinishRace()
     {
+        if (gameBGMManager != null) gameBGMManager.StopBGMWithFade();
         if (isFinished) return;
         isFinished = true;
 
