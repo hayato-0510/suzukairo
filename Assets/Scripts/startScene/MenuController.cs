@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro; // TextMesh Proを使用するために必要
 using UnityEngine.SceneManagement; // シーン管理のために必要
+using UnityEngine.UIElements; // UI Toolkitを使用するために必要
 public class MenuController : MonoBehaviour
 {
     // --- Inspectorで設定 ---
@@ -14,6 +15,16 @@ public class MenuController : MonoBehaviour
     [SerializeField] private KeyCode nextKey = KeyCode.JoystickButton0; // コース選択・決定 (例: Aボタン)
     [SerializeField] private KeyCode startKey = KeyCode.JoystickButton7; // ゲーム開始 (例: Startボタン)
     
+    // ★★★ 1. TMPのフォントアセット本体 (Projectからドラッグ＆ドロップ)
+    [Header("フォントアセット")]
+    [SerializeField] private TMP_FontAsset mainFontAsset; 
+    
+    // ★★★ 2. UXMLのルート要素 (HierarchyからUIDocument経由で取得)
+    [Header("UI Toolkit要素")]
+    [SerializeField] private UIDocument uiDocument; // UIDocumentコンポーネント自体をセット
+    
+
+
     // --- 内部状態 ---
     private enum MenuState {
         SelectCourse, // コース選択中
@@ -25,14 +36,43 @@ public class MenuController : MonoBehaviour
     
     void Start()
     {
+        // ★★★ C#によるフォント割り当てを実行 ★★★
+        //ApplyFontToUIElements();
         if (menuText == null)
         {
             Debug.LogError("Menu Text (TextMeshProUGUI) が設定されていません。");
             return;
         }
+        
         UpdateMenuText();
     }
+/*
+    private void ApplyFontToUIElements()
+    {
+        if (uiDocument == null || mainFontAsset == null)
+        {
+            Debug.LogError("UIDocumentまたはMain Font Assetが設定されていません。");
+            return;
+        }
 
+        // 1. UIDocumentからVisualTreeのルートを取得
+        VisualElement root = uiDocument.rootVisualElement;
+        
+        // 2. StyleFontDefinitionを作成
+        // TMP_FontAssetを直接渡して StyleFontDefinition を作成します。
+        // StyleFontDefinition は、StyleFont や FontDefinition のラッパーとして機能します。
+        var fontStyleDef = new StyleFontDefinition(mainFontAsset);
+
+        // 3. root要素以下のすべてのLabel要素に対してフォントを適用
+        root.Query<Label>().ForEach(label =>
+        {
+            // -unity-font-definition プロパティに StyleFontDefinition を割り当てます。
+            label.style.unityFontDefinition = fontStyleDef;
+        });
+        
+        Debug.Log("UI ToolkitのすべてのLabel要素にフォントを適用しました。");
+    }
+*/
     void Update()
     {
         HandleInput();

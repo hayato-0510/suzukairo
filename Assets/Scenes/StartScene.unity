@@ -263,6 +263,8 @@ MonoBehaviour:
   - MIE
   nextKey: 275
   startKey: 13
+  mainFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  uiDocument: {fileID: 0}
 --- !u!4 &713504224
 Transform:
   m_ObjectHideFlags: 0
