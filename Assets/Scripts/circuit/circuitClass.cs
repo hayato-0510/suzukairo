@@ -34,6 +34,7 @@ public class RawCircuit
     public int circuitId;
     public int lapNum;
     public float batteryVoltage;
+    public int timeLimit;
     public List<RawComponent> components;
 }
 
@@ -44,7 +45,7 @@ public class Circuit : ScriptableObject
     public int circuitId;
     public int lapNum;
     public float batteryVoltage;
-
+    public int timeLimit;
     public List<ComponentBase> components = new List<ComponentBase>();
 }
 

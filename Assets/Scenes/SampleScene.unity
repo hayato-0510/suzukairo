@@ -764,7 +764,6 @@ MonoBehaviour:
   circuitData: {fileID: 0}
   width: 1.2
   returnColor: {r: 0.10980392, g: 0.23529412, b: 0.33333334, a: 1}
-  checkpointNum: 0
   checkPointIds: 
   components:
   - type: Battery
@@ -800,6 +799,9 @@ MonoBehaviour:
   - type: Parallel
     prefab: {fileID: 4555719822100093193, guid: 90e3c4c949896bb47b0f71f23c1c1504, type: 3}
     endPoint: 0
+  - type: DCDC
+    prefab: {fileID: 1363260632655674554, guid: 1902842953a98764d96cc2deb6c94f0c, type: 3}
+    endPoint: 17.5
 --- !u!114 &980864577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -817,6 +819,7 @@ MonoBehaviour:
   timeLimit: 90
   controller: {fileID: 1556619576}
   finishText: {fileID: 2077606950}
+  cl: {fileID: 980864576}
 --- !u!1 &1101536859
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,7 +1132,7 @@ MonoBehaviour:
   voltageText: {fileID: 19682103}
   radiationSpeed: 0.1
   canMove: 0
-  boostSpeed: 5
+  boostSpeed: 15
   boostDecay: 3
   BoostKey: 32
 --- !u!4 &1556619578 stripped

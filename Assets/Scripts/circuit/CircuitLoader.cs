@@ -37,6 +37,7 @@ public class CircuitLoader : MonoBehaviour
         circuit.circuitId = raw.circuitId;
         circuit.lapNum = raw.lapNum;
         circuit.batteryVoltage = raw.batteryVoltage;
+        circuit.timeLimit = raw.timeLimit;
         circuit.components = new List<ComponentBase>();
 
         foreach (var rc in raw.components)
@@ -84,6 +85,7 @@ public class CircuitLoader : MonoBehaviour
             "Conductor" => ScriptableObject.CreateInstance<Conductor>(),
             "CurvedConductor" => ScriptableObject.CreateInstance<CurvedConductor>(),
             "Checkpoint" => ScriptableObject.CreateInstance<Checkpoint>(),
+            "DCDC" => ScriptableObject.CreateInstance<DCDC>(),
             _ => ScriptableObject.CreateInstance<Resistor>()
         };
 
