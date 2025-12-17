@@ -5,13 +5,13 @@ using TMPro;
 
 public class controller : MonoBehaviour
 {
-    [Header("ƒL[")]
+    [Header("ï¿½Lï¿½[")]
     public KeyCode MoveFront = KeyCode.W;
     public KeyCode RotateRight = KeyCode.D;
     public KeyCode MoveBack = KeyCode.S;
     public KeyCode RotateLeft = KeyCode.A;
 
-    [Header("ƒXƒs[ƒh")]
+    [Header("ï¿½Xï¿½sï¿½[ï¿½h")]
     public float moveSpeed = 0.5f;
     public float rotateSpeed = 90f;
     public float conducutorMoveSpeed = 2f;
@@ -19,20 +19,20 @@ public class controller : MonoBehaviour
     public float moveDecay = 3f;
     private Vector2 moveVelocity;
 
-    [Header("“d—¬")]
+    [Header("ï¿½dï¿½ï¿½")]
     public float startAmpere = 0.1f;
     public float ampere=0.1f;
 
-    [Header("“dˆ³")]
+    [Header("ï¿½dï¿½ï¿½")]
     public float voltage=5.0f;
     public TextMeshProUGUI voltageText;
 
-    [Header("•ú”MƒXƒs[ƒh")]
+    [Header("ï¿½ï¿½ï¿½Mï¿½Xï¿½sï¿½[ï¿½h")]
     public float radiationSpeed=1.0f;
 
     private Rigidbody2D rb;
     private Vector3 dir;
-    private bool isOnConductor=false;
+    public bool isOnConductor=false;
     private Vector3 startScale;
 
     [HideInInspector]
@@ -102,7 +102,7 @@ public class controller : MonoBehaviour
         rb.linearVelocity = moveVelocity + boostVelocity;
 
 
-        // ‰ñ“]
+        // ï¿½ï¿½]
         float turn = 0f;
         if (Input.GetKey(RotateRight)) turn = -1f;
         if (Input.GetKey(RotateLeft)) turn = 1f;
