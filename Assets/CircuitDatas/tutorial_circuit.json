@@ -1,0 +1,131 @@
+{
+  "circuitName": "tutorial_circuit",
+  "circuitId": "tutorial_circuit",
+  "lapNum": 3,
+  "batteryVoltage": 5,
+  "components": [
+    {
+        "type":"Conductor",
+        "value":10.0,
+        "angle":0
+    },
+    {
+        "type":"Switch",
+        "value":0.0,
+        "angle":0.0,
+        "label":"SW1 (タイミングよく押せ!)"
+    },
+    {
+        "type":"Conductor",
+        "value":20,
+        "angle":0
+    },
+    {
+        "type":"Conductor",
+        "value":25,
+        "angle":90
+    },
+    {
+        "type":"Parallel",
+        "parallel":{
+            "parallelSpacing":10,
+            "branches":[
+                {
+                    "components":[
+                        {
+                            "type":"Resistor",
+                            "value":2,
+                            "angle":90
+                        }
+                    ]
+                },
+                {
+                    "components":[
+                        {
+                            "type":"Conductor",
+                            "value":2.65,
+                            "angle":90
+                        },
+                        {
+                            "type":"Inductor",
+                            "value":1,
+                            "value2":0.05,
+                            "angle":90,
+                            "label":"R4"
+                        },
+                        {
+                            "type":"Conductor",
+                            "value":2.65,
+                            "angle":90
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "type":"Conductor",
+        "value":5,
+        "angle":90
+    },
+    {
+        "type":"Conductor",
+        "value":20,
+        "angle":180
+    },
+    {
+        "type":"RCD",
+        "value":2,
+        "value2":0.2,
+        "angle":180
+    },
+    {
+        "type":"Conductor",
+        "value":20,
+        "angle":180
+    },
+    {
+        "type":"Conductor",
+        "value":11,
+        "angle":225
+    },
+    {
+        "type":"Inductor",
+        "value":5,
+        "value2":0.05,
+        "angle":-90
+    },
+    {
+      "type": "Parallel",
+      "parallel": {
+        "parallelSpacing": 10,
+        "branches": [
+          {
+            "components": [
+              {
+                "type": "Resistor",
+                "value": 2,
+                "angle": -90
+              }
+            ]
+          },
+          {
+            "components": [
+              {
+                "type": "Resistor",
+                "value": 1,
+                "angle": -90
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+        "type":"Conductor",
+        "value":11.5,
+        "angle":-45
+
+    }
+  ]
+}
