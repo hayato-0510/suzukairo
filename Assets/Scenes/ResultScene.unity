@@ -164,7 +164,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiDocument: {fileID: 1989979220}
-  mainFontAsset: {fileID: 0}
   mainMenuSceneName: StartScene
   mapBackgrounds:
   - mapName: TUTORIAL
