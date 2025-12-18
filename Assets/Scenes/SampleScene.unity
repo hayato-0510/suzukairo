@@ -812,6 +812,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &875105651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 875105653}
+  - component: {fileID: 875105652}
+  m_Layer: 0
+  m_Name: switchManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &875105652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875105651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44aa9a1bfe3306943b5c1d4f4a78b3d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  switches: 0000000000000000
+  circuitLoader: {fileID: 980864576}
+--- !u!4 &875105653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875105651}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.49756, y: 5.0184813, z: -0.08375523}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &882156259
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1018,6 +1064,7 @@ MonoBehaviour:
   width: 1.2
   returnColor: {r: 0.10980392, g: 0.23529412, b: 0.33333334, a: 1}
   checkPointIds: 
+  switches: []
   components:
   - type: Battery
     prefab: {fileID: 4057877209119981574, guid: 939a3be351546614ca6aabf6fb89b7c5, type: 3}
@@ -2544,3 +2591,4 @@ SceneRoots:
   - {fileID: 485366003}
   - {fileID: 1171826361}
   - {fileID: 1178022674}
+  - {fileID: 875105653}
