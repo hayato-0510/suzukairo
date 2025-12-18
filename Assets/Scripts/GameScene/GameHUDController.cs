@@ -41,24 +41,6 @@ public class GameHUDController : MonoBehaviour
         {
             liveCommentary.OnCommentReceived += ShowCommentary;
         }
-
-        // デバッグ用：開始時にテストメッセージを表示
-        StartCoroutine(TestMessage());
-    }
-
-    private IEnumerator TestMessage()
-    {
-        yield return new WaitForSeconds(1f);
-        ShowCommentary("SSテスト：システム起動完了");
-    }
-
-    private void Update()
-    {
-        // デバッグ用：Tキーでテスト
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            ShowCommentary("Debug: Test Message Triggered!");
-        }
     }
 
     private void OnDisable()
