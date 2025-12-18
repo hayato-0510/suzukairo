@@ -1,0 +1,13 @@
+{
+  "circuitName": "circuit1",
+  "circuitId": 1,
+  "lapNum": 3,
+  "batteryVoltage": 5,
+  "components": [
+    {
+        "type": "Conductor",
+        "value": 30,
+        "angle": 45
+    }
+  ]
+}

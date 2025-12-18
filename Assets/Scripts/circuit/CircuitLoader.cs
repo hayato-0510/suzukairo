@@ -107,7 +107,7 @@ public class CircuitLoader : MonoBehaviour
         circuitBounds = new Bounds(Vector3.zero, Vector3.zero);
 
         Vector2 cursorPos = Vector2.zero;
-        Vector2 direction = Vector2.right;
+        Vector2 direction = Vector2.left;
 
         var batteryPrefab = components.Find(c => c.type == "Battery");
         if (batteryPrefab != null)
