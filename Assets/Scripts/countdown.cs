@@ -29,9 +29,11 @@ public class countdown : MonoBehaviour
     IEnumerator CountDown()
     {
         string[] seq = { "3", "2", "1", "GO!" };
+        Debug.Log("<color=green>[Countdown] Starting countdown sequence.</color>");
         if (gameBGMManager != null)
         {
             gameBGMManager.PlayBGM();
+            Debug.Log("<color=green>[Countdown] Game BGM Started.</color>");
         }
         foreach (var s in seq)
         {

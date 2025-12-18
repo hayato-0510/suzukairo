@@ -1065,7 +1065,7 @@ MonoBehaviour:
   timerText: {fileID: 2142359631}
   controller: {fileID: 1556619576}
   finishText: {fileID: 2077606950}
-timeLimit: 90
+  timeLimit: 90
   isFinished: 0
   gameBGMManager: {fileID: 137505342}
 --- !u!114 &980864578

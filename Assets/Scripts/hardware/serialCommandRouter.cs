@@ -3,27 +3,42 @@ using UnityEngine;
 public class SerialCommandRouter : MonoBehaviour
 {
     [SerializeField] private SerialHandler serialHandler;
-    public float turn ;
-    public float move ;
-
+    public float turn;
+    public float move;
     public float turbo;
-
     public int mapID = 0;
 
-
-    void Awake()
+    void Start()
     {
-        // Inspector で SerialHandler をアサインしておく想定
-        serialHandler.OnDataReceived += HandleSerialData;
+        // SerializeFieldで設定されていない場合は検索
+        if (serialHandler == null)
+        {
+            serialHandler = FindObjectOfType<SerialHandler>();
+        }
+        
+        // シリアルハンドラーが存在し、接続されている場合のみイベント登録
+        if (serialHandler != null && serialHandler.isConnected)
+        {
+            serialHandler.OnDataReceived += HandleSerialData;
+            Debug.Log("[SerialRouter] Connected to serial handler");
+        }
+        else
+        {
+            Debug.Log("[SerialRouter] Running in keyboard-only mode");
+        }
     }
 
     void OnDestroy()
     {
-        serialHandler.OnDataReceived -= HandleSerialData;
+        if (serialHandler != null)
+        {
+            serialHandler.OnDataReceived -= HandleSerialData;
+        }
     }
 
     private void HandleSerialData(string data)
     {
+        // シリアルコマンド処理
         //Debug.Log($"Received: {data}");
         string[] commands = data.Split(' ');
         switch (commands[0])
