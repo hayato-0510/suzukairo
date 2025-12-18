@@ -1,0 +1,196 @@
+{
+  "circuitName": "mie_circuit",
+  "circuitId": "mie_circuit",
+  "lapNum": 3,
+  "batteryVoltage": 5,
+  "timeLimit": 180,
+  "components": [
+    {
+      "type": "Conductor",
+      "value": 5,
+      "angle": 135
+    },
+    {
+      "type": "Conductor",
+      "value": 10,
+      "angle": 90
+    },
+    {
+      "type": "Conductor",
+      "value": 15,
+      "angle": 135
+    },
+    {
+        "type": "Conductor",
+        "value": 15,
+        "angle": 180
+    },
+    {
+        "type":"Conductor",
+        "value":15,
+        "angle":135
+    },
+    {
+        "type":"Conductor",
+        "value":10,
+        "angle":45
+    },
+    {
+      "type": "Parallel",
+      "parallel": {
+        "parallelSpacing": 20,
+        "branches": [
+          {
+            "components": [
+              {
+                "type": "Conductor",
+                 "value": 1.5,
+                 "angle": 45
+              },
+              {
+                "type": "Inductor",
+                "value": 1,
+                "value2": 0.05,
+                "angle": 45
+              },
+              {
+                "type": "Conductor",
+                 "value": 1.5,
+                 "angle": 45
+              }
+            ]
+          },
+          {
+            "components": [
+              {
+                "type": "DCDC",
+                "value": 5,
+                "value2": 0.1,
+                "angle": 45
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "Conductor",
+      "value": 20,
+      "angle": -45
+    },
+    {
+        "type":"Conductor",
+        "value":5,
+        "angle":45
+    },
+    {
+        "type": "Resistor",
+        "value": 5,
+        "angle": 45
+    },
+    {
+        "type": "Conductor",
+        "value": 3,
+        "angle": 5
+    },
+    {
+        "type":"Conductor",
+        "value":5,
+        "angle":90
+    },
+    {
+        "type":"Conductor",
+        "value":5,
+        "angle":45
+    },
+    {
+        "type":"Resistor",
+        "value":5,
+        "angle":0
+    },
+    {
+        "type":"Conductor",
+        "value":10,
+        "angle":-90
+    },
+    {
+        "type":"Conductor",
+        "value":3,
+        "angle":-135
+    },
+    {
+        "type":"Resistor",
+        "value":5,
+        "angle":-90
+    },
+    {
+        "type":"Conductor",
+        "value":3,
+        "angle":-45
+    },
+    {
+        "type":"Inductor",
+        "value":3,
+        "value2":0.1,
+        "angle":-45
+    },
+    {
+        "type":"Conductor",
+        "value":3,
+        "angle":-45
+    },
+    {
+        "type":"Conductor",
+        "value":30,
+        "angle":0
+    },
+    {
+        "type":"Conductor",
+        "value":15,
+        "angle":-45
+    },
+    {
+        "type":"MOSFET",
+        "value":1,
+        "angle":-90
+    },
+    {
+      "type": "Conductor",
+      "value": 5,
+      "angle": -135
+    },
+    {
+      "type": "Conductor",
+      "value":5,
+      "angle":135
+    },
+    {
+      "type": "Switch",
+      "value": 1,
+      "angle": 145
+    },
+    {
+      "type": "Conductor",
+      "value": 3,
+      "angle": 145
+    },
+    {
+      "type": "Switch",
+      "angle": 180
+    },
+    {
+      "type": "Conductor",
+      "value": 5,
+      "angle": 135
+    },
+    {
+      "type": "Conductor",
+      "value": 10,
+      "angle": -135
+    },
+    {
+      "type": "Checkpoint",
+      "value": 1
+    }
+  ]
+}

@@ -104,18 +104,28 @@ public class CircuitLoader : MonoBehaviour
     {
         if (circuitData?.components == null) return;
 
+        // 既存の回路要素を即座に削除
+        while (transform.childCount > 0)
+        {
+            DestroyImmediate(transform.GetChild(0).gameObject);
+        }
+
         circuitBounds = new Bounds(Vector3.zero, Vector3.zero);
 
-        Vector2 cursorPos = Vector2.zero;
-        Vector2 direction = Vector2.left;
-
         var batteryPrefab = components.Find(c => c.type == "Battery");
+        float batteryLength = batteryPrefab != null ? batteryPrefab.endPoint : 0;
+        
+        Vector2 batteryStartPos = new Vector2(-batteryLength, 0);  // バッテリーの左端
+        Vector2 direction = Vector2.right;
+
         if (batteryPrefab != null)
         {
-            var battery = Instantiate(batteryPrefab.prefab, cursorPos, Quaternion.identity, transform);
+            var battery = Instantiate(batteryPrefab.prefab, batteryStartPos, Quaternion.identity, transform);
             UpdateBounds(battery);
-            cursorPos += direction * batteryPrefab.endPoint;
         }
+
+        Vector2 batteryEndPos = new Vector2(0, 0);  // バッテリーの右端（原点）
+        Vector2 cursorPos = batteryStartPos;  // 素子はバッテリーの左端（正極）から開始
 
         int idCounter = 0;
 
@@ -131,7 +141,7 @@ public class CircuitLoader : MonoBehaviour
             idCounter++;
         }
 
-        CreateReturnLine(cursorPos);
+        CreateReturnLine(cursorPos, batteryEndPos);
     }
 
     private void BuildParallel(
@@ -259,9 +269,8 @@ public class CircuitLoader : MonoBehaviour
         return false;
     }
     
-    private void CreateReturnLine(Vector2 endPos)
+    private void CreateReturnLine(Vector2 endPos, Vector2 origin)
     {
-        Vector2 origin = Vector2.zero;
         float margin = width * 2f;
 
         Vector2 diff = origin - endPos;
