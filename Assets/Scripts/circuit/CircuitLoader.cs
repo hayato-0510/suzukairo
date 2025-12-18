@@ -9,6 +9,7 @@ public class CircuitLoader : MonoBehaviour
     public Color returnColor;
 
     public List<int> checkPointIds = new List<int>();
+    public List<GameObject> switches = new List<GameObject>();
 
     [System.Serializable]
     public class ComponentPrefabs
@@ -270,7 +271,7 @@ public class CircuitLoader : MonoBehaviour
         else if (comp.type == "Checkpoint")
         {
             checkPointIds.Add(id);
-        }
+        } 
 
         Transform obj = Instantiate(
             prefab.prefab,
@@ -295,6 +296,11 @@ public class CircuitLoader : MonoBehaviour
 
         float rad = comp.angle * Mathf.Deg2Rad;
         direction = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)).normalized;
+
+        if (comp.type == "Switch")
+        {
+            switches.Add(obj.gameObject);
+        }
 
         return cursorPos + direction * len;
     }
