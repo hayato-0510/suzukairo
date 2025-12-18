@@ -50,6 +50,11 @@ public class Checkpoint : ComponentBase
 {
 }
 
+[CreateAssetMenu(fileName = "DCDC", menuName = "Circuit/DCDC")]
+public class DCDC : ComponentBase
+{
+}
+
 [CreateAssetMenu(fileName = "Parallel", menuName = "Circuit/Parallel")]
 public class ParallelComponent : ComponentBase
 {

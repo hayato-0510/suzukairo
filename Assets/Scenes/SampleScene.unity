@@ -1048,6 +1048,9 @@ MonoBehaviour:
   - type: Parallel
     prefab: {fileID: 4555719822100093193, guid: 90e3c4c949896bb47b0f71f23c1c1504, type: 3}
     endPoint: 0
+  - type: DCDC
+    prefab: {fileID: 1363260632655674554, guid: 1902842953a98764d96cc2deb6c94f0c, type: 3}
+    endPoint: 17.5
 --- !u!114 &980864577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1065,6 +1068,7 @@ MonoBehaviour:
   timerText: {fileID: 2142359631}
   controller: {fileID: 1556619576}
   finishText: {fileID: 2077606950}
+  cl: {fileID: 980864576}
   timeLimit: 90
   isFinished: 0
   gameBGMManager: {fileID: 137505342}
@@ -1540,7 +1544,7 @@ MonoBehaviour:
   radiationSpeed: 0.1
   isOnConductor: 0
   canMove: 0
-  boostSpeed: 5
+  boostSpeed: 15
   boostDecay: 3
   BoostKey: 32
 --- !u!4 &1556619578 stripped

@@ -11,6 +11,7 @@ public class countdown : MonoBehaviour
     public TextMeshProUGUI timerText;
     public controller controller;
     public GameObject finishText;
+    public CircuitLoader cl;
 
     [Header("Settings")]
     public int timeLimit = 90;
@@ -24,6 +25,7 @@ public class countdown : MonoBehaviour
     void Start()
     {
         StartCoroutine(CountDown());
+        timeLimit=cl.circuitData.timeLimit;
     }
 
     IEnumerator CountDown()

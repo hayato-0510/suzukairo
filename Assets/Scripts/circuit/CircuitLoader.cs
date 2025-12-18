@@ -37,6 +37,7 @@ public class CircuitLoader : MonoBehaviour
         circuit.circuitId = raw.circuitId;
         circuit.lapNum = raw.lapNum;
         circuit.batteryVoltage = raw.batteryVoltage;
+        circuit.timeLimit = raw.timeLimit;
         circuit.components = new List<ComponentBase>();
 
         foreach (var rc in raw.components)
@@ -84,6 +85,7 @@ public class CircuitLoader : MonoBehaviour
             "Conductor" => ScriptableObject.CreateInstance<Conductor>(),
             "CurvedConductor" => ScriptableObject.CreateInstance<CurvedConductor>(),
             "Checkpoint" => ScriptableObject.CreateInstance<Checkpoint>(),
+            "DCDC" => ScriptableObject.CreateInstance<DCDC>(),
             _ => ScriptableObject.CreateInstance<Resistor>()
         };
 
@@ -102,18 +104,28 @@ public class CircuitLoader : MonoBehaviour
     {
         if (circuitData?.components == null) return;
 
+        // æ—¢å­˜ã®å›è·¯è¦ç´ ã‚’å³åº§ã«å‰Šé™¤
+        while (transform.childCount > 0)
+        {
+            DestroyImmediate(transform.GetChild(0).gameObject);
+        }
+
         circuitBounds = new Bounds(Vector3.zero, Vector3.zero);
 
-        Vector2 cursorPos = Vector2.zero;
+        var batteryPrefab = components.Find(c => c.type == "Battery");
+        float batteryLength = batteryPrefab != null ? batteryPrefab.endPoint : 0;
+        
+        Vector2 batteryStartPos = new Vector2(-batteryLength, 0);  // ãƒãƒƒãƒ†ãƒªãƒ¼ã®å·¦ç«¯
         Vector2 direction = Vector2.right;
 
-        var batteryPrefab = components.Find(c => c.type == "Battery");
         if (batteryPrefab != null)
         {
-            var battery = Instantiate(batteryPrefab.prefab, cursorPos, Quaternion.identity, transform);
+            var battery = Instantiate(batteryPrefab.prefab, batteryStartPos, Quaternion.identity, transform);
             UpdateBounds(battery);
-            cursorPos += direction * batteryPrefab.endPoint;
         }
+
+        Vector2 batteryEndPos = new Vector2(0, 0);  // ãƒãƒƒãƒ†ãƒªãƒ¼ã®å³ç«¯ï¼ˆåŸç‚¹ï¼‰
+        Vector2 cursorPos = batteryStartPos;  // ç´ å­ã¯ãƒãƒƒãƒ†ãƒªãƒ¼ã®å·¦ç«¯ï¼ˆæ­£æ¥µï¼‰ã‹ã‚‰é–‹å§‹
 
         int idCounter = 0;
 
@@ -129,7 +141,7 @@ public class CircuitLoader : MonoBehaviour
             idCounter++;
         }
 
-        CreateReturnLine(cursorPos);
+        CreateReturnLine(cursorPos, batteryEndPos);
     }
 
     private void BuildParallel(
@@ -143,11 +155,14 @@ public class CircuitLoader : MonoBehaviour
         float spacing = p.parallelSpacing;
         float half = spacing * (count - 1) / 2f;
 
+        // é€²è¡Œæ–¹å‘ã«å¯¾ã—ã¦å‚ç›´ãªæ–¹å‘ã‚’è¨ˆç®—
+        Vector2 perpendicular = new Vector2(-direction.y, direction.x);
+
         Vector2[] branchEnds = new Vector2[count];
 
         for (int i = 0; i < count; i++)
         {
-            Vector2 start = cursorPos + new Vector2(0, i * spacing - half);
+            Vector2 start = cursorPos + perpendicular * (i * spacing - half);
             CreateFatLine($"ParallelSplit_{i}", cursorPos, start, returnColor);
 
             Vector2 pos = start;
@@ -254,33 +269,32 @@ public class CircuitLoader : MonoBehaviour
         return false;
     }
     
-    private void CreateReturnLine(Vector2 endPos)
+    private void CreateReturnLine(Vector2 endPos, Vector2 origin)
     {
-        Vector2 origin = Vector2.zero;
         float margin = width * 2f;
 
         Vector2 diff = origin - endPos;
 
         Vector2 mid;
 
-        // diff.x > 0 ¨ origin ‚Í¶, diff.x < 0 ¨ origin ‚Í‰E
-        // diff.y > 0 ¨ origin ‚Íã, diff.y < 0 ¨ origin ‚Í‰º
+        // diff.x > 0 ï¿½ï¿½ origin ï¿½Íï¿½, diff.x < 0 ï¿½ï¿½ origin ï¿½Í‰E
+        // diff.y > 0 ï¿½ï¿½ origin ï¿½Íï¿½, diff.y < 0 ï¿½ï¿½ origin ï¿½Í‰ï¿½
 
         if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
         {
-            // X•ûŒü‚Ì‹——£‚ª’·‚¢ ¨ ‰¡‚ğæ‚ÉˆÚ“® ¨ mid ‚Ì Y ‚Í endPos.y
+            // Xï¿½ï¿½ï¿½ï¿½ï¿½Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ÉˆÚ“ï¿½ ï¿½ï¿½ mid ï¿½ï¿½ Y ï¿½ï¿½ endPos.y
             mid = new Vector2(origin.x, endPos.y);
         }
         else
         {
-            // Y•ûŒü‚Ì‹——£‚ª’·‚¢ ¨ c‚ğæ‚ÉˆÚ“® ¨ mid ‚Ì X ‚Í endPos.x
+            // Yï¿½ï¿½ï¿½ï¿½ï¿½Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½cï¿½ï¿½ï¿½ÉˆÚ“ï¿½ ï¿½ï¿½ mid ï¿½ï¿½ X ï¿½ï¿½ endPos.x
             mid = new Vector2(endPos.x, origin.y);
         }
 
-        // áŠQ•¨ƒ`ƒFƒbƒN
+        // ï¿½ï¿½Qï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N
         if (IntersectsBounds(endPos, mid, circuitBounds) || IntersectsBounds(mid, origin, circuitBounds))
         {
-            // ŠOüƒ‹[ƒg‚ÉƒtƒH[ƒ‹ƒoƒbƒN
+            // ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½Éƒtï¿½Hï¿½[ï¿½ï¿½ï¿½oï¿½bï¿½N
             float minX = circuitBounds.min.x - margin;
             float minY = circuitBounds.min.y - margin;
 
@@ -318,7 +332,7 @@ public class CircuitLoader : MonoBehaviour
         lr.useWorldSpace = true; lr.startWidth = width; lr.endWidth = width; 
         lr.material = new Material(Shader.Find("Sprites/Default")); lr.startColor = col; 
         lr.endColor = col; lr.SetPosition(0, p0); lr.SetPosition(1, p1); 
-        // ------- PolygonCollider2Di’·•ûŒ`j -------
+        // ------- PolygonCollider2Dï¿½iï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½j -------
         PolygonCollider2D poly = lineObj.AddComponent<PolygonCollider2D>(); 
         poly.isTrigger = true; Vector2 dir = (p1 - p0).normalized; Vector2 normal = new Vector2(-dir.y, dir.x); 
         float halfW = width / 2f; Vector2 v0 = p0 + normal * halfW; 
