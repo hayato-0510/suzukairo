@@ -436,9 +436,9 @@ MonoBehaviour:
   courseNames:
   - CHUTORIAL
   - MIE
-  - SUZUKA CIRCUIT
+  - SUZUKA
   bgmManager: {fileID: 576415514}
-  startKey: 13
+  startKey: 32
   cancelKey: 27
 --- !u!4 &713504224
 Transform:

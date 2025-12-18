@@ -9,7 +9,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private TextMeshPro menuText;
     
     [Header("コースリスト")]
-    [SerializeField] private string[] courseNames = { "CHUTORIAL", "MIE", "SUZUKA CIRCUIT" };
+    [SerializeField] private string[] courseNames = { "TUTORIAL", "MIE", "SUZUKA CIRCUIT" };
     
     [Header("BGM管理")]
     [SerializeField] private BGMManager bgmManager; // 先ほど作成したBGMManagerをアタッチ
