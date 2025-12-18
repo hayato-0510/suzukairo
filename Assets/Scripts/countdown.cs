@@ -29,7 +29,10 @@ public class countdown : MonoBehaviour
     IEnumerator CountDown()
     {
         string[] seq = { "3", "2", "1", "GO!" };
-
+        if (gameBGMManager != null)
+        {
+            gameBGMManager.PlayBGM();
+        }
         foreach (var s in seq)
         {
             countDownText.text = s;
@@ -56,10 +59,6 @@ public class countdown : MonoBehaviour
             }
         }
         //ここからレース開始
-        if (gameBGMManager != null)
-        {
-            gameBGMManager.PlayBGM();
-        }
         controller.canMove = true;
         countDownText.text = "";
         time = timeLimit;
