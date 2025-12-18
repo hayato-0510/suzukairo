@@ -722,6 +722,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1556619578}
   smoothTime: 0.4
+  autoSetInitialPosition: 1
 --- !u!4 &555750905 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6990979261286933283, guid: 1ea587b73c0014c29bc68d713fed6e35, type: 3}
@@ -1009,7 +1010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf1e575cf4ce1d8489eacde1b09b12f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  json: {fileID: 4900000, guid: 4a71be358fce7ba4f8ba75d1df9c5780, type: 3}
+  json: {fileID: 4900000, guid: 7994d3699a0c8594f8be60bbf6bbbb13, type: 3}
   circuitData: {fileID: 0}
   width: 1.2
   returnColor: {r: 0.10980392, g: 0.23529412, b: 0.33333334, a: 1}
@@ -1051,6 +1052,7 @@ MonoBehaviour:
   - type: DCDC
     prefab: {fileID: 1363260632655674554, guid: 1902842953a98764d96cc2deb6c94f0c, type: 3}
     endPoint: 17.5
+  playerPrefab: {fileID: 0}
 --- !u!114 &980864577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2351,6 +2353,10 @@ PrefabInstance:
     - target: {fileID: 8236386941394665692, guid: 939a3be351546614ca6aabf6fb89b7c5, type: 3}
       propertyPath: m_Name
       value: battery
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236386941394665692, guid: 939a3be351546614ca6aabf6fb89b7c5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

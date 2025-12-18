@@ -19,6 +19,10 @@ public class CircuitLoader : MonoBehaviour
     }
 
     public List<ComponentPrefabs> components;
+    
+    [Header("プレイヤー設定")]
+    public Transform playerPrefab;  // プレイヤープレハブ
+    private Transform playerInstance;  // 生成されたプレイヤー
 
     private Bounds circuitBounds;
 
@@ -26,6 +30,7 @@ public class CircuitLoader : MonoBehaviour
     {
         LoadData();
         BuildCircuit();
+        SpawnPlayer();  // プレイヤーを生成
     }
 
     public void LoadData()
@@ -115,7 +120,7 @@ public class CircuitLoader : MonoBehaviour
         var batteryPrefab = components.Find(c => c.type == "Battery");
         float batteryLength = batteryPrefab != null ? batteryPrefab.endPoint : 0;
         
-        Vector2 batteryStartPos = new Vector2(-batteryLength, 0);  // バッテリーの左端
+        Vector2 batteryStartPos = new Vector2(-batteryLength, 0);  // バッテリーの左端（正極+）
         Vector2 direction = Vector2.right;
 
         if (batteryPrefab != null)
@@ -124,7 +129,7 @@ public class CircuitLoader : MonoBehaviour
             UpdateBounds(battery);
         }
 
-        Vector2 batteryEndPos = new Vector2(0, 0);  // バッテリーの右端（原点）
+        Vector2 batteryEndPos = new Vector2(0, 0);  // バッテリーの右端（負極-）← ここが電子のスタート地点
         Vector2 cursorPos = batteryStartPos;  // 素子はバッテリーの左端（正極）から開始
 
         int idCounter = 0;
@@ -142,6 +147,44 @@ public class CircuitLoader : MonoBehaviour
         }
 
         CreateReturnLine(cursorPos, batteryEndPos);
+    }
+    
+    /// <summary>
+    /// プレイヤー（電子）をバッテリーの負極に生成
+    /// </summary>
+    private void SpawnPlayer()
+    {
+        // バッテリーの負極位置（原点）
+        Vector2 spawnPosition = new Vector2(0, 0);
+        
+        // 既存のプレイヤーを検索
+        var existingPlayer = FindObjectOfType<controller>();
+        
+        if (existingPlayer != null)
+        {
+            // 既存のプレイヤーの位置を更新
+            existingPlayer.transform.position = spawnPosition;
+            playerInstance = existingPlayer.transform;
+            Debug.Log($"[CircuitLoader] Player repositioned to battery negative terminal: {spawnPosition}");
+        }
+        else if (playerPrefab != null)
+        {
+            // プレイヤーを新規生成
+            playerInstance = Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
+            playerInstance.name = "Player";
+            Debug.Log($"[CircuitLoader] Player spawned at battery negative terminal: {spawnPosition}");
+        }
+        else
+        {
+            Debug.LogWarning("[CircuitLoader] Player not found and playerPrefab is not set!");
+        }
+        
+        // カメラのターゲットを設定
+        var cameraFollow = FindObjectOfType<cameraFollow>();
+        if (cameraFollow != null && playerInstance != null)
+        {
+            cameraFollow.SetTarget(playerInstance);
+        }
     }
 
     private void BuildParallel(
@@ -192,11 +235,11 @@ public class CircuitLoader : MonoBehaviour
     }
 
     private Vector2 BuildSingleComponent(
-    ComponentBase comp,
-    Vector2 cursorPos,
-    ref Vector2 direction,
-    int id
-)
+        ComponentBase comp,
+        Vector2 cursorPos,
+        ref Vector2 direction,
+        int id
+    )
     {
         var prefab = components.Find(c => c.type == comp.type);
         if (prefab == null) return cursorPos;
