@@ -35,6 +35,31 @@ public class ResultScreenController : MonoBehaviour
 
         // 2. ボタンのイベント登録
         SetupButtons();
+
+        // 3. AI分析の実行
+        var analyzer = FindObjectOfType<RaceLogAnalyzer>();
+        if (analyzer != null)
+        {
+            // UI Toolkitのラベルを取得（事前にUXMLに "AdviceLabel" という名前のLabelを追加しておく必要があります）
+            var adviceLabel = root.Q<Label>("AdviceLabel");
+            if (adviceLabel != null)
+            {
+                adviceLabel.text = "AI Coach is analyzing..."; // 初期化（空文字は避ける）
+                analyzer.AnalyzeLastRun(
+                    onTokenReceived: (token) => 
+                    {
+                        if (adviceLabel.text == "AI Coach is analyzing...") adviceLabel.text = "";
+                        adviceLabel.text += token;
+                    },
+                    onComplete: () => Debug.Log("Advice displayed.")
+                );
+            }
+            else
+            {
+                // ラベルが見つからない場合はログのみ
+                analyzer.AnalyzeLastRun();
+            }
+        }
     }
 
     private void ProcessAndDisplayResults()

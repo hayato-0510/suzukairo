@@ -11,8 +11,12 @@ public class GameLogger : MonoBehaviour
     [Tooltip("ログを記録する間隔（秒）")]
     public float loggingInterval = 0.1f;
 
+    // メモリ内ログ（AI分析用）
+    public System.Collections.Generic.List<PlayerStateData> logs = new System.Collections.Generic.List<PlayerStateData>();
+
     private StreamWriter writer;
     private string logPath;
+    public string CurrentLogPath => logPath; // 外部から参照可能にする
     private bool isLogging = false;
 
     private void Awake()
@@ -38,6 +42,8 @@ public class GameLogger : MonoBehaviour
             Debug.LogWarning("[GameLogger] Logging is already active.");
             return;
         }
+
+        logs.Clear(); // 新しいレースのためにログをクリア
 
         string logDirectory = Path.Combine(Application.persistentDataPath, "Logs");
         Directory.CreateDirectory(logDirectory); // フォルダがなければ作成
@@ -74,6 +80,9 @@ public class GameLogger : MonoBehaviour
     public void LogPlayerState(PlayerStateData data)
     {
         if (!isLogging) return;
+        
+        logs.Add(data); // メモリに保存
+
         PlayerStateLog log = new PlayerStateLog
         {
             timestamp = Time.time,

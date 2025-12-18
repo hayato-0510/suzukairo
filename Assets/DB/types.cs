@@ -10,6 +10,7 @@ public class RankingEntry
     public string timeText;
     public float timeInSeconds;
     public long timestamp;
+    public string logFileName; // 紐付け用ログファイル名
 }
 
 [Serializable]
