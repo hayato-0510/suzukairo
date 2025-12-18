@@ -50,6 +50,11 @@ public class LapCounter : MonoBehaviour
         if (!isRacing && controller.canMove && !isFinished)
         {
             isRacing = true;
+            // ロギング開始
+            if (GameLogger.Instance != null && GameLogger.Instance.enableLogging)
+            {
+                GameLogger.Instance.StartLogging();
+            }
         }
 
         // レース中のみ加算
@@ -92,6 +97,12 @@ public class LapCounter : MonoBehaviour
                 lap++;
                 lapText.text = lap.ToString() + "/" + lapNum;
                 
+                // ラップ完了イベントをログに記録
+                if (GameLogger.Instance != null && GameLogger.Instance.enableLogging)
+                {
+                    GameLogger.Instance.LogLapComplete(new LapCompleteData { lapNumber = this.lap, lapTime = this.raceTimer });
+                }
+
                 ResetAllComponents();
                 controller.voltage += batteryVoltage;
 
@@ -111,6 +122,12 @@ public class LapCounter : MonoBehaviour
         if (gameBGMManager != null) gameBGMManager.StopBGMWithFade();
         if (isFinished) return;
         isFinished = true;
+
+        // ロギング終了
+        if (GameLogger.Instance != null && GameLogger.Instance.enableLogging)
+        {
+            GameLogger.Instance.StopLogging();
+        }
 
         // 1. 保存用のエンティティを作成
         string uniqueId = System.Guid.NewGuid().ToString(); 

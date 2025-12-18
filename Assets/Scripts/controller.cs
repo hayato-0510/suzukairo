@@ -5,13 +5,13 @@ using TMPro;
 
 public class controller : MonoBehaviour
 {
-    [Header("�L�[")]
+    [Header("キー")]
     public KeyCode MoveFront = KeyCode.W;
     public KeyCode RotateRight = KeyCode.D;
     public KeyCode MoveBack = KeyCode.S;
     public KeyCode RotateLeft = KeyCode.A;
 
-    [Header("�X�s�[�h")]
+    [Header("スピード")]
     public float moveSpeed = 0.5f;
     public float rotateSpeed = 90f;
     public float conducutorMoveSpeed = 2f;
@@ -19,15 +19,15 @@ public class controller : MonoBehaviour
     public float moveDecay = 3f;
     private Vector2 moveVelocity;
 
-    [Header("�d��")]
+    [Header("電流")]
     public float startAmpere = 0.1f;
     public float ampere=0.1f;
 
-    [Header("�d��")]
+    [Header("電圧")]
     public float voltage=5.0f;
     public TextMeshProUGUI voltageText;
 
-    [Header("���M�X�s�[�h")]
+    [Header("放射スピード")]
     public float radiationSpeed=1.0f;
 
     private Rigidbody2D rb;
@@ -48,6 +48,12 @@ public class controller : MonoBehaviour
     private SerialCommandRouter serialRouter;
     private float forward = 0f;
     private float turn = 0f;
+    
+    // --- ロギング用変数 ---
+    private ComponentContext currentComponentContext;
+    private float logTimer;
+    private bool isTouchingComponent;
+
 
     private void Start()
     {
@@ -57,6 +63,20 @@ public class controller : MonoBehaviour
 
         // SerialCommandRouter を取得
         serialRouter = FindObjectOfType<SerialCommandRouter>();
+        
+        // ロギング用コンテキストを初期化
+        InitializeComponentContext();
+    }
+    
+    private void InitializeComponentContext()
+    {
+        currentComponentContext = new ComponentContext
+        {
+            onComponent = false,
+            componentType = "None",
+            componentId = -1,
+            componentValue = 0f
+        };
     }
 
     private void Update()
@@ -79,6 +99,42 @@ public class controller : MonoBehaviour
         // 移動処理
         ApplyMovement();
     }
+    
+    private void FixedUpdate()
+    {
+        if (!canMove) return;
+
+        // isTouchingComponentフラグが更新されなかった場合（=コンポーネントから離れたフレーム）、コンテキストをリセット
+        if (!isTouchingComponent)
+        {
+            InitializeComponentContext();
+        }
+        isTouchingComponent = false; // 次のFixedUpdateのためにリセット
+
+        // 定期的なログ記録
+        if (GameLogger.Instance == null || !GameLogger.Instance.enableLogging) return;
+        
+        logTimer += Time.fixedDeltaTime;
+        if (logTimer >= GameLogger.Instance.loggingInterval)
+        {
+            logTimer = 0f;
+            LogPlayerState();
+        }
+    }
+
+    private void LogPlayerState()
+    {
+        var stateData = new PlayerStateData
+        {
+            position = new Vector2Serializable(transform.position),
+            angle = transform.eulerAngles.z,
+            velocity = new Vector2Serializable(rb.linearVelocity),
+            ampere = this.ampere,
+            voltage = this.voltage,
+            componentContext = this.currentComponentContext
+        };
+        GameLogger.Instance.LogPlayerState(stateData);
+    }
 
     private void HandleKeyboardInput()
     {
@@ -95,6 +151,12 @@ public class controller : MonoBehaviour
         {
             boostVelocity += (Vector2)transform.up * boostSpeed;
             voltage--;
+            
+            // ブーストイベントをログに記録
+            if (GameLogger.Instance != null && GameLogger.Instance.enableLogging)
+            {
+                GameLogger.Instance.LogBoost(new BoostActivatedData { remainingVoltage = this.voltage });
+            }
         }
     }
 
@@ -112,6 +174,12 @@ public class controller : MonoBehaviour
             boostVelocity += (Vector2)transform.up * boostSpeed;
             voltage--;
             serialRouter.turbo = 0f; // 1回のみ発動
+            
+            // ブーストイベントをログに記録
+            if (GameLogger.Instance != null && GameLogger.Instance.enableLogging)
+            {
+                GameLogger.Instance.LogBoost(new BoostActivatedData { remainingVoltage = this.voltage });
+            }
         }
     }
 
@@ -150,7 +218,7 @@ public class controller : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "conductor")
+        if (collision.gameObject.CompareTag("conductor"))
         {
             moveSpeed = nonconductorMoveSpeed;
             isOnConductor = false;
@@ -159,7 +227,7 @@ public class controller : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "conductor")
+        if (collision.gameObject.CompareTag("conductor"))
         {
             moveSpeed = conducutorMoveSpeed;
             isOnConductor = true;
@@ -168,10 +236,29 @@ public class controller : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "conductor")
+        if (collision.gameObject.CompareTag("conductor"))
         {
             moveSpeed = conducutorMoveSpeed;
             isOnConductor = true;
+            
+            // ログ用のコンポーネント情報を更新
+            var componentData = collision.gameObject.GetComponent<componentData>();
+            if (componentData != null)
+            {
+                currentComponentContext.onComponent = true;
+                currentComponentContext.componentType = componentData.type;
+                currentComponentContext.componentId = componentData.id;
+                currentComponentContext.componentValue = componentData.value;
+            }
+            else
+            {
+                // componentDataがない導体（例：ただの線）の場合
+                currentComponentContext.onComponent = true;
+                currentComponentContext.componentType = "Conductor"; // デフォルトタイプ
+                currentComponentContext.componentId = -1;
+                currentComponentContext.componentValue = 0;
+            }
+            isTouchingComponent = true;
         }
     }
 }
