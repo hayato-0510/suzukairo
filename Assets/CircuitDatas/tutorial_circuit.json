@@ -3,6 +3,7 @@
   "circuitId": "tutorial_circuit",
   "lapNum": 3,
   "batteryVoltage": 5,
+  "timeLimit": 180,
   "components": [
     {
         "type":"Conductor",
