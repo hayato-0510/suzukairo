@@ -1,159 +1,128 @@
 using UnityEngine;
-using TMPro; // TextMesh Proを使用するために必要
-using UnityEngine.SceneManagement; // シーン管理のために必要
-using UnityEngine.UIElements; // UI Toolkitを使用するために必要
+using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
+
 public class MenuController : MonoBehaviour
 {
-    // --- Inspectorで設定 ---
     [Header("UI要素")]
-    [SerializeField] private TextMeshPro menuText; // 3D空間に配置したTMPテキストをセット
+    [SerializeField] private TextMeshPro menuText;
     
     [Header("コースリスト")]
     [SerializeField] private string[] courseNames = { "SUZUKA CIRCUIT", "CHUTORIAL", "MIE" };
     
-    [Header("入力キー設定")]
-    [SerializeField] private KeyCode nextKey = KeyCode.JoystickButton0; // コース選択・決定 (例: Aボタン)
-    [SerializeField] private KeyCode startKey = KeyCode.JoystickButton7; // ゲーム開始 (例: Startボタン)
-    
-    // ★★★ 1. TMPのフォントアセット本体 (Projectからドラッグ＆ドロップ)
-    [Header("フォントアセット")]
-    [SerializeField] private TMP_FontAsset mainFontAsset; 
-    
-    // ★★★ 2. UXMLのルート要素 (HierarchyからUIDocument経由で取得)
-    [Header("UI Toolkit要素")]
-    [SerializeField] private UIDocument uiDocument; // UIDocumentコンポーネント自体をセット
-    
+    [Header("BGM管理")]
+    [SerializeField] private BGMManager bgmManager; // 先ほど作成したBGMManagerをアタッチ
 
+    [Header("操作設定")]
+    [SerializeField] private KeyCode startKey = KeyCode.Space; // 最終決定キー（例：スペースキー）
+    [SerializeField] private KeyCode cancelKey = KeyCode.Escape; // キャンセル・戻るキー
 
-    // --- 内部状態 ---
     private enum MenuState {
-        SelectCourse, // コース選択中
-        ReadyToStart // スタート待機中
+        WaitingForInput, // 1,2,3の入力を待っている状態
+        ReadyToStart     // コースが確定し、開始ボタンを待っている状態（BGM：Heavy）
     }
     
-    private MenuState currentState = MenuState.SelectCourse;
+    private MenuState currentState = MenuState.WaitingForInput;
     private int selectedCourseIndex = 0;
     
     void Start()
     {
-        // ★★★ C#によるフォント割り当てを実行 ★★★
-        //ApplyFontToUIElements();
         if (menuText == null)
         {
-            Debug.LogError("Menu Text (TextMeshProUGUI) が設定されていません。");
+            Debug.LogError("Menu Text (TextMeshPro) が設定されていません。");
             return;
         }
-        
         UpdateMenuText();
     }
-/*
-    private void ApplyFontToUIElements()
-    {
-        if (uiDocument == null || mainFontAsset == null)
-        {
-            Debug.LogError("UIDocumentまたはMain Font Assetが設定されていません。");
-            return;
-        }
 
-        // 1. UIDocumentからVisualTreeのルートを取得
-        VisualElement root = uiDocument.rootVisualElement;
-        
-        // 2. StyleFontDefinitionを作成
-        // TMP_FontAssetを直接渡して StyleFontDefinition を作成します。
-        // StyleFontDefinition は、StyleFont や FontDefinition のラッパーとして機能します。
-        var fontStyleDef = new StyleFontDefinition(mainFontAsset);
-
-        // 3. root要素以下のすべてのLabel要素に対してフォントを適用
-        root.Query<Label>().ForEach(label =>
-        {
-            // -unity-font-definition プロパティに StyleFontDefinition を割り当てます。
-            label.style.unityFontDefinition = fontStyleDef;
-        });
-        
-        Debug.Log("UI ToolkitのすべてのLabel要素にフォントを適用しました。");
-    }
-*/
     void Update()
     {
         HandleInput();
     }
     
-    // --- 入力処理 ---
     private void HandleInput()
     {
-        // 決定/次へキーの処理
-        if (Input.GetKeyDown(nextKey))
+        // 1. コース入力待ち状態
+        if (currentState == MenuState.WaitingForInput)
         {
-            if (currentState == MenuState.SelectCourse)
-            {
-                // コースを切り替える
-                selectedCourseIndex = (selectedCourseIndex + 1) % courseNames.Length;
-                UpdateMenuText();
-            }
-            else if (currentState == MenuState.ReadyToStart)
-            {
-                // ReadyToStart状態での決定キー -> コース選択に戻る
-                currentState = MenuState.SelectCourse;
-                UpdateMenuText();
-            }
+            // 数字キー 1, 2, 3 を MapID として受け取る
+            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1)) SelectCourse(0);
+            if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2)) SelectCourse(1);
+            if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3)) SelectCourse(2);
         }
-        
-        // ゲーム開始キーの処理 (Startボタンなど)
-        if (Input.GetKeyDown(startKey))
+        // 2. 開始待ち状態
+        else if (currentState == MenuState.ReadyToStart)
         {
-            if (currentState == MenuState.SelectCourse)
+            // スタートキーでゲーム開始
+            if (Input.GetKeyDown(startKey))
             {
-                // コース選択完了 -> スタート待機状態へ
-                currentState = MenuState.ReadyToStart;
-                UpdateMenuText();
-            }
-            else if (currentState == MenuState.ReadyToStart)
-            {
-                // スタート待機完了 -> ゲーム開始処理
                 StartGame();
+            }
+            // キャンセルキーでコース選択に戻る
+            if (Input.GetKeyDown(cancelKey))
+            {
+                CancelSelection();
             }
         }
     }
 
-    // --- テキスト表示の更新 ---
+    // コースが入力された時の処理
+    private void SelectCourse(int index)
+    {
+        Debug.Log($"Course Selected");
+        if (index >= courseNames.Length) return;
+
+        selectedCourseIndex = index;
+        currentState = MenuState.ReadyToStart;
+        
+        // BGMをHeavy（ドラムあり）に切り替え
+        if (bgmManager != null)
+        {
+            bgmManager.SwitchToHeavyLoop();
+            Debug.Log($"Course Selected: {courseNames[index]}. BGM Switched to Heavy.");
+        }
+
+        UpdateMenuText();
+    }
+
+    // 選択をキャンセルして戻る処理
+    private void CancelSelection()
+    {
+        currentState = MenuState.WaitingForInput;
+
+        // BGMをNormal（ドラム少）に戻す
+        if (bgmManager != null)
+        {
+            bgmManager.SwitchToNormalLoop();
+        }
+
+        UpdateMenuText();
+    }
+
     private void UpdateMenuText()
     {
         string displayMessage = "";
         
-        if (currentState == MenuState.SelectCourse)
+        if (currentState == MenuState.WaitingForInput)
         {
-            // コース選択中: 現在選択されているコース名と操作説明を表示
-            displayMessage = $"COURSE: {courseNames[selectedCourseIndex]}";
-            //displayMessage += $"Press [{nextKey.ToString()}] to Change Course";
-            //displayMessage += $"Press [{startKey.ToString()}] to Select and Continue";
+            displayMessage = "SELECT COURSE\n[1][2][3]";
         }
         else if (currentState == MenuState.ReadyToStart)
         {
-            // スタート待機中: 決定したコース名と最終確認を表示
-            displayMessage = $"READY TO START\n\n";
-            displayMessage += $"Course: {courseNames[selectedCourseIndex]}\n";
-            //displayMessage += $"Press [{startKey.ToString()}] to START GAME\n";
-            //displayMessage += $"Press [{nextKey.ToString()}] to Return to Selection";
+            displayMessage = $"READY?\n\n<color=#FFD700>{courseNames[selectedCourseIndex]}</color>\n\nPRESS [SPACE] TO START";
         }
         
         menuText.text = displayMessage;
     }
 
-    // --- ゲーム開始処理 ---
     private void StartGame()
     {
-        Debug.Log($"ゲーム開始！選択されたコース: {courseNames[selectedCourseIndex]}");
-        // 1. ロードするシーン名を取得
-        // 選択されたコース名と同じ名前のシーンをロードすると仮定します。
-        //string sceneToLoad = courseNames[selectedCourseIndex];
-        string sceneToLoad = "SampleScene"; // ★★★ 実際のシーン名に置き換えてください ★★★
+        // 実際には各コースに応じたシーンをロードする設定も可能
+        string sceneToLoad = "SampleScene"; 
+        menuText.text = $"LOADING\n{courseNames[selectedCourseIndex]}...";
         
-        // 画面のテキストを最終メッセージに変更
-        menuText.text = $"LOADING {courseNames[selectedCourseIndex]}...";
-        // スクリプトの入力を無効化
         enabled = false;
-        // ★★★ 実際のシーン遷移を実行 ★★★
         SceneManager.LoadScene(sceneToLoad);
-        
     }
 }

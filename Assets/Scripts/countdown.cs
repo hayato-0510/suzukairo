@@ -18,6 +18,9 @@ public class countdown : MonoBehaviour
     [HideInInspector] public bool isFinished = false;
     private int time;
 
+    [Header("BGM")]
+    public GameBGMManager gameBGMManager;
+
     void Start()
     {
         StartCoroutine(CountDown());
@@ -26,7 +29,12 @@ public class countdown : MonoBehaviour
     IEnumerator CountDown()
     {
         string[] seq = { "3", "2", "1", "GO!" };
-
+        Debug.Log("<color=green>[Countdown] Starting countdown sequence.</color>");
+        if (gameBGMManager != null)
+        {
+            gameBGMManager.PlayBGM();
+            Debug.Log("<color=green>[Countdown] Game BGM Started.</color>");
+        }
         foreach (var s in seq)
         {
             countDownText.text = s;
@@ -52,7 +60,7 @@ public class countdown : MonoBehaviour
                 yield return null;
             }
         }
-        
+        //ここからレース開始
         controller.canMove = true;
         countDownText.text = "";
         time = timeLimit;
@@ -79,6 +87,7 @@ public class countdown : MonoBehaviour
 
     private void OnTimeUp()
     {
+        if (gameBGMManager != null) gameBGMManager.StopBGMWithFade();
         if (isFinished) return;
         isFinished = true;
 
