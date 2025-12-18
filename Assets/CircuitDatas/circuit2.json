@@ -3,6 +3,7 @@
   "circuitId": 1,
   "lapNum": 3,
   "batteryVoltage": 5,
+  "timeLimit": 30,
   "components": [
     {
       "type": "RCD",
