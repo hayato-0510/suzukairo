@@ -9,7 +9,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private TextMeshPro menuText;
     
     [Header("コースリスト")]
-    [SerializeField] private string[] courseNames = { "SUZUKA CIRCUIT", "CHUTORIAL", "MIE" };
+    [SerializeField] private string[] courseNames = { "CHUTORIAL", "MIE", "SUZUKA CIRCUIT" };
     
     [Header("BGM管理")]
     [SerializeField] private BGMManager bgmManager; // 先ほど作成したBGMManagerをアタッチ
@@ -25,6 +25,7 @@ public class MenuController : MonoBehaviour
     
     private MenuState currentState = MenuState.WaitingForInput;
     private int selectedCourseIndex = 0;
+    private SerialCommandRouter serialRouter;
     
     void Start()
     {
@@ -34,6 +35,13 @@ public class MenuController : MonoBehaviour
             return;
         }
         UpdateMenuText();
+        
+        // SerialCommandRouterを検索して取得
+        serialRouter = FindObjectOfType<SerialCommandRouter>();
+        if (serialRouter == null)
+        {
+            Debug.LogWarning("[MenuController] SerialCommandRouter not found. Device input will be disabled.");
+        }
     }
 
     void Update()
@@ -46,10 +54,10 @@ public class MenuController : MonoBehaviour
         // 1. コース入力待ち状態
         if (currentState == MenuState.WaitingForInput)
         {
-            // 数字キー 1, 2, 3 を MapID として受け取る
-            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1)) SelectCourse(0);
-            if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2)) SelectCourse(1);
-            if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3)) SelectCourse(2);
+            // キーボード入力を処理
+            HandleKeyboardInput();
+            // シリアル入力を処理
+            HandleSerialInput();
         }
         // 2. 開始待ち状態
         else if (currentState == MenuState.ReadyToStart)
@@ -64,6 +72,36 @@ public class MenuController : MonoBehaviour
             {
                 CancelSelection();
             }
+        }
+    }
+
+    private void HandleKeyboardInput()
+    {
+        // 数字キー 1, 2, 3 を インデックス (0, 1, 2) として受け取る
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1)) SelectCourse(0); // チュートリアル
+        if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2)) SelectCourse(1); // 三重
+        if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3)) SelectCourse(2); // 鈴鹿
+    }
+    
+    private void HandleSerialInput()
+    {
+        if (serialRouter == null || serialRouter.mapID == 0) return;
+
+        int deviceMapId = serialRouter.mapID;
+        
+        // mapIDをリセットして、毎フレーム選択されるのを防ぐ
+        serialRouter.mapID = 0;
+        
+        // deviceMapId (1, 2, 3) をインデックス (0, 1, 2) に変換
+        int courseIndex = deviceMapId - 1;
+
+        if (courseIndex >= 0 && courseIndex < courseNames.Length)
+        {
+            SelectCourse(courseIndex);
+        }
+        else
+        {
+            Debug.LogWarning($"[MenuController] Received unknown mapID from device: {deviceMapId}");
         }
     }
 
@@ -106,7 +144,12 @@ public class MenuController : MonoBehaviour
         
         if (currentState == MenuState.WaitingForInput)
         {
-            displayMessage = "SELECT COURSE\n[1][2][3]";
+            displayMessage = "SELECT COURSE\n";
+            for (int i = 0; i < courseNames.Length; i++)
+            {
+                // Display 1-based index for user
+                displayMessage += $"[{i + 1}] {courseNames[i]}\n";
+            }
         }
         else if (currentState == MenuState.ReadyToStart)
         {
@@ -121,6 +164,9 @@ public class MenuController : MonoBehaviour
         // 実際には各コースに応じたシーンをロードする設定も可能
         string sceneToLoad = "SampleScene"; 
         menuText.text = $"LOADING\n{courseNames[selectedCourseIndex]}...";
+
+        // 選択されたコースのIDを保存
+        CourseSelectionData.SelectedMapId = selectedCourseIndex;
         
         enabled = false;
         SceneManager.LoadScene(sceneToLoad);

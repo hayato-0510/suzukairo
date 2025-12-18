@@ -1010,7 +1010,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf1e575cf4ce1d8489eacde1b09b12f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  json: {fileID: 4900000, guid: 7994d3699a0c8594f8be60bbf6bbbb13, type: 3}
+  jsonFiles:
+  - {fileID: 4900000, guid: 3f16e64d76883724aafb64f9f1df2969, type: 3}
+  - {fileID: 4900000, guid: 7994d3699a0c8594f8be60bbf6bbbb13, type: 3}
+  - {fileID: 4900000, guid: 17a55af2070a9954bb34ddaf0a80c57a, type: 3}
   circuitData: {fileID: 0}
   width: 1.2
   returnColor: {r: 0.10980392, g: 0.23529412, b: 0.33333334, a: 1}

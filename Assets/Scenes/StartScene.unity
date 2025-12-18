@@ -434,9 +434,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuText: {fileID: 1788362108}
   courseNames:
-  - SUZUKA CIRCUIT
   - CHUTORIAL
   - MIE
+  - SUZUKA CIRCUIT
   bgmManager: {fileID: 576415514}
   startKey: 13
   cancelKey: 27

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CircuitLoader : MonoBehaviour
 {
-    public TextAsset json;
+    public List<TextAsset> jsonFiles; // List of JSON files for the circuits
     public Circuit circuitData;
     public float width = 1.2f;
     public Color returnColor;
@@ -35,7 +35,27 @@ public class CircuitLoader : MonoBehaviour
 
     public void LoadData()
     {
-        var raw = JsonUtility.FromJson<RawCircuit>(json.text);
+        int selectedMapId = CourseSelectionData.SelectedMapId;
+        if (jsonFiles == null || jsonFiles.Count == 0)
+        {
+            Debug.LogError("[CircuitLoader] No JSON files assigned.");
+            return;
+        }
+
+        if (selectedMapId < 0 || selectedMapId >= jsonFiles.Count)
+        {
+            Debug.LogWarning($"[CircuitLoader] SelectedMapId {selectedMapId} is out of range. Clamping to valid range [0, {jsonFiles.Count - 1}].");
+            selectedMapId = Mathf.Clamp(selectedMapId, 0, jsonFiles.Count - 1);
+        }
+
+        TextAsset selectedJson = jsonFiles[selectedMapId];
+        if (selectedJson == null)
+        {
+            Debug.LogError($"[CircuitLoader] JSON file at index {selectedMapId} is null.");
+            return;
+        }
+
+        var raw = JsonUtility.FromJson<RawCircuit>(selectedJson.text);
 
         Circuit circuit = ScriptableObject.CreateInstance<Circuit>();
         circuit.circuitName = raw.circuitName;
