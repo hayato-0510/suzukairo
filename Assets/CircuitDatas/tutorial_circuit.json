@@ -1,6 +1,6 @@
 {
   "circuitName": "tutorial_circuit",
-  "circuitId": "tutorial_circuit",
+  "circuitId": "1",
   "lapNum": 3,
   "batteryVoltage": 5,
   "timeLimit": 180,
