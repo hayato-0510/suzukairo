@@ -23,6 +23,7 @@ public class ResultScreenController : MonoBehaviour
     [SerializeField] private List<MapBackground> mapBackgrounds;
     [SerializeField] private Texture2D fallbackBackground;
     [SerializeField] private CircuitLoader circuitLoader;
+    [SerializeField] private ReplayController replayController; // 追加
 
     [Header("Debug")]
     [SerializeField] private bool useDebugData = false;
@@ -89,6 +90,13 @@ public class ResultScreenController : MonoBehaviour
                 // 背景を白にする
                 Camera.main.clearFlags = CameraClearFlags.SolidColor;
                 Camera.main.backgroundColor = Color.white;
+
+                // リプレイ再生（デバッグ用データがあれば）
+                if (replayController != null && GameLogger.Instance != null && GameLogger.Instance.logs.Count > 0)
+                {
+                    GameObject prefab = circuitLoader.playerPrefab != null ? circuitLoader.playerPrefab.gameObject : null;
+                    replayController.StartReplay(GameLogger.Instance.logs, prefab);
+                }
             }
             return;
         }
@@ -124,6 +132,13 @@ public class ResultScreenController : MonoBehaviour
             // 背景を白にする
             Camera.main.clearFlags = CameraClearFlags.SolidColor;
             Camera.main.backgroundColor = Color.white;
+
+            // リプレイ再生
+            if (replayController != null && GameLogger.Instance != null && GameLogger.Instance.logs.Count > 0)
+            {
+                GameObject prefab = circuitLoader.playerPrefab != null ? circuitLoader.playerPrefab.gameObject : null;
+                replayController.StartReplay(GameLogger.Instance.logs, prefab);
+            }
         }
         else
         {

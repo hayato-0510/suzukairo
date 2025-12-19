@@ -81,11 +81,12 @@ public class GameLogger : MonoBehaviour
     {
         if (!isLogging) return;
         
+        data.timestamp = Time.time; // タイムスタンプを記録
         logs.Add(data); // メモリに保存
 
         PlayerStateLog log = new PlayerStateLog
         {
-            timestamp = Time.time,
+            timestamp = data.timestamp,
             eventType = "player_state",
             eventData = data
         };
