@@ -24,18 +24,38 @@
           {
             "components": [
               {
+                "type": "Conductor",
+                "value": 5,
+                "angle": 45
+              },
+              {
                 "type": "Resistor",
                 "value": 2,
                 "angle": 90
+              },
+              {
+                "type": "Conductor",
+                "value": 5,
+                "angle": 135
               }
             ]
           },
           {
             "components": [
               {
+                "type": "Conductor",
+                "value": 5,
+                "angle": 135
+              },
+              {
                 "type": "Resistor",
-                "value": 1,
+                "value": 2,
                 "angle": 90
+              },
+              {
+                "type": "Conductor",
+                "value": 5,
+                "angle": 45
               }
             ]
           }
@@ -82,30 +102,49 @@
                 {
                     "components":[
                         {
-                            "type":"Conductor",
-                            "value":2.65,
-                            "angle":-90
+                            "type": "Conductor",
+                            "value": 5,
+                            "angle": -135
                         },
                         {
-                            "type":"Inductor",
-                            "value":2,
-                            "value2":0.1,
-                            "angle":-90,
-                            "label":"R3"
+                            "type": "Conductor",
+                            "value": 2.65,
+                            "angle": -90
                         },
                         {
-                            "type":"Conductor",
-                            "value":2.65,
-                            "angle":-90
+                            "type": "Inductor",
+                            "value": 2,
+                            "value2": 0.1,
+                            "angle": -90
+                        },
+                        {
+                            "type": "Conductor",
+                            "value": 2.65,
+                            "angle": -90
+                        },
+                        {
+                            "type": "Conductor",
+                            "value": 5,
+                            "angle": -45
                         }
                     ]
                 },
                 {
                     "components":[
                         {
-                            "type":"Resistor",
-                            "value":2,
-                            "angle":-90
+                            "type": "Conductor",
+                            "value": 5,
+                            "angle": -45
+                        },
+                        {
+                            "type": "Resistor",
+                            "value": 2,
+                            "angle": -90
+                        },
+                        {
+                            "type": "Conductor",
+                            "value": 5,
+                            "angle": -135
                         }
                     ]
                 }
@@ -114,7 +153,7 @@
     },
     {
         "type":"Conductor",
-        "value":20,
+        "value":20.3,
         "angle":-90
     },
     {
