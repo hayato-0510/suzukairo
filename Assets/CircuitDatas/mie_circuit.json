@@ -1,7 +1,7 @@
 {
   "circuitName": "mie_circuit",
   "circuitId": "mie_circuit",
-  "lapNum": 3,
+  "lapNum": 2,
   "batteryVoltage": 5,
   "timeLimit": 180,
   "components": [
@@ -185,7 +185,7 @@
     },
     {
       "type": "Conductor",
-      "value": 10,
+      "value": 9,
       "angle": -135
     },
     {

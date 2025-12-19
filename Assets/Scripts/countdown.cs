@@ -32,11 +32,17 @@ public class countdown : MonoBehaviour
     {
         string[] seq = { "3", "2", "1", "GO!" };
         Debug.Log("<color=green>[Countdown] Starting countdown sequence.</color>");
+        
         if (gameBGMManager != null)
         {
             gameBGMManager.PlayBGM();
             Debug.Log("<color=green>[Countdown] Game BGM Started.</color>");
         }
+        else
+        {
+            Debug.LogError("<color=red>[Countdown] GameBGMManager is NOT assigned! Please assign it in the Inspector.</color>");
+        }
+
         foreach (var s in seq)
         {
             countDownText.text = s;

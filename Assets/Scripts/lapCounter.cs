@@ -123,6 +123,12 @@ public class LapCounter : MonoBehaviour
         if (isFinished) return;
         isFinished = true;
 
+        // コントローラーの動作を停止（これによりFixedUpdate内のログ出力も確実に止まる）
+        if (controller != null)
+        {
+            controller.canMove = false;
+        }
+
         // ロギング終了
         if (GameLogger.Instance != null && GameLogger.Instance.enableLogging)
         {
@@ -131,13 +137,21 @@ public class LapCounter : MonoBehaviour
 
         // 1. 保存用のエンティティを作成
         string uniqueId = System.Guid.NewGuid().ToString(); 
+        string logFile = "";
+        if (GameLogger.Instance != null)
+        {
+            // フルパスからファイル名だけを抽出
+            logFile = System.IO.Path.GetFileName(GameLogger.Instance.CurrentLogPath);
+        }
+
         var newEntry = new RankingEntry {
             id = uniqueId,
             mapName = loader.circuitData.circuitName,
             playerName = "YOU",
             timeText = TimeFormatter.Format(raceTimer),
             timeInSeconds = raceTimer,
-            timestamp = System.DateTimeOffset.Now.ToUnixTimeSeconds()
+            timestamp = System.DateTimeOffset.Now.ToUnixTimeSeconds(),
+            logFileName = logFile
         };
 
         // 2. この場で保存
