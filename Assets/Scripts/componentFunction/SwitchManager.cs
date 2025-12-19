@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class SwitchManager : MonoBehaviour
 {
-    [Header("ƒXƒCƒbƒ`ó‘Ô")]
-    public int[] switches = new int[2]; // —á: [0,0]
+    [Header("ï¿½Xï¿½Cï¿½bï¿½`ï¿½ï¿½ï¿½")]
+    public int[] switches = new int[2]; // ï¿½ï¿½: [0,0]
 
     public CircuitLoader circuitLoader;
     private List<GameObject> switchObjects = new List<GameObject>();
+
+    [SerializeField] private SerialCommandRouter serialRouter;
 
     void Start()
     {
@@ -31,7 +33,7 @@ public class SwitchManager : MonoBehaviour
             if (index < 0 || index >= switches.Length)
                 continue;
 
-            if (switches[index] == 1)
+            if (serialRouter.msw1 == false)
                 cData.value2 = 1;
             else
                 cData.value2 = 0;

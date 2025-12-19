@@ -1075,6 +1075,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   switches: 0000000000000000
   circuitLoader: {fileID: 980864576}
+  serialRouter: {fileID: 980864579}
 --- !u!4 &875105653
 Transform:
   m_ObjectHideFlags: 0
@@ -1596,6 +1597,8 @@ MonoBehaviour:
   move: 0
   turbo: 0
   mapID: 0
+  msw1: 0
+  msw2: 0
 --- !u!114 &980864580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1608,7 +1611,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9f64a3ec616147778f00e2a95c80c6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portName: COM2
   baudRate: 115200
 --- !u!114 &980864581
 MonoBehaviour:
