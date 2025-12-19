@@ -1,9 +1,9 @@
 {
-    "circuitName": "map2",
-    "circuitId": "map2",
+    "circuitName": "suzuka_circuit",
+    "circuitId": "3",
     "lapNum": 3,
     "batteryVoltage": 5,
-    "timeLimit": 30,
+    "timeLimit": 180,
     "components": [
         {
             "type":"Conductor",
@@ -311,7 +311,7 @@
         },
         {
             "type":"Conductor",
-            "value":2,
+            "value":2.5,
             "angle":225
         },
         {
