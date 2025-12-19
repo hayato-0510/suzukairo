@@ -67,9 +67,14 @@ public class SerialCommandRouter : MonoBehaviour
                 else
                     move = 0f;
 
-                left = commands[2] == "1" ? 1 : 0;
-                right = commands[3] == "1" ? 1 : 0;
-                turn = right - left;
+                 if(commands[2] == "1" && commands[3] == "1")
+                    turn = 0;
+                else if(commands[2] == "1" && commands[3] == "0")
+                    turn = -1;
+                else if(commands[2] == "0" && commands[3] == "1")
+                    turn = 1;
+                else
+                    turn = 0;
 
                 if (commands[4] == "1\r")
                     turbo = 1f;
@@ -83,9 +88,14 @@ public class SerialCommandRouter : MonoBehaviour
                 else
                     move = 0f;
 
-                left = commands[3] == "1" ? 1 : 0;
-                right = commands[1] == "1" ? 1 : 0;
-                turn = right - left;
+                if(commands[3] == "1" && commands[1] == "1")
+                    turn = 0;
+                else if(commands[3] == "1" && commands[1] == "0")
+                    turn = 1;
+                else if(commands[3] == "0" && commands[1] == "1")
+                    turn = -1;
+                else
+                    turn = 0;
 
                 if (commands[4] == "1\r")
                     turbo = 1f;

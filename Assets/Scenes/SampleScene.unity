@@ -1358,6 +1358,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7871556540511652807, guid: bb52ec697f62d7d43b2f917a81d9f328, type: 3}
+      propertyPath: m_Color.b
+      value: 0.05900679
+      objectReference: {fileID: 0}
+    - target: {fileID: -7871556540511652807, guid: bb52ec697f62d7d43b2f917a81d9f328, type: 3}
+      propertyPath: m_Color.g
+      value: 0.6824336
+      objectReference: {fileID: 0}
+    - target: {fileID: -7871556540511652807, guid: bb52ec697f62d7d43b2f917a81d9f328, type: 3}
+      propertyPath: m_Color.r
+      value: 0.9622642
+      objectReference: {fileID: 0}
     - target: {fileID: -3888481672020999207, guid: bb52ec697f62d7d43b2f917a81d9f328, type: 3}
       propertyPath: m_Name
       value: electron

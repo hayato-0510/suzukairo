@@ -18,6 +18,10 @@ public class MenuController : MonoBehaviour
     [SerializeField] private KeyCode startKey = KeyCode.Space; // 最終決定キー（例：スペースキー）
     [SerializeField] private KeyCode cancelKey = KeyCode.Escape; // キャンセル・戻るキー
 
+    private float lastMove = 0f;
+    private float lastTurn = 0f;
+    private float lastTurbo = 0f;
+
     private enum MenuState {
         WaitingForInput, // 1,2,3の入力を待っている状態
         ReadyToStart     // コースが確定し、開始ボタンを待っている状態（BGM：Heavy）
@@ -62,11 +66,16 @@ public class MenuController : MonoBehaviour
         // 2. 開始待ち状態
         else if (currentState == MenuState.ReadyToStart)
         {
-            // スタートキーでゲーム開始
-            if (Input.GetKeyDown(startKey))
+            if(
+                (lastTurn != serialRouter.turn) ||
+                (lastMove != serialRouter.move) ||
+                (lastTurbo != serialRouter.turbo) ||
+                Input.GetKeyDown(startKey)
+            )
             {
                 StartGame();
             }
+
             // キャンセルキーでコース選択に戻る
             if (Input.GetKeyDown(cancelKey))
             {
@@ -88,12 +97,16 @@ public class MenuController : MonoBehaviour
         if (serialRouter == null || serialRouter.mapID == 0) return;
 
         int deviceMapId = serialRouter.mapID;
-        
+
         // mapIDをリセットして、毎フレーム選択されるのを防ぐ
         serialRouter.mapID = 0;
         
         // deviceMapId (1, 2, 3) をインデックス (0, 1, 2) に変換
         int courseIndex = deviceMapId - 1;
+
+        //Map4の時チュートリアルに変換
+        if(deviceMapId == 4)
+            courseIndex = 0;
 
         if (courseIndex >= 0 && courseIndex < courseNames.Length)
         {
