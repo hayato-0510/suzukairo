@@ -1158,6 +1158,8 @@ MonoBehaviour:
   move: 0
   turbo: 0
   mapID: 0
+  msw1: 0
+  msw2: 0
 --- !u!114 &980864580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1170,8 +1172,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9f64a3ec616147778f00e2a95c80c6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portName: COM2
   baudRate: 115200
+  timeoutMs: 250
+  portName_: /dev/tty.usbserial-130
+  probeMessage: 'health
+
+'
+  expectedResponsePrefix: ok
+  verboseLog: 0
 --- !u!4 &1069802318 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8752306969386733323, guid: f9c6ba13abc694bf7bf31ab9949fde70, type: 3}
