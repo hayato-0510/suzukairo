@@ -26,12 +26,23 @@ public class rcdFunction : MonoBehaviour,IResettableComponent
         {
             if (Input.GetKey(MoveFront) || Input.GetKey(MoveBack))
             {
+                controller ctrl = collision.GetComponent<controller>();
                 if (decrementAmpere + cData.value2 * Time.deltaTime >= cData.value) { 
-                    collision.GetComponent<controller>().ampere -= cData.value - decrementAmpere;
+                    ctrl.ampere -= cData.value - decrementAmpere;
+                    // 電流の下限値チェック
+                    if (ctrl.ampere < ctrl.minAmpere)
+                    {
+                        ctrl.ampere = ctrl.minAmpere;
+                    }
                     decrementAmpere = cData.value;
                 }
                 else { 
-                    collision.GetComponent<controller>().ampere -= cData.value2 * Time.deltaTime; 
+                    ctrl.ampere -= cData.value2 * Time.deltaTime;
+                    // 電流の下限値チェック
+                    if (ctrl.ampere < ctrl.minAmpere)
+                    {
+                        ctrl.ampere = ctrl.minAmpere;
+                    }
                     decrementAmpere += cData.value2 * Time.deltaTime;
                 }
             }
@@ -45,14 +56,25 @@ public class rcdFunction : MonoBehaviour,IResettableComponent
         {
             if (Input.GetKey(MoveFront) || Input.GetKey(MoveBack))
             {
+                controller ctrl = collision.GetComponent<controller>();
                 if (decrementAmpere + cData.value2 * Time.deltaTime >= cData.value)
                 {
-                    collision.GetComponent<controller>().ampere -= cData.value - decrementAmpere;
+                    ctrl.ampere -= cData.value - decrementAmpere;
+                    // 電流の下限値チェック
+                    if (ctrl.ampere < ctrl.minAmpere)
+                    {
+                        ctrl.ampere = ctrl.minAmpere;
+                    }
                     decrementAmpere = cData.value;
                 }
                 else
                 {
-                    collision.GetComponent<controller>().ampere -= cData.value2 * Time.deltaTime;
+                    ctrl.ampere -= cData.value2 * Time.deltaTime;
+                    // 電流の下限値チェック
+                    if (ctrl.ampere < ctrl.minAmpere)
+                    {
+                        ctrl.ampere = ctrl.minAmpere;
+                    }
                     decrementAmpere += cData.value2 * Time.deltaTime;
                 }
             }
