@@ -8,7 +8,7 @@ public class GameBGMManager : MonoBehaviour
 
     private Coroutine fadeCoroutine;
 
-    void Start()
+    void Awake()
     {
         if (bgmSource != null)
         {
@@ -16,6 +16,10 @@ public class GameBGMManager : MonoBehaviour
             bgmSource.loop = true;
             bgmSource.playOnAwake = false;
             bgmSource.volume = 1.0f; // 初期ボリュームを最大に
+        }
+        else
+        {
+            Debug.LogError("<color=red>[GameBGMManager] AudioSource is NOT assigned! Please assign it in the Inspector.</color>");
         }
     }
 
@@ -26,7 +30,7 @@ public class GameBGMManager : MonoBehaviour
         {
             bgmSource.volume = 1.0f; 
             bgmSource.Play();
-            Debug.Log("<color=green>[GameBGM] BGM Started.</color>");
+            Debug.Log($"<color=green>[GameBGM] BGM Started. Clip: {bgmSource.clip?.name}, Volume: {bgmSource.volume}, Mute: {bgmSource.mute}, Loop: {bgmSource.loop}, SpatialBlend: {bgmSource.spatialBlend}</color>");
         }
     }
 
