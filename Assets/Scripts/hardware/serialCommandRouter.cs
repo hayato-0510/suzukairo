@@ -5,7 +5,7 @@ using System.Collections;
 public class SerialCommandRouter : MonoBehaviour
 {
     [SerializeField] private SerialHandler serialHandler;
-    
+
     public float turn;
     public float move;
     public float turbo;
@@ -24,23 +24,15 @@ public class SerialCommandRouter : MonoBehaviour
         {
             serialHandler = FindObjectOfType<SerialHandler>();
         }
-        
+
 
         if (serialHandler != null)
         {
             // 常に購読して、接続後にも受け取れるようにする
             serialHandler.OnDataReceived += HandleSerialData;
-            serialHandler.OnConnected += HandleConnected;
 
-            if (serialHandler.isConnected)
-            {
-                HandleConnected();
-            }
-            else
-            {
-                // 未接続なら待つ（ログも控えめに）
+            if(!serialHandler.isStarted)
                 StartCoroutine(WaitForSerial());
-            }
         }
         else
         {
@@ -50,23 +42,15 @@ public class SerialCommandRouter : MonoBehaviour
 
     private IEnumerator WaitForSerial()
     {
-        yield return new WaitUntil(() => serialHandler != null && serialHandler.isConnected);
-        HandleConnected();
+        yield return new WaitUntil(() => serialHandler != null && serialHandler.isStarted);
     }
 
-    private void HandleConnected()
-    {
-        Debug.Log("[SerialRouter] Serial connected and ready");
-        // 必要なら疎通確認
-        serialHandler?.SendMessage("health");
-    }
 
     void OnDestroy()
     {
         if (serialHandler != null)
         {
             serialHandler.OnDataReceived -= HandleSerialData;
-            serialHandler.OnConnected -= HandleConnected;
         }
     }
 
@@ -107,7 +91,7 @@ public class SerialCommandRouter : MonoBehaviour
                     turbo = 1f;
                 else
                     turbo = 0f;
-                    
+
                 break;
             case "map":
                 mapID = int.Parse(commands[1]);

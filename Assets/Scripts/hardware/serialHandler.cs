@@ -13,7 +13,6 @@ public class SerialHandler : MonoBehaviour
 {
     public int baudRate = 115200;
     public event Action<string> OnDataReceived;
-    public event Action OnConnected;
     public int timeoutMs = 250;
     // 接続に使用するポート名（自動検出で上書きされる）
     public string portName = null;
@@ -21,6 +20,7 @@ public class SerialHandler : MonoBehaviour
     public string expectedResponsePrefix = "ok";
 
     public bool isConnected = false; // 追加：接続に成功したかどうかのフラグ
+    public bool isStarted = false; //開始できるかどうか
 
     public bool verboseLog = true;
     private SerialPort serialPort;
@@ -70,6 +70,7 @@ public class SerialHandler : MonoBehaviour
         {
             portName = await SearchPort();
         }
+        
         if (portName != null)
         {
             OpenToRead();// Deviceのポートを開く
@@ -77,7 +78,10 @@ public class SerialHandler : MonoBehaviour
             thread = new Thread(Read);
             thread.Start();
             Thread.Sleep(100);// 100ms待つ
-            
+        }
+        else
+        {
+            isStarted = true;
         }
     }
 
@@ -197,7 +201,7 @@ public class SerialHandler : MonoBehaviour
         serialPort.Open();//ポートを開く
         isPortOpen = true; // ポートが開かれたことを示す
         isConnected = true;
-        try { OnConnected?.Invoke(); } catch (Exception e) { Debug.LogWarning($"[Serial] OnConnected handler error: {e.Message}"); }
+        isStarted = true;
     }
 
     public void SendMessage(string message)

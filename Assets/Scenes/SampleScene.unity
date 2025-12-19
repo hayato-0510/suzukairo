@@ -843,6 +843,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   switches: 0000000000000000
   circuitLoader: {fileID: 980864576}
+  serialRouter: {fileID: 980864579}
 --- !u!4 &875105653
 Transform:
   m_ObjectHideFlags: 0
@@ -1174,12 +1175,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baudRate: 115200
   timeoutMs: 250
-  portName_: /dev/tty.usbserial-130
+  portName: 
   probeMessage: 'health
 
 '
   expectedResponsePrefix: ok
+  isConnected: 0
   verboseLog: 0
+  DeviceList: []
+  activePorts: []
 --- !u!4 &1069802318 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8752306969386733323, guid: f9c6ba13abc694bf7bf31ab9949fde70, type: 3}
