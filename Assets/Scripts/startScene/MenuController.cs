@@ -88,12 +88,16 @@ public class MenuController : MonoBehaviour
         if (serialRouter == null || serialRouter.mapID == 0) return;
 
         int deviceMapId = serialRouter.mapID;
-        
+
         // mapIDをリセットして、毎フレーム選択されるのを防ぐ
         serialRouter.mapID = 0;
         
         // deviceMapId (1, 2, 3) をインデックス (0, 1, 2) に変換
         int courseIndex = deviceMapId - 1;
+
+        //Map4の時チュートリアルに変換
+        if(deviceMapId == 4)
+            courseIndex = 0;
 
         if (courseIndex >= 0 && courseIndex < courseNames.Length)
         {
