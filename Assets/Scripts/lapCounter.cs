@@ -24,6 +24,9 @@ public class LapCounter : MonoBehaviour
     [Header("BGM")]
     public GameBGMManager gameBGMManager;
 
+    [Header("goalCollider")]
+    public Transform goalCollider;
+
     private void Start()
     {
         if (loader == null || loader.circuitData == null)
@@ -179,5 +182,51 @@ public class LapCounter : MonoBehaviour
                 resettable.ResetComponent();
             }
         }
+    }
+
+    public Transform getNextCheckpoint()
+    {
+        // すでに全チェックポイント通過済み
+        if (nextIndex < 0)
+            return goalCollider;
+        else if(nextIndex >= checkpointOrder.Count)
+            return null;
+
+        int targetId = checkpointOrder[nextIndex];
+
+        foreach (var cp in GameObject.FindGameObjectsWithTag("checkpoint"))
+        {
+            var data = cp.GetComponent<componentData>();
+            if (data != null && data.id == targetId)
+            {
+                return cp.transform;
+            }
+        }
+
+        return null;
+    }
+
+    public Transform getCheckpoint()
+    {
+        // まだ1つも通っていない
+        if (nextIndex-1 == -1)
+            return goalCollider;
+
+        int currentId = 0;
+
+        if (nextIndex == -1)
+            currentId = checkpointOrder[checkpointOrder.Count - 1];
+        else currentId = checkpointOrder[nextIndex - 1];
+
+        foreach (var cp in GameObject.FindGameObjectsWithTag("checkpoint"))
+        {
+            var data = cp.GetComponent<componentData>();
+            if (data != null && data.id == currentId)
+            {
+                return cp.transform;
+            }
+        }
+
+        return null;
     }
 }

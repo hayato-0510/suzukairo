@@ -25,5 +25,6 @@ public class checkpointFunction : MonoBehaviour
         col.radius = r;
 
         col.isTrigger = true;
+        transform.GetChild(0).localScale = new Vector3(r*2f, r*2f, 1f);
     }
 }
