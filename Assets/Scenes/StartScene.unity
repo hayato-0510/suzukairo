@@ -508,7 +508,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuText: {fileID: 1788362108}
   courseNames:
-  - CHUTORIAL
+  - TUTORIAL
   - MIE
   - SUZUKA
   bgmManager: {fileID: 576415514}
