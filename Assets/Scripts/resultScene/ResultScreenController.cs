@@ -22,6 +22,12 @@ public class ResultScreenController : MonoBehaviour
     [Header("Map Visuals")]
     [SerializeField] private List<MapBackground> mapBackgrounds;
     [SerializeField] private Texture2D fallbackBackground;
+    [SerializeField] private CircuitLoader circuitLoader;
+    [SerializeField] private ReplayController replayController; // 追加
+
+    [Header("Debug")]
+    [SerializeField] private bool useDebugData = false;
+    [SerializeField] private string debugMapName = "Circuit 1";
 
     private VisualElement root;
 
@@ -64,6 +70,37 @@ public class ResultScreenController : MonoBehaviour
 
     private void ProcessAndDisplayResults()
     {
+        // デバッグモードの場合の処理
+        if (string.IsNullOrEmpty(GameResultData.LastEntryId) && useDebugData)
+        {
+            Debug.LogWarning("[ResultScreenController] Using Debug Data because LastEntryId is empty.");
+            
+            // デバッグ用の背景生成（コース生成）
+            if (circuitLoader != null)
+            {
+                // デバッグ時は CourseSelectionData.SelectedMapId を使用するか、
+                // もしくは debugMapName に対応するIDを探すロジックが必要ですが、
+                // ここではシンプルに現在の CourseSelectionData.SelectedMapId で生成します。
+                circuitLoader.autoLoadOnStart = false;
+                circuitLoader.spawnPlayer = false;
+                circuitLoader.LoadData();
+                circuitLoader.BuildCircuit();
+                circuitLoader.FitCameraToCircuit(Camera.main);
+
+                // 背景を白にする
+                Camera.main.clearFlags = CameraClearFlags.SolidColor;
+                Camera.main.backgroundColor = Color.white;
+
+                // リプレイ再生（デバッグ用データがあれば）
+                if (replayController != null && GameLogger.Instance != null && GameLogger.Instance.logs.Count > 0)
+                {
+                    GameObject prefab = circuitLoader.playerPrefab != null ? circuitLoader.playerPrefab.gameObject : null;
+                    replayController.StartReplay(GameLogger.Instance.logs, prefab);
+                }
+            }
+            return;
+        }
+
         // IDが渡されていない場合は何もしない
         if (string.IsNullOrEmpty(GameResultData.LastEntryId))
         {
@@ -83,7 +120,31 @@ public class ResultScreenController : MonoBehaviour
         }
 
         // 2. 【背景の設定】確定した mapName を使用
-        SetBackgroundByMapName(myEntry.mapName);
+        if (circuitLoader != null)
+        {
+            // CircuitLoaderを使ってコースを生成し、カメラを合わせる
+            circuitLoader.autoLoadOnStart = false;
+            circuitLoader.spawnPlayer = false;
+            circuitLoader.LoadData();
+            circuitLoader.BuildCircuit();
+            circuitLoader.FitCameraToCircuit(Camera.main);
+
+            // 背景を白にする
+            Camera.main.clearFlags = CameraClearFlags.SolidColor;
+            Camera.main.backgroundColor = Color.white;
+
+            // リプレイ再生
+            if (replayController != null && GameLogger.Instance != null && GameLogger.Instance.logs.Count > 0)
+            {
+                GameObject prefab = circuitLoader.playerPrefab != null ? circuitLoader.playerPrefab.gameObject : null;
+                replayController.StartReplay(GameLogger.Instance.logs, prefab);
+            }
+        }
+        else
+        {
+            // CircuitLoaderが設定されていない場合は従来の背景画像を使用
+            SetBackgroundByMapName(myEntry.mapName);
+        }
 
         // 3. 同じマップのデータだけを抽出してソート
         var mapRanking = allEntries

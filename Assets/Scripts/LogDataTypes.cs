@@ -44,6 +44,7 @@ public class PlayerStateLog : LogEntry
 [Serializable]
 public class PlayerStateData
 {
+    public float timestamp; // Added for replay
     public Vector2Serializable position;
     public float angle;
     public Vector2Serializable velocity;

@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 87162552}
   - component: {fileID: 87162553}
+  - component: {fileID: 87162554}
   m_Layer: 0
   m_Name: SceneController
   m_TagString: Untagged
@@ -169,6 +170,28 @@ MonoBehaviour:
   - mapName: TUTORIAL
     backgroundTexture: {fileID: 2800000, guid: 76f018b261fcf41a4918f55ff68dc041, type: 3}
   fallbackBackground: {fileID: 0}
+  circuitLoader: {fileID: 1453884802}
+  replayController: {fileID: 87162554}
+  useDebugData: 0
+  debugMapName: Circuit 1
+--- !u!114 &87162554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87162550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1086ba36954064740b227c474e31d333, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerVisualPrefab: {fileID: 0}
+  playerColor: {r: 1, g: 0.48993433, b: 0, a: 1}
+  visualScale: 4
+  showTrail: 1
+  trailTime: 6
+  trailWidth: 4
 --- !u!1 &450830281
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,6 +516,99 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1453884801
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1453884803}
+  - component: {fileID: 1453884802}
+  m_Layer: 0
+  m_Name: CircuitLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1453884802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453884801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf1e575cf4ce1d8489eacde1b09b12f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jsonFiles:
+  - {fileID: 4900000, guid: 3f16e64d76883724aafb64f9f1df2969, type: 3}
+  - {fileID: 4900000, guid: 7994d3699a0c8594f8be60bbf6bbbb13, type: 3}
+  - {fileID: 4900000, guid: 17a55af2070a9954bb34ddaf0a80c57a, type: 3}
+  circuitData: {fileID: 0}
+  width: 1.2
+  returnColor: {r: 0.10980392, g: 0.23529412, b: 0.33333334, a: 1}
+  checkPointIds: 
+  switches: []
+  components:
+  - type: Battery
+    prefab: {fileID: 4057877209119981574, guid: 939a3be351546614ca6aabf6fb89b7c5, type: 3}
+    endPoint: 20.05
+  - type: Resistor
+    prefab: {fileID: 7536083664960071423, guid: 01f80df3700e76c40a4c0297cc301391, type: 3}
+    endPoint: 19.7
+  - type: Inductor
+    prefab: {fileID: 6250596092688987186, guid: a0a00afed62ab3348ad9b40814bb5fa2, type: 3}
+    endPoint: 14.4
+  - type: RCD
+    prefab: {fileID: 6421631610039786525, guid: a88cef6cf16027f4683e7bc6de570cea, type: 3}
+    endPoint: 35.75
+  - type: Switch
+    prefab: {fileID: 6253712951008373518, guid: 8163d17250295e8488df654ac8b620c5, type: 3}
+    endPoint: 19.25
+  - type: MOSFET
+    prefab: {fileID: 6868671550009200816, guid: 7a098f2294ca6874e817f194a658811d, type: 3}
+    endPoint: 19.25
+  - type: Conductor
+    prefab: {fileID: 3309893058882330631, guid: a9cc8d424ab6d2b41bf00c5442cd7b14, type: 3}
+    endPoint: 0
+  - type: CurvedConductor
+    prefab: {fileID: 3309893058882330631, guid: 369d963cc0c8e464c8017eb25df4eb1a, type: 3}
+    endPoint: 0
+  - type: CurvedConductor
+    prefab: {fileID: 3309893058882330631, guid: 369d963cc0c8e464c8017eb25df4eb1a, type: 3}
+    endPoint: 0
+  - type: Checkpoint
+    prefab: {fileID: 1746542247521221915, guid: 9977d44a9251e1d44918555356a2b650, type: 3}
+    endPoint: 0
+  - type: Parallel
+    prefab: {fileID: 4555719822100093193, guid: 90e3c4c949896bb47b0f71f23c1c1504, type: 3}
+    endPoint: 0
+  - type: DCDC
+    prefab: {fileID: 1363260632655674554, guid: 1902842953a98764d96cc2deb6c94f0c, type: 3}
+    endPoint: 17.5
+  playerPrefab: {fileID: 0}
+  autoLoadOnStart: 0
+  spawnPlayer: 0
+--- !u!4 &1453884803
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453884801}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15.296905, y: 12.688197, z: 0.24675018}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1584606070
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,3 +749,4 @@ SceneRoots:
   - {fileID: 1989979221}
   - {fileID: 641099417}
   - {fileID: 455335499}
+  - {fileID: 1453884803}
