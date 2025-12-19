@@ -25,10 +25,16 @@ public class CircuitLoader : MonoBehaviour
     public Transform playerPrefab;  // プレイヤープレハブ
     private Transform playerInstance;  // 生成されたプレイヤー
 
+    [Header("生成設定")]
+    public bool autoLoadOnStart = true;
+    public bool spawnPlayer = true;
+
     private Bounds circuitBounds;
 
     private void Start()
     {
+        if (!autoLoadOnStart) return;
+
         LoadData();
         BuildCircuit();
         SpawnPlayer();  // プレイヤーを生成
@@ -168,6 +174,9 @@ public class CircuitLoader : MonoBehaviour
         }
 
         CreateReturnLine(cursorPos, batteryEndPos);
+
+        // 全ての生成が終わった後にBoundsを再計算（リターンラインなども含めるため）
+        RecalculateBounds();
     }
     
     /// <summary>
@@ -175,6 +184,8 @@ public class CircuitLoader : MonoBehaviour
     /// </summary>
     private void SpawnPlayer()
     {
+        if (!spawnPlayer) return;
+
         // バッテリーの負極位置（原点）
         Vector2 spawnPosition = new Vector2(0, 0);
         
@@ -409,5 +420,42 @@ public class CircuitLoader : MonoBehaviour
         Vector2 v2 = p1 - normal * halfW; 
         Vector2 v3 = p0 - normal * halfW; 
         poly.points = new Vector2[] { v0, v1, v2, v3 }; 
+    }
+
+    private void RecalculateBounds()
+    {
+        var renderers = GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0) return;
+
+        circuitBounds = renderers[0].bounds;
+        for (int i = 1; i < renderers.Length; i++)
+        {
+            circuitBounds.Encapsulate(renderers[i].bounds);
+        }
+    }
+
+    public Bounds GetCircuitBounds() => circuitBounds;
+
+    public void FitCameraToCircuit(Camera cam)
+    {
+        if (cam == null) return;
+        if (circuitBounds.size == Vector3.zero) return;
+
+        float padding = 1.2f; // 余白
+        float targetHeight = circuitBounds.size.y * padding;
+        float targetWidth = circuitBounds.size.x * padding;
+
+        float screenRatio = (float)Screen.width / (float)Screen.height;
+        float targetRatio = targetWidth / targetHeight;
+
+        float orthoSize = targetHeight / 2f;
+        if (screenRatio < targetRatio)
+        {
+            orthoSize = targetWidth / (2f * screenRatio);
+        }
+
+        cam.orthographic = true;
+        cam.orthographicSize = orthoSize;
+        cam.transform.position = new Vector3(circuitBounds.center.x, circuitBounds.center.y, -10f);
     }
 }

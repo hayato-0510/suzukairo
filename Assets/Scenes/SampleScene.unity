@@ -1171,6 +1171,8 @@ MonoBehaviour:
     prefab: {fileID: 1363260632655674554, guid: 1902842953a98764d96cc2deb6c94f0c, type: 3}
     endPoint: 17.5
   playerPrefab: {fileID: 0}
+  autoLoadOnStart: 1
+  spawnPlayer: 1
 --- !u!114 &980864577
 MonoBehaviour:
   m_ObjectHideFlags: 0
