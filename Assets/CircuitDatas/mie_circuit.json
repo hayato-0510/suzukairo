@@ -85,7 +85,7 @@
     },
     {
         "type": "Resistor",
-        "value": 5,
+        "value": 1200,
         "angle": 45
     },
     {
@@ -105,7 +105,7 @@
     },
     {
         "type":"Resistor",
-        "value":5,
+        "value":150000,
         "angle":0
     },
     {
@@ -120,7 +120,7 @@
     },
     {
         "type":"Resistor",
-        "value":5,
+        "value":100,
         "angle":-90
     },
     {
