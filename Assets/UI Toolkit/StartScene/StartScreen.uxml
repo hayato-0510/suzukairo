@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement name="Background" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);"> 
+        
+        <ui:Image name="LogoImagePlaceholder" style="..." />
+
+    </ui:VisualElement>
+</ui:UXML>

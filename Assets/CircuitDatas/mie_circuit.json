@@ -3,7 +3,7 @@
   "circuitId": "mie_circuit",
   "lapNum": 2,
   "batteryVoltage": 5,
-  "timeLimit": 180,
+  "timeLimit": 30,
   "components": [
     {
       "type": "Conductor",

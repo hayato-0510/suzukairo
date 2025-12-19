@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/GameScene/GameHUD.uss?fileID=7433441132597879392&amp;guid=4db10a65be8b64881942675d5b3d3e8d&amp;type=3#GameHUD" />
+    <ui:VisualElement name="HUDContainer" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; justify-content: space-between; pointer-events: none;">
+        <!-- 上部：実況エリア (初期状態はUSSクラスで制御するため、インラインのopacityは削除) -->
+        <ui:VisualElement name="CommentaryArea" class="commentary-hidden" style="align-items: center; margin-top: 20px; transition-duration: 0.5s;">
+            <ui:Label name="CommentaryText" text="Waiting..." class="commentary-text" enable-rich-text="false" />
+        </ui:VisualElement>
+
+        <!-- 下部：既存のUIがあればここに追加 -->
+        <ui:VisualElement name="BottomArea" style="height: 100px;" />
+    </ui:VisualElement>
+</ui:UXML>

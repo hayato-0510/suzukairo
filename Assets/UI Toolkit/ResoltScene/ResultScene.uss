@@ -1,0 +1,106 @@
+/* --- Base Styles --- */
+#ResultPanel {
+    width: 70%;
+    height: 75%; /* 少し縦長に調整 */
+    background-color: rgba(15, 15, 15, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 5px solid #00e5ff;
+    padding: 3%; /* ピクセルから％に変更して画面サイズに追従 */
+    border-radius: 4px;
+    min-width: 500px;
+    min-height: 400px;
+    align-items: center;
+    color: white;
+    justify-content: space-around; /* 中身を上下に均等に散らす */
+}
+
+
+/* --- Typography --- */
+#NewRecordLabel {
+    font-size: 28px;
+    color: #FFD700; /* ゴールドカラーで強調 */
+    -unity-font-style: bold;
+    margin-bottom: 10px;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+}
+
+#TimeLabel {
+    /* 画面が広くなった分、タイムをさらに強調 */
+    font-size: 100px; 
+    -unity-font-style: bold;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+}
+
+/* --- Ranking Table --- */
+#RankingList {
+    width: 100%;
+    flex-grow: 1; /* ランキングエリアを可能な限り広げる */
+    margin: 20px 0;
+}
+
+.ranking-row {
+    flex-direction: row;
+    align-items: center;
+    padding: 0 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    /* 固定の50pxから、柔軟な高さに変更 */
+    flex-grow: 1; 
+    min-height: 40px;
+}
+
+.ranking-row Label {
+    -unity-text-align: middle-left;
+    line-height: 1.2;
+    font-size: 24px; /* 全体的に少し大きく */
+}
+
+/* --- Column Definitions --- */
+.col-pos {
+    width: 80px;
+    -unity-font-style: bold;
+    color: #00FFFF;
+}
+
+.col-name {
+    flex-grow: 1;
+}
+
+.col-time {
+    width: 200px;
+    -unity-text-align: middle-right;
+}
+
+/* --- Modifiers --- */
+.header-row {
+    border-bottom: 2px solid rgba(0, 229, 255, 0.5);
+    flex-grow: 0.5; /* ヘッダーは少し低めに */
+}
+
+.header-row Label {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- Button --- */
+.button-primary {
+    font-size: 24px; /* ボタンの文字も大きく */
+    background-color: transparent;
+    border: 2px solid #00e5ff;
+    color: #00e5ff;
+    padding: 15px 60px;
+    margin-top: 10px;
+}
+
+/* --- AI Advice --- */
+.advice-text {
+    font-size: 18px;
+    color: #aaffaa;
+    -unity-text-align: middle-center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: rgba(0, 50, 0, 0.3);
+    border-radius: 4px;
+    width: 100%;
+}
