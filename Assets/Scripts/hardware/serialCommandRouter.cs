@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using UnityEngine;
 
 public class SerialCommandRouter : MonoBehaviour
@@ -8,6 +9,12 @@ public class SerialCommandRouter : MonoBehaviour
     public float turbo;
     public int mapID = 0;
 
+    public bool msw1 = false;
+    public bool msw2 = false;
+
+    private int right = 0;
+    private int left = 0;
+
     void Start()
     {
         // SerializeFieldで設定されていない場合は検索
@@ -15,12 +22,13 @@ public class SerialCommandRouter : MonoBehaviour
         {
             serialHandler = FindObjectOfType<SerialHandler>();
         }
-        
+
         // シリアルハンドラーが存在し、接続されている場合のみイベント登録
         if (serialHandler != null && serialHandler.isConnected)
         {
             serialHandler.OnDataReceived += HandleSerialData;
             Debug.Log("[SerialRouter] Connected to serial handler");
+            serialHandler.SendMessage("health");
         }
         else
         {
@@ -39,58 +47,62 @@ public class SerialCommandRouter : MonoBehaviour
     private void HandleSerialData(string data)
     {
         // シリアルコマンド処理
-        //Debug.Log($"Received: {data}");
+        Debug.Log($"Received: {data}");
         string[] commands = data.Split(' ');
         switch (commands[0])
         {
             case "sw":
-                if(commands[1] == "1")
+                if (commands[1] == "1")
                     move = 1f;
                 else
                     move = 0f;
 
-                if(commands[2] == "1")
-                    turn = -1f;
-                else 
-                    turn = 0f;
+                left = commands[2] == "1" ? 1 : 0;
+                right = commands[3] == "1" ? 1 : 0;
+                turn = right - left;
 
-                if(commands[3] == "1")
-                    turn = 1f;
-                else
-                    turn = 0f;
-
-                if(commands[4] == "1")
+                if (commands[4] == "1\r")
                     turbo = 1f;
                 else
                     turbo = 0f;
                 break;
             case "pad":
-                if(commands[1] == "1")
-                    turn = 1f;
-                else
-                    turn = 0f;
 
-                if(commands[2] == "1")
+                if (commands[2] == "1")
                     move = 1f;
-                else 
+                else
                     move = 0f;
 
-                if(commands[3] == "1")
-                    turn = -1f;
-                else
-                    turn = 0f;
+                left = commands[3] == "1" ? 1 : 0;
+                right = commands[1] == "1" ? 1 : 0;
+                turn = right - left;
 
-                if(commands[4] == "1")
+                if (commands[4] == "1\r")
                     turbo = 1f;
                 else
                     turbo = 0f;
+                    
                 break;
             case "map":
                 mapID = int.Parse(commands[1]);
                 break;
+            case "msw":
+                if (commands[1] == "1")
+                    msw1 = true;
+                else
+                    msw1 = false;
+                if (commands[2] == "1\r")
+                    msw2 = true;
+                else
+                    msw2 = false;
+                break;
+
             case "health":
                 Debug.Log("[Serial] health check");
                 serialHandler.SendMessage("ok");
+                break;
+            case "ok":
+                Debug.Log("[Serial] helth ok");
                 break;
             case "start":
                 Debug.Log("[Serial] started");
