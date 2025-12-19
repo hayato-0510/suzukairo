@@ -1,5 +1,5 @@
-using System.Security.AccessControl;
 using UnityEngine;
+using System.Collections;
 
 public class SerialCommandRouter : MonoBehaviour
 {
@@ -23,17 +23,39 @@ public class SerialCommandRouter : MonoBehaviour
             serialHandler = FindObjectOfType<SerialHandler>();
         }
 
-        // シリアルハンドラーが存在し、接続されている場合のみイベント登録
-        if (serialHandler != null && serialHandler.isConnected)
+        if (serialHandler != null)
         {
+            // 常に購読して、接続後にも受け取れるようにする
             serialHandler.OnDataReceived += HandleSerialData;
-            Debug.Log("[SerialRouter] Connected to serial handler");
-            serialHandler.SendMessage("health");
+            serialHandler.OnConnected += HandleConnected;
+
+            if (serialHandler.isConnected)
+            {
+                HandleConnected();
+            }
+            else
+            {
+                // 未接続なら待つ（ログも控えめに）
+                StartCoroutine(WaitForSerial());
+            }
         }
         else
         {
-            Debug.Log("[SerialRouter] Running in keyboard-only mode");
+            Debug.LogWarning("[SerialRouter] SerialHandler not found");
         }
+    }
+
+    private IEnumerator WaitForSerial()
+    {
+        yield return new WaitUntil(() => serialHandler != null && serialHandler.isConnected);
+        HandleConnected();
+    }
+
+    private void HandleConnected()
+    {
+        Debug.Log("[SerialRouter] Serial connected and ready");
+        // 必要なら疎通確認
+        serialHandler?.SendMessage("health");
     }
 
     void OnDestroy()
@@ -41,6 +63,7 @@ public class SerialCommandRouter : MonoBehaviour
         if (serialHandler != null)
         {
             serialHandler.OnDataReceived -= HandleSerialData;
+            serialHandler.OnConnected -= HandleConnected;
         }
     }
 

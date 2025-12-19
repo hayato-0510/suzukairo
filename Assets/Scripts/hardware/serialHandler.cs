@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.VisualBasic;
 
+[DefaultExecutionOrder(-1000)]
 public class SerialHandler : MonoBehaviour
 {
     public int baudRate = 115200;
     public event Action<string> OnDataReceived;
+    public event Action OnConnected;
     public int timeoutMs = 250;
     // 接続に使用するポート名（自動検出で上書きされる）
     public string portName = null;
@@ -195,6 +197,7 @@ public class SerialHandler : MonoBehaviour
         serialPort.Open();//ポートを開く
         isPortOpen = true; // ポートが開かれたことを示す
         isConnected = true;
+        try { OnConnected?.Invoke(); } catch (Exception e) { Debug.LogWarning($"[Serial] OnConnected handler error: {e.Message}"); }
     }
 
     public void SendMessage(string message)
