@@ -31,6 +31,9 @@ public class CircuitLoader : MonoBehaviour
 
     private Bounds circuitBounds;
 
+    [Header("goal_collider")]
+    public Transform goalCollider;
+
     private void Start()
     {
         if (!autoLoadOnStart) return;
@@ -149,6 +152,7 @@ public class CircuitLoader : MonoBehaviour
         
         Vector2 batteryStartPos = new Vector2(-batteryLength, 0);  // バッテリーの左端（正極+）
         Vector2 direction = Vector2.right;
+        goalCollider.position = new Vector2(-batteryLength/2, 0);
 
         if (batteryPrefab != null)
         {

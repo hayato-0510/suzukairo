@@ -52,6 +52,12 @@ public class controller : MonoBehaviour
     [Header("放射スピード")]
     public float radiationSpeed=1.0f;
 
+    [Header("チェックポイントテレポート")]
+    public float checkPointTPtime = 3.0f;
+    public float minAmpere = 0.01f;
+    private float tpTime = 0;
+    private bool firstTimeShortage = true;
+
     private Rigidbody2D rb;
     private Vector3 dir;
     public bool isOnConductor=false;
@@ -75,7 +81,6 @@ public class controller : MonoBehaviour
     private ComponentContext currentComponentContext;
     private float logTimer;
     private bool isTouchingComponent;
-
 
     private void Start()
     {
@@ -135,6 +140,26 @@ public class controller : MonoBehaviour
     {
         voltageText.text = _voltage.ToString("f"+1)+"V";
         ampereText.text = ampere.ToString("f"+3)+"A";
+
+        GetComponent<LapCounter>().getNextCheckpoint().GetChild(0).gameObject.SetActive(true);
+        GetComponent<LapCounter>().getCheckpoint().GetChild(0).gameObject.SetActive(false);
+
+        if (ampere < minAmpere)
+        {
+            if (firstTimeShortage) 
+            { 
+                tpTime = 0; 
+                firstTimeShortage = false;
+            }
+            tpTime += Time.deltaTime;
+            if (checkPointTPtime <= tpTime)
+            {
+                transform.position = GetComponent<LapCounter>().getCheckpoint().position;
+                ampere = startAmpere/1.5f;
+                firstTimeShortage=true;
+            }
+        }
+
         
         // 電圧計の針を更新
         UpdateVoltageNeedle();
@@ -302,6 +327,7 @@ public class controller : MonoBehaviour
         {
             moveSpeed = nonconductorMoveSpeed;
             isOnConductor = false;
+
         }
     }
 

@@ -168,9 +168,13 @@
         "label":"SW1 (タイミングよく押せ!)"
     },
     {
-        "type":"Conductor",
-        "value":10.0,
-        "angle":180
+      "type": "Conductor",
+      "value": 10.0,
+      "angle": 180
+    },
+    {
+      "type": "Checkpoint",
+      "value": 1
     }
   ]
 }
