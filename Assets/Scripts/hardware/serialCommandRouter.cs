@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 using System.Collections;
 
 public class SerialCommandRouter : MonoBehaviour
 {
     [SerializeField] private SerialHandler serialHandler;
+    
     public float turn;
     public float move;
     public float turbo;
@@ -22,6 +24,7 @@ public class SerialCommandRouter : MonoBehaviour
         {
             serialHandler = FindObjectOfType<SerialHandler>();
         }
+        
 
         if (serialHandler != null)
         {
