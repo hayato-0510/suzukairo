@@ -33,48 +33,17 @@ public class SerialHandler : MonoBehaviour
     [SerializeField] private List<string> DeviceList = new List<string>();
     [SerializeField] string[] activePorts = null;
 
-    private static SerialHandler instance;
-    public static SerialHandler Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<SerialHandler>();
-                if (instance == null)
-                {
-                    Debug.LogError("MySerialHandler instance not found in the scene. Please ensure MySerialHandler is attached to a GameObject in the scene.");
-                }
-            }
-            return instance;
-        }
-    }
-
     async void Awake()
-    {   
-        if (instance && this != instance)
-        {
-            Debug.Log("Destroyed");
-            Destroy(this.gameObject);
-            return; // この行を追加して、以下のコードが実行されないようにする
-
-        }
-
-        instance = this;
-        // Scene遷移で破棄されなようにする。      
-        DontDestroyOnLoad(this);
-
-        Thread.Sleep(2000);
-        
+    {
         if (!isPortOpen)
         {
             portName = await SearchPort();
         }
-        
+
         if (portName != null)
         {
             OpenToRead();// Deviceのポートを開く
-            
+
             thread = new Thread(Read);
             thread.Start();
             Thread.Sleep(100);// 100ms待つ
@@ -173,7 +142,7 @@ public class SerialHandler : MonoBehaviour
                         break;
                     }
 
-                    if(message.Contains(expectedResponsePrefix))
+                    if (message.Contains(expectedResponsePrefix))
                     {
                         break;
                     }
@@ -181,7 +150,7 @@ public class SerialHandler : MonoBehaviour
                     {
                         continue;
                     }
-                    
+
                 }
                 else
                 {
@@ -191,7 +160,7 @@ public class SerialHandler : MonoBehaviour
         });
         return message;
     }
-    
+
     private void OpenToRead()
     {
         serialPort = new SerialPort(portName, baudRate, Parity.None, 8, StopBits.One)
@@ -268,5 +237,5 @@ public class SerialHandler : MonoBehaviour
     {
         Close();
     }
-    
+
 }
