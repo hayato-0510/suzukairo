@@ -1,0 +1,192 @@
+{
+  "circuitName": "tutorial_circuit",
+  "circuitId": "1",
+  "lapNum": 3,
+  "batteryVoltage": 5,
+  "timeLimit": 180,
+  "components": [
+    {
+      "type": "Conductor",
+      "value": 11.5,
+      "angle": 180
+
+    },
+    {
+      "type": "Conductor",
+      "value": 3,
+      "angle": 90
+    },
+    {
+      "type": "Parallel",
+      "parallel": {
+        "parallelSpacing": 10,
+        "branches": [
+          {
+            "components": [
+              {
+                "type": "Conductor",
+                "value": 5,
+                "angle": 45
+              },
+              {
+                "type": "Resistor",
+                "value": 2,
+                "angle": 90
+              },
+              {
+                "type": "Conductor",
+                "value": 5,
+                "angle": 135
+              }
+            ]
+          },
+          {
+            "components": [
+              {
+                "type": "Conductor",
+                "value": 5,
+                "angle": 135
+              },
+              {
+                "type": "Resistor",
+                "value": 2,
+                "angle": 90
+              },
+              {
+                "type": "Conductor",
+                "value": 5,
+                "angle": 45
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "Checkpoint",
+      "value": 1
+    },
+    {
+      "type": "Inductor",
+      "value": 5,
+      "value2": 0.05,
+      "angle": 90
+    },
+    {
+      "type": "Conductor",
+      "value": 11,
+      "angle": 45
+    },
+    {
+      "type": "Conductor",
+      "value": 20,
+      "angle": 0
+    },
+    {
+      "type": "RCD",
+      "value": 0.1,
+      "value2": 0.05,
+      "angle": 0
+    },
+    {
+      "type": "Checkpoint",
+      "value": 1
+    },
+    {
+      "type": "Conductor",
+      "value": 20,
+      "angle": 0
+    },
+    {
+      "type": "Conductor",
+      "value": 5,
+      "angle": -90
+    },
+    {
+      "type": "Parallel",
+      "parallel": {
+        "parallelSpacing": 10,
+        "branches": [
+          {
+            "components": [
+              {
+                "type": "Conductor",
+                "value": 5,
+                "angle": -135
+              },
+              {
+                "type": "Conductor",
+                "value": 2.65,
+                "angle": -90
+              },
+              {
+                "type": "Inductor",
+                "value": 2,
+                "value2": 0.1,
+                "angle": -90
+              },
+              {
+                "type": "Conductor",
+                "value": 2.65,
+                "angle": -90
+              },
+              {
+                "type": "Conductor",
+                "value": 5,
+                "angle": -45
+              }
+            ]
+          },
+          {
+            "components": [
+              {
+                "type": "Conductor",
+                "value": 5,
+                "angle": -45
+              },
+              {
+                "type": "Resistor",
+                "value": 2,
+                "angle": -90
+              },
+              {
+                "type": "Conductor",
+                "value": 5,
+                "angle": -135
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "Checkpoint",
+      "value": 1
+    },
+    {
+      "type": "Conductor",
+      "value": 20.2,
+      "angle": -90
+    },
+    {
+      "type": "Conductor",
+      "value": 20,
+      "angle": 180
+    },
+    {
+      "type": "Switch",
+      "value": 0.0,
+      "angle": 180.0,
+      "label": "SW1 (タイミングよく押せ!)"
+    },
+    {
+      "type": "Conductor",
+      "value": 11,
+      "angle": 180
+    },
+    {
+      "type": "Checkpoint",
+      "value": 1
+    }
+  ]
+}
