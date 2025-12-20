@@ -1097,6 +1097,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   switches: 0000000000000000
   circuitLoader: {fileID: 980864576}
+  serialHandler: {fileID: 980864580}
   serialRouter: {fileID: 980864579}
 --- !u!4 &875105653
 Transform:

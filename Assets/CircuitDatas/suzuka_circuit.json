@@ -6,40 +6,40 @@
     "timeLimit": 180,
     "components": [
         {
-            "type":"Conductor",
-            "value":10,
-            "angle":180
+            "type": "Conductor",
+            "value": 10,
+            "angle": 180
         },
         {
-            "type":"Parallel",
+            "type": "Parallel",
             "parallel": {
                 "parallelSpacing": 10,
                 "branches": [
                     {
                         "components": [
                             {
-                                "type":"Resistor",
-                                "value":2,
-                                "angle":180
+                                "type": "Resistor",
+                                "value": 2,
+                                "angle": 180
                             },
                             {
-                                "type":"Resistor",
-                                "value":2,
-                                "angle":180
+                                "type": "Resistor",
+                                "value": 2,
+                                "angle": 180
                             }
                         ]
                     },
                     {
                         "components": [
                             {
-                                "type":"Resistor",
-                                "value":1,
-                                "angle":180
+                                "type": "Resistor",
+                                "value": 1,
+                                "angle": 180
                             },
                             {
-                                "type":"Resistor",
-                                "value":1,
-                                "angle":180
+                                "type": "Resistor",
+                                "value": 1,
+                                "angle": 180
                             }
                         ]
                     }
@@ -47,115 +47,115 @@
             }
         },
         {
-            "type":"Conductor",
-            "value":5,
-            "angle":180
+            "type": "Conductor",
+            "value": 5,
+            "angle": 180
         },
         {
-            "type":"Conductor",
-            "value":3.5,
-            "angle":90
+            "type": "Conductor",
+            "value": 3.5,
+            "angle": 90
         },
         {
-            "type":"Inductor",
-            "value":10,
-            "value2":0.1,
-            "angle":90
+            "type": "Inductor",
+            "value": 10,
+            "value2": 0.1,
+            "angle": 90
         },
         {
-            "type":"Conductor",
-            "value":5,
-            "angle":90
+            "type": "Conductor",
+            "value": 5,
+            "angle": 90
         },
         {
-            "type":"Conductor",
-            "value":2,
-            "angle":45
+            "type": "Conductor",
+            "value": 2,
+            "angle": 45
         },
         {
-            "type":"Inductor",
-            "value":10,
-            "value2":0.1,
-            "angle":0
+            "type": "Inductor",
+            "value": 10,
+            "value2": 0.1,
+            "angle": 0
         },
         {
-            "type":"Conductor",
-            "value":5,
-            "angle":270
+            "type": "Conductor",
+            "value": 5,
+            "angle": 270
         },
         {
-            "type":"Conductor",
-            "value":2,
-            "angle":315
+            "type": "Conductor",
+            "value": 2,
+            "angle": 315
         },
         {
-            "type":"Inductor",
-            "value":5,
-            "value2":0.05,
-            "angle":0
+            "type": "Inductor",
+            "value": 5,
+            "value2": 0.05,
+            "angle": 0
         },
         {
-            "type":"Conductor",
-            "value":10,
-            "angle":90
+            "type": "Conductor",
+            "value": 10,
+            "angle": 90
         },
         {
-            "type":"MOSFET",
-            "value":1,
-            "angle":90
+            "type": "MOSFET",
+            "value": 1,
+            "angle": 90
         },
         {
-            "type":"Conductor",
-            "value":5,
-            "angle":45
+            "type": "Conductor",
+            "value": 5,
+            "angle": 45
         },
         {
-            "type":"Conductor",
-            "value":35,
-            "angle":0
+            "type": "Conductor",
+            "value": 35,
+            "angle": 0
         },
         {
-            "type":"Conductor",
-            "value":2,
-            "angle":270
+            "type": "Conductor",
+            "value": 2,
+            "angle": 270
         },
         {
-            "type":"Parallel",
+            "type": "Parallel",
             "parallel": {
                 "parallelSpacing": 10,
                 "branches": [
                     {
                         "components": [
                             {
-                                "type":"RCD",
-                                "value":2,
-                                "value2":0.2,
-                                "angle":270
+                                "type": "RCD",
+                                "value": 2,
+                                "value2": 0.2,
+                                "angle": 270
                             }
                         ]
                     },
                     {
                         "components": [
                             {
-                                "type":"Conductor",
-                                "value":0.825,
-                                "angle":270
+                                "type": "Conductor",
+                                "value": 0.825,
+                                "angle": 270
                             },
                             {
-                                "type":"Resistor",
-                                "value":1,
-                                "angle":270
+                                "type": "Resistor",
+                                "value": 1,
+                                "angle": 270
                             },
                             {
-                                "type":"Inductor",
-                                "value":2,
-                                "value2":0.1,
-                                "angle":270
+                                "type": "Inductor",
+                                "value": 2,
+                                "value2": 0.1,
+                                "angle": 270
                             },
                             {
-                                "type":"Conductor",
-                                "value":0.825,
-                                "angle":270
+                                "type": "Conductor",
+                                "value": 0.825,
+                                "angle": 270
                             }
                         ]
                     }
@@ -163,160 +163,162 @@
             }
         },
         {
-            "type":"Conductor",
-            "value":30,
-            "angle":-90
+            "type": "Conductor",
+            "value": 30,
+            "angle": -90
         },
         {
-            "type":"Conductor",
-            "value":3,
-            "angle":0
+            "type": "Conductor",
+            "value": 3,
+            "angle": 0
         },
         {
-            "type":"Parallel",
+            "type": "Parallel",
             "parallel": {
                 "parallelSpacing": 10,
                 "branches": [
                     {
                         "components": [
                             {
-                                "type":"Switch",
-                                "angle":0
+                                "type": "Switch",
+                                "value": 0,
+                                "angle": 0
                             },
                             {
-                                "type":"Switch",
-                                "angle":0
+                                "type": "Switch",
+                                "value": 1,
+                                "angle": 0
                             },
                             {
-                                "type":"DCDC",
-                                "value":2,
-                                "angle":0
+                                "type": "DCDC",
+                                "value": 2,
+                                "angle": 0
                             }
                         ]
                     },
                     {
-                      "components": [
+                        "components": [
                             {
-                                "type":"Conductor",
-                                "value":20.75,
-                                "angle":0
+                                "type": "Conductor",
+                                "value": 20.75,
+                                "angle": 0
                             },
                             {
-                                "type":"Inductor",
-                                "value":1,
-                                "value2":0.05,
-                                "angle":0
+                                "type": "Inductor",
+                                "value": 1,
+                                "value2": 0.05,
+                                "angle": 0
                             },
                             {
-                                "type":"Conductor",
-                                "value":20.75,
-                                "angle":0
-                            } 
-                        ]  
+                                "type": "Conductor",
+                                "value": 20.75,
+                                "angle": 0
+                            }
+                        ]
                     }
                 ]
             }
         },
         {
-            "type":"Conductor",
-            "value":2,
-            "angle":0
+            "type": "Conductor",
+            "value": 2,
+            "angle": 0
         },
         {
-            "type":"Conductor",
-            "value":10,
-            "angle":90
+            "type": "Conductor",
+            "value": 10,
+            "angle": 90
         },
         {
-            "type":"Conductor",
-            "value":2,
-            "angle":45
+            "type": "Conductor",
+            "value": 2,
+            "angle": 45
         },
         {
-            "type":"Inductor",
-            "value":5,
-            "value2":0.05,
-            "angle":90
+            "type": "Inductor",
+            "value": 5,
+            "value2": 0.05,
+            "angle": 90
         },
         {
-            "type":"Conductor",
-            "value":5,
-            "angle":45
+            "type": "Conductor",
+            "value": 5,
+            "angle": 45
         },
         {
-            "type":"Conductor",
-            "value":5,
-            "angle":0
+            "type": "Conductor",
+            "value": 5,
+            "angle": 0
         },
         {
-            "type":"Conductor",
-            "value":5,
-            "angle":315
+            "type": "Conductor",
+            "value": 5,
+            "angle": 315
         },
         {
-            "type":"Resistor",
-            "value":15,
-            "angle":270,
-            "label":"R3"
+            "type": "Resistor",
+            "value": 15,
+            "angle": 270,
+            "label": "R3"
         },
         {
-            "type":"Conductor",
-            "value":10,
-            "angle":0
+            "type": "Conductor",
+            "value": 10,
+            "angle": 0
         },
         {
-            "type":"Conductor",
-            "value":5,
-            "angle":45
+            "type": "Conductor",
+            "value": 5,
+            "angle": 45
         },
         {
-            "type":"Resistor",
-            "value":10,
-            "angle":90,
-            "label":"R10"
+            "type": "Resistor",
+            "value": 10,
+            "angle": 90,
+            "label": "R10"
         },
         {
-            "type":"Resistor",
-            "value":5,
-            "angle":90,
-            "label":"R11"
+            "type": "Resistor",
+            "value": 5,
+            "angle": 90,
+            "label": "R11"
         },
         {
-            "type":"Conductor",
-            "value":5,
-            "angle":135
+            "type": "Conductor",
+            "value": 5,
+            "angle": 135
         },
         {
-            "type":"Conductor",
-            "value":5,
-            "angle":180
+            "type": "Conductor",
+            "value": 5,
+            "angle": 180
         },
         {
-            "type":"Resistor",
-            "value":10,
-            "angle":180,
-            "label":"R12"
+            "type": "Resistor",
+            "value": 10,
+            "angle": 180,
+            "label": "R12"
         },
         {
-            "type":"Resistor",
-            "value":10,
-            "angle":225,
-            "label":"R13"
+            "type": "Resistor",
+            "value": 10,
+            "angle": 225,
+            "label": "R13"
         },
         {
-            "type":"Resistor",
-            "value":3,
-            "angle":270,
-            "label":"R14"
+            "type": "Resistor",
+            "value": 3,
+            "angle": 270,
+            "label": "R14"
         },
         {
-            "type":"Conductor",
-            "value":2.5,
-            "angle":225
+            "type": "Conductor",
+            "value": 2.5,
+            "angle": 225
         },
         {
-            "type":"Checkpoint",
-            "value":3
+            "type": "Checkpoint",
+            "value": 3
         }
     ]
 }
