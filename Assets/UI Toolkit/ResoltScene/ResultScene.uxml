@@ -9,6 +9,7 @@
                 <ui:VisualElement class="ranking-row header-row">
                     <ui:Label text="POS" class="col-pos" />
                     <ui:Label text="NAME" class="col-name" />
+                    <ui:Label text="STATUS" class="col-status" />
                     <ui:Label text="TIME" class="col-time" />
                 </ui:VisualElement>
                 <ui:VisualElement class="ranking-row">

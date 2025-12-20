@@ -203,7 +203,9 @@ public class ResultScreenController : MonoBehaviour
     private void RenderRanking(VisualElement container, List<RankingEntry> top5, string currentId)
     {
         container.Clear();
-        container.Add(CreateRow("POS", "NAME", "TIME", true));
+        // ヘッダーはUXMLで定義されているため、データ行のみを追加する形にするのが理想だが、
+        // 現在のコードはコンテナをClearしてヘッダーから再生成しているため、それに合わせる。
+        container.Add(CreateRow("POS", "NAME", "STATUS", "TIME", true));
 
         for (int i = 0; i < top5.Count; i++)
         {
@@ -211,11 +213,20 @@ public class ResultScreenController : MonoBehaviour
             // IDで今回の自分かどうかを判定
             bool isPlayer = (entry.id == currentId);
             
-            container.Add(CreateRow(GetRankText(i + 1), entry.playerName, entry.timeText, false, isPlayer));
+            string status = "CLEAR";
+            string time = entry.timeText;
+
+            if (entry.timeText == "TIME UP")
+            {
+                status = "TIME UP";
+                time = "-"; 
+            }
+
+            container.Add(CreateRow(GetRankText(i + 1), entry.playerName, status, time, false, isPlayer));
         }
     }
 
-    private VisualElement CreateRow(string pos, string name, string time, bool isHeader, bool isPlayer = false)
+    private VisualElement CreateRow(string pos, string name, string status, string time, bool isHeader, bool isPlayer = false)
     {
         var row = new VisualElement();
         row.AddToClassList("ranking-row");
@@ -224,6 +235,7 @@ public class ResultScreenController : MonoBehaviour
 
         row.Add(CreateLabel(pos, "col-pos"));
         row.Add(CreateLabel(name, "col-name"));
+        row.Add(CreateLabel(status, "col-status"));
         row.Add(CreateLabel(time, "col-time"));
 
         return row;

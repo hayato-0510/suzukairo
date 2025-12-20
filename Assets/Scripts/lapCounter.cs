@@ -135,6 +135,12 @@ public class LapCounter : MonoBehaviour
             GameLogger.Instance.StopLogging();
         }
 
+        // AI分析を即座に開始（リザルト画面での待ち時間を短縮）
+        if (RaceLogAnalyzer.Instance != null)
+        {
+            RaceLogAnalyzer.Instance.AnalyzeLastRun();
+        }
+
         // 1. 保存用のエンティティを作成
         string uniqueId = System.Guid.NewGuid().ToString(); 
         string logFile = "";
@@ -147,7 +153,7 @@ public class LapCounter : MonoBehaviour
         var newEntry = new RankingEntry {
             id = uniqueId,
             mapName = loader.circuitData.circuitName,
-            playerName = "YOU",
+            playerName = "", // RankingManagerで自動設定されるため空でOK
             timeText = TimeFormatter.Format(raceTimer),
             timeInSeconds = raceTimer,
             timestamp = System.DateTimeOffset.Now.ToUnixTimeSeconds(),
