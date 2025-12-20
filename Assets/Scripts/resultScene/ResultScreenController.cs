@@ -263,5 +263,10 @@ public class ResultScreenController : MonoBehaviour
         {
             returnButton.clicked += () => SceneManager.LoadScene(mainMenuSceneName);
         }
+        GameObject gm = GameObject.Find("gameManager");
+        if (gm != null)
+        {
+            Destroy(gm);
+        }
     }
 }
