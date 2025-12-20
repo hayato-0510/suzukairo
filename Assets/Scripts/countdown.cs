@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class countdown : MonoBehaviour
 {
     [Header("References")]
-    public CircuitLoader loader; // マップ名取得用に追加
     public TextMeshProUGUI countDownText;
     public TextMeshProUGUI timerText;
     public controller controller;
@@ -105,14 +104,14 @@ public class countdown : MonoBehaviour
         // --- IDベースの保存ロジック ---
         // タイムアップでもランキングデータとして保存（順位計算に含めるため）
         string uniqueId = System.Guid.NewGuid().ToString();
-        string mapName = (loader != null && loader.circuitData != null) 
-                         ? loader.circuitData.circuitName 
+        string mapName = (cl != null && cl.circuitData != null) 
+                         ? cl.circuitData.circuitName 
                          : "Unknown Course";
 
         var timeUpEntry = new RankingEntry {
             id = uniqueId,
             mapName = mapName,
-            playerName = "YOU",
+            playerName = "", // RankingManagerで自動設定されるため空でOK
             timeText = "TIME UP",
             timeInSeconds = 9999f, // ワースト記録として扱う
             timestamp = System.DateTimeOffset.Now.ToUnixTimeSeconds()

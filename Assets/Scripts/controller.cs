@@ -49,8 +49,14 @@ public class controller : MonoBehaviour
     public float ampereSmoothSpeed = 5f;  // アンペア表示の滑らかさ（大きいほど速く追従）
     private float displayAmpere = 0f;     // 表示用のアンペア値（滑らかに変化）
 
-    [Header("放射スピード")]
-    public float radiationSpeed=1.0f;
+    [Header("コースアウト時の電流減少")]
+    public float radiationSpeed=1.0f;  // コースアウト時の電流減少速度
+    public float minAmpere = 0.01f;    // 電流の下限値
+
+    [Header("チェックポイントテレポート")]
+    public float checkPointTPtime = 3.0f;
+    private float tpTime = 0;
+    private bool firstTimeShortage = true;
 
     private Rigidbody2D rb;
     private Vector3 dir;
@@ -75,7 +81,6 @@ public class controller : MonoBehaviour
     private ComponentContext currentComponentContext;
     private float logTimer;
     private bool isTouchingComponent;
-
 
     private void Start()
     {
@@ -135,6 +140,26 @@ public class controller : MonoBehaviour
     {
         voltageText.text = _voltage.ToString("f"+1)+"V";
         ampereText.text = ampere.ToString("f"+3)+"A";
+
+        GetComponent<LapCounter>().getNextCheckpoint().GetChild(0).gameObject.SetActive(true);
+        GetComponent<LapCounter>().getCheckpoint().GetChild(0).gameObject.SetActive(false);
+
+        if (ampere < minAmpere)
+        {
+            if (firstTimeShortage) 
+            { 
+                tpTime = 0; 
+                firstTimeShortage = false;
+            }
+            tpTime += Time.deltaTime;
+            if (checkPointTPtime <= tpTime)
+            {
+                transform.position = GetComponent<LapCounter>().getCheckpoint().position;
+                ampere = startAmpere/1.5f;
+                firstTimeShortage=true;
+            }
+        }
+
         
         // 電圧計の針を更新
         UpdateVoltageNeedle();
@@ -148,19 +173,6 @@ public class controller : MonoBehaviour
             ampereMeter.fillAmount = Mathf.Clamp01(ampere / maxAmpere);
         }
         
-        if (Input.GetKeyDown(BoostKey))
-        {
-            if (voltage >= 1)
-            {
-                boostVelocity += (Vector2)transform.up * boostSpeed;
-                voltage--;
-            }
-            else if(voltage>0)
-            {
-                boostVelocity += (Vector2)transform.up * boostSpeed * voltage;
-                voltage = 0;
-            }
-        }
         if (!canMove) return;
 
         // デフォルト値をリセット
@@ -273,6 +285,11 @@ public class controller : MonoBehaviour
         if (forward != 0 && !isOnConductor)
         {
             ampere /= 1f + Time.deltaTime * radiationSpeed;
+            // 電流の下限値を適用
+            if (ampere < minAmpere)
+            {
+                ampere = minAmpere;
+            }
         }
 
         // 移動速度の計算
@@ -302,6 +319,7 @@ public class controller : MonoBehaviour
         {
             moveSpeed = nonconductorMoveSpeed;
             isOnConductor = false;
+
         }
     }
 

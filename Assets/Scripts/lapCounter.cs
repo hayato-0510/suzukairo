@@ -24,6 +24,9 @@ public class LapCounter : MonoBehaviour
     [Header("BGM")]
     public GameBGMManager gameBGMManager;
 
+    [Header("goalCollider")]
+    public Transform goalCollider;
+
     private void Start()
     {
         if (loader == null || loader.circuitData == null)
@@ -91,6 +94,8 @@ public class LapCounter : MonoBehaviour
         // ゴール判定
         if (other.CompareTag("goal"))
         {
+            Debug.Log($"[LapCounter] Goal detected! nextIndex: {nextIndex}, lap: {lap}/{lapNum}");
+            
             // 全チェックポイントを通過している場合のみカウント
             if (nextIndex == -1)
             {
@@ -104,7 +109,10 @@ public class LapCounter : MonoBehaviour
                 }
 
                 ResetAllComponents();
+                
+                float voltageBeforeRecovery = controller.voltage;
                 controller.voltage += batteryVoltage;
+                Debug.Log($"[LapCounter] Voltage Recovery - Before: {voltageBeforeRecovery}V, Added: {batteryVoltage}V, After: {controller.voltage}V");
 
                 if (lap >= lapNum)
                 {
@@ -114,6 +122,10 @@ public class LapCounter : MonoBehaviour
                 {
                     nextIndex = 0; // 次の周回のためにリセット
                 }
+            }
+            else
+            {
+                Debug.LogWarning($"[LapCounter] Goal reached but not all checkpoints passed. nextIndex: {nextIndex} (need -1)");
             }
         }
     }
@@ -135,6 +147,12 @@ public class LapCounter : MonoBehaviour
             GameLogger.Instance.StopLogging();
         }
 
+        // AI分析を即座に開始（リザルト画面での待ち時間を短縮）
+        if (RaceLogAnalyzer.Instance != null)
+        {
+            RaceLogAnalyzer.Instance.AnalyzeLastRun();
+        }
+
         // 1. 保存用のエンティティを作成
         string uniqueId = System.Guid.NewGuid().ToString(); 
         string logFile = "";
@@ -147,7 +165,7 @@ public class LapCounter : MonoBehaviour
         var newEntry = new RankingEntry {
             id = uniqueId,
             mapName = loader.circuitData.circuitName,
-            playerName = "YOU",
+            playerName = "", // RankingManagerで自動設定されるため空でOK
             timeText = TimeFormatter.Format(raceTimer),
             timeInSeconds = raceTimer,
             timestamp = System.DateTimeOffset.Now.ToUnixTimeSeconds(),
@@ -179,5 +197,51 @@ public class LapCounter : MonoBehaviour
                 resettable.ResetComponent();
             }
         }
+    }
+
+    public Transform getNextCheckpoint()
+    {
+        // すでに全チェックポイント通過済み
+        if (nextIndex < 0)
+            return goalCollider;
+        else if(nextIndex >= checkpointOrder.Count)
+            return null;
+
+        int targetId = checkpointOrder[nextIndex];
+
+        foreach (var cp in GameObject.FindGameObjectsWithTag("checkpoint"))
+        {
+            var data = cp.GetComponent<componentData>();
+            if (data != null && data.id == targetId)
+            {
+                return cp.transform;
+            }
+        }
+
+        return null;
+    }
+
+    public Transform getCheckpoint()
+    {
+        // まだ1つも通っていない
+        if (nextIndex-1 == -1)
+            return goalCollider;
+
+        int currentId = 0;
+
+        if (nextIndex == -1)
+            currentId = checkpointOrder[checkpointOrder.Count - 1];
+        else currentId = checkpointOrder[nextIndex - 1];
+
+        foreach (var cp in GameObject.FindGameObjectsWithTag("checkpoint"))
+        {
+            var data = cp.GetComponent<componentData>();
+            if (data != null && data.id == currentId)
+            {
+                return cp.transform;
+            }
+        }
+
+        return null;
     }
 }
