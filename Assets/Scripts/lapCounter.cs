@@ -91,6 +91,8 @@ public class LapCounter : MonoBehaviour
         // ゴール判定
         if (other.CompareTag("goal"))
         {
+            Debug.Log($"[LapCounter] Goal detected! nextIndex: {nextIndex}, lap: {lap}/{lapNum}");
+            
             // 全チェックポイントを通過している場合のみカウント
             if (nextIndex == -1)
             {
@@ -104,7 +106,10 @@ public class LapCounter : MonoBehaviour
                 }
 
                 ResetAllComponents();
+                
+                float voltageBeforeRecovery = controller.voltage;
                 controller.voltage += batteryVoltage;
+                Debug.Log($"[LapCounter] Voltage Recovery - Before: {voltageBeforeRecovery}V, Added: {batteryVoltage}V, After: {controller.voltage}V");
 
                 if (lap >= lapNum)
                 {
@@ -114,6 +119,10 @@ public class LapCounter : MonoBehaviour
                 {
                     nextIndex = 0; // 次の周回のためにリセット
                 }
+            }
+            else
+            {
+                Debug.LogWarning($"[LapCounter] Goal reached but not all checkpoints passed. nextIndex: {nextIndex} (need -1)");
             }
         }
     }

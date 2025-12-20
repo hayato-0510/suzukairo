@@ -19,12 +19,12 @@
                         "components": [
                             {
                                 "type":"Resistor",
-                                "value":2,
+                                "value":150000,
                                 "angle":180
                             },
                             {
                                 "type":"Resistor",
-                                "value":2,
+                                "value":560,
                                 "angle":180
                             }
                         ]
@@ -33,12 +33,12 @@
                         "components": [
                             {
                                 "type":"Resistor",
-                                "value":1,
+                                "value":100,
                                 "angle":180
                             },
                             {
                                 "type":"Resistor",
-                                "value":1,
+                                "value":100000,
                                 "angle":180
                             }
                         ]
@@ -128,8 +128,8 @@
                         "components": [
                             {
                                 "type":"RCD",
-                                "value":2,
-                                "value2":0.2,
+                                "value":0.5,
+                                "value2":0.1,
                                 "angle":270
                             }
                         ]
@@ -143,7 +143,7 @@
                             },
                             {
                                 "type":"Resistor",
-                                "value":1,
+                                "value":150,
                                 "angle":270
                             },
                             {
@@ -255,7 +255,7 @@
         },
         {
             "type":"Resistor",
-            "value":15,
+            "value":100,
             "angle":270,
             "label":"R3"
         },
@@ -271,13 +271,13 @@
         },
         {
             "type":"Resistor",
-            "value":10,
+            "value":560,
             "angle":90,
             "label":"R10"
         },
         {
             "type":"Resistor",
-            "value":5,
+            "value":5100,
             "angle":90,
             "label":"R11"
         },
@@ -293,19 +293,19 @@
         },
         {
             "type":"Resistor",
-            "value":10,
+            "value":10000,
             "angle":180,
             "label":"R12"
         },
         {
             "type":"Resistor",
-            "value":10,
+            "value":100000,
             "angle":225,
             "label":"R13"
         },
         {
             "type":"Resistor",
-            "value":3,
+            "value":150000,
             "angle":270,
             "label":"R14"
         },
