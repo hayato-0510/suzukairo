@@ -1518,9 +1518,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jsonFiles:
-  - {fileID: 4900000, guid: 1bf276631b8327647993519e974e331d, type: 3}
-  - {fileID: 4900000, guid: eb9be1e995ecc7f4b845e79d635d58a9, type: 3}
-  - {fileID: 4900000, guid: b5a2f3f8a500a7c47a0f384b69265053, type: 3}
+  - {fileID: 4900000, guid: 3f16e64d76883724aafb64f9f1df2969, type: 3}
+  - {fileID: 4900000, guid: 7994d3699a0c8594f8be60bbf6bbbb13, type: 3}
+  - {fileID: 4900000, guid: 17a55af2070a9954bb34ddaf0a80c57a, type: 3}
   circuitData: {fileID: 0}
   width: 1.2
   returnColor: {r: 0.10980392, g: 0.23529412, b: 0.33333334, a: 1}
@@ -1579,7 +1579,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2ee5ee6c80fff4b99cce8a750b328a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loader: {fileID: 0}
   countDownText: {fileID: 450761595}
   timerText: {fileID: 2142359631}
   controller: {fileID: 1556619576}
@@ -2726,8 +2725,8 @@ MonoBehaviour:
   maxAmpereAngle: 135
   ampereSmoothSpeed: 5
   radiationSpeed: 0.1
-  checkPointTPtime: 3
   minAmpere: 0.05
+  checkPointTPtime: 3
   isOnConductor: 0
   canMove: 0
   boostSpeed: 15
