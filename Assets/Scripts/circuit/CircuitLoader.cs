@@ -31,6 +31,9 @@ public class CircuitLoader : MonoBehaviour
 
     private Bounds circuitBounds;
 
+    [Header("goal_collider")]
+    public Transform goalCollider;
+
     private void Start()
     {
         if (!autoLoadOnStart) return;
@@ -38,6 +41,7 @@ public class CircuitLoader : MonoBehaviour
         LoadData();
         BuildCircuit();
         SpawnPlayer();  // プレイヤーを生成
+        checkPointIds.Reverse();
     }
 
     public void LoadData()
@@ -149,6 +153,7 @@ public class CircuitLoader : MonoBehaviour
         
         Vector2 batteryStartPos = new Vector2(-batteryLength, 0);  // バッテリーの左端（正極+）
         Vector2 direction = Vector2.right;
+        goalCollider.position = new Vector2(-batteryLength/2, 0);
 
         if (batteryPrefab != null)
         {
@@ -348,33 +353,43 @@ public class CircuitLoader : MonoBehaviour
 
         return false;
     }
-    
+
     private void CreateReturnLine(Vector2 endPos, Vector2 origin)
     {
         float margin = width * 2f;
+        float straightThreshold = width * 0.5f;
 
         Vector2 diff = origin - endPos;
 
-        Vector2 mid;
+        // ===== ほぼ水平 → 直線 =====
+        if (Mathf.Abs(diff.y) < straightThreshold)
+        {
+            CreateFatLine("Return_Straight_H", endPos, origin, returnColor);
+            return;
+        }
 
-        // diff.x > 0 �� origin �͍�, diff.x < 0 �� origin �͉E
-        // diff.y > 0 �� origin �͏�, diff.y < 0 �� origin �͉�
+        // ===== ほぼ垂直 → 直線 =====
+        if (Mathf.Abs(diff.x) < straightThreshold)
+        {
+            CreateFatLine("Return_Straight_V", endPos, origin, returnColor);
+            return;
+        }
+
+        // ===== ここから従来のL字処理 =====
+        Vector2 mid;
 
         if (Mathf.Abs(diff.x) > Mathf.Abs(diff.y))
         {
-            // X�����̋��������� �� �����Ɉړ� �� mid �� Y �� endPos.y
             mid = new Vector2(origin.x, endPos.y);
         }
         else
         {
-            // Y�����̋��������� �� �c���Ɉړ� �� mid �� X �� endPos.x
             mid = new Vector2(endPos.x, origin.y);
         }
 
-        // ��Q���`�F�b�N
-        if (IntersectsBounds(endPos, mid, circuitBounds) || IntersectsBounds(mid, origin, circuitBounds))
+        if (IntersectsBounds(endPos, mid, circuitBounds) ||
+            IntersectsBounds(mid, origin, circuitBounds))
         {
-            // �O�����[�g�Ƀt�H�[���o�b�N
             float minX = circuitBounds.min.x - margin;
             float minY = circuitBounds.min.y - margin;
 
@@ -392,6 +407,7 @@ public class CircuitLoader : MonoBehaviour
         CreateFatLine("Return_L_A", endPos, mid, returnColor);
         CreateFatLine("Return_L_B", mid, origin, returnColor);
     }
+
 
     private void UpdateBounds(Transform obj)
     {
