@@ -8,7 +8,7 @@ public class SwitchManager : MonoBehaviour
 
     public CircuitLoader circuitLoader;
     private List<GameObject> switchObjects = new List<GameObject>();
-
+    [SerializeField] private SerialHandler serialHandler;
     [SerializeField] private SerialCommandRouter serialRouter;
 
     void Start()
@@ -28,15 +28,20 @@ public class SwitchManager : MonoBehaviour
         foreach (var sw in switchObjects)
         {
             componentData cData = sw.GetComponent<componentData>();
-            int index = (int)cData.value;
+            int value = (int)cData.value;
 
-            if (index < 0 || index >= switches.Length)
-                continue;
-
-            if (serialRouter.msw1 == false)
-                cData.value2 = 1;
+            if (serialHandler.isConnected)
+            {
+                if ((value == 0 && serialRouter.msw1 == false) || (value == 1 && serialRouter.msw2 == false))
+                    cData.value2 = 1;
+                else
+                    cData.value2 = 0;
+            }
             else
+            {
                 cData.value2 = 0;
+            }
+
         }
     }
 }

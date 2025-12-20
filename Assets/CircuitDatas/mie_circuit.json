@@ -166,7 +166,7 @@
     },
     {
       "type": "Switch",
-      "value": 1,
+      "value": 0,
       "angle": 145
     },
     {
@@ -176,6 +176,7 @@
     },
     {
       "type": "Switch",
+      "value": 1,
       "angle": 180
     },
     {
