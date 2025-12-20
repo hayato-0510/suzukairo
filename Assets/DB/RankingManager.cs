@@ -11,6 +11,12 @@ public class RankingManager
     public void SaveRecord(RankingEntry newEntry)
     {
         RankingData data = LoadAllData();
+        
+        // プレイヤー名を自動生成 (PLAYER 1, PLAYER 2...)
+        // 既存のデータ数 + 1 を番号とする
+        int playerNumber = data.entries.Count + 1;
+        newEntry.playerName = $"PLAYER {playerNumber}";
+
         data.entries.Add(newEntry);
         
         // JSON化して書き込み
