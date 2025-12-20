@@ -55,7 +55,6 @@ public class controller : MonoBehaviour
 
     [Header("チェックポイントテレポート")]
     public float checkPointTPtime = 3.0f;
-    public float minAmpere = 0.01f;
     private float tpTime = 0;
     private bool firstTimeShortage = true;
 
