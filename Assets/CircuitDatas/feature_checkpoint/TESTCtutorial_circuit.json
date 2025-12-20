@@ -3,7 +3,7 @@
   "circuitId": "1",
   "lapNum": 3,
   "batteryVoltage": 5,
-  "timeLimit": 180,
+  "timeLimit": 3,
   "components": [
     {
       "type": "Conductor",
