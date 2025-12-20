@@ -14,13 +14,12 @@ public class MenuController : MonoBehaviour
     [Header("BGM管理")]
     [SerializeField] private BGMManager bgmManager; // 先ほど作成したBGMManagerをアタッチ
 
+    [Header("球生成管理")]
+    [SerializeField] private SphereSpawner sphereSpawner; // SphereSpawnerへの参照
+
     [Header("操作設定")]
     [SerializeField] private KeyCode startKey = KeyCode.Space; // 最終決定キー（例：スペースキー）
     [SerializeField] private KeyCode cancelKey = KeyCode.Escape; // キャンセル・戻るキー
-
-    private float lastMove = 0f;
-    private float lastTurn = 0f;
-    private float lastTurbo = 0f;
 
     private enum MenuState {
         WaitingForInput, // 1,2,3の入力を待っている状態
@@ -66,16 +65,11 @@ public class MenuController : MonoBehaviour
         // 2. 開始待ち状態
         else if (currentState == MenuState.ReadyToStart)
         {
-            if(
-                (lastTurn != serialRouter.turn) ||
-                (lastMove != serialRouter.move) ||
-                (lastTurbo != serialRouter.turbo) ||
-                Input.GetKeyDown(startKey)
-            )
+            // スタートキーでゲーム開始
+            if (Input.GetKeyDown(startKey))
             {
                 StartGame();
             }
-
             // キャンセルキーでコース選択に戻る
             if (Input.GetKeyDown(cancelKey))
             {
@@ -97,16 +91,12 @@ public class MenuController : MonoBehaviour
         if (serialRouter == null || serialRouter.mapID == 0) return;
 
         int deviceMapId = serialRouter.mapID;
-
+        
         // mapIDをリセットして、毎フレーム選択されるのを防ぐ
         serialRouter.mapID = 0;
         
         // deviceMapId (1, 2, 3) をインデックス (0, 1, 2) に変換
         int courseIndex = deviceMapId - 1;
-
-        //Map4の時チュートリアルに変換
-        if(deviceMapId == 4)
-            courseIndex = 0;
 
         if (courseIndex >= 0 && courseIndex < courseNames.Length)
         {
@@ -134,6 +124,19 @@ public class MenuController : MonoBehaviour
             Debug.Log($"Course Selected: {courseNames[index]}. BGM Switched to Heavy.");
         }
 
+        // 追加の球を1つ生成（選択されたコースのインデックスを渡す）
+        if (sphereSpawner != null)
+        {
+            Debug.Log($"[MenuController] SpawnAdditionalSphere呼び出し - courseIndex: {index}");
+            // 既存の球を全て削除してから新しい球を生成
+            sphereSpawner.ClearAllSpheres();
+            sphereSpawner.SpawnAdditionalSphere(index);
+        }
+        else
+        {
+            Debug.LogWarning("[MenuController] SphereSpawnerが設定されていません！");
+        }
+
         UpdateMenuText();
     }
 
@@ -146,6 +149,12 @@ public class MenuController : MonoBehaviour
         if (bgmManager != null)
         {
             bgmManager.SwitchToNormalLoop();
+        }
+
+        // 球を初期状態に戻す
+        if (sphereSpawner != null)
+        {
+            sphereSpawner.ResetToInitialSpheres();
         }
 
         UpdateMenuText();

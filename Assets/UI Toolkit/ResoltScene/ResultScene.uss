@@ -66,8 +66,14 @@
     flex-grow: 1;
 }
 
+.col-status {
+    width: 120px;
+    -unity-text-align: middle-center;
+    color: #aaaaaa;
+}
+
 .col-time {
-    width: 200px;
+    width: 180px;
     -unity-text-align: middle-right;
 }
 
