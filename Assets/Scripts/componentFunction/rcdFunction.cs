@@ -47,13 +47,27 @@ public class rcdFunction : MonoBehaviour,IResettableComponent
             {
                 if (decrementAmpere + cData.value2 * Time.deltaTime >= cData.value)
                 {
-                    collision.GetComponent<controller>().ampere -= cData.value - decrementAmpere;
-                    decrementAmpere = cData.value;
+                    if (collision.GetComponent<controller>().ampere - (cData.value - decrementAmpere) >= collision.GetComponent<controller>().minAmpere)
+                    {
+                        collision.GetComponent<controller>().ampere -= cData.value - decrementAmpere;
+                        decrementAmpere = cData.value;
+                    }
+                    else
+                    {
+                        collision.GetComponent<controller>().ampere = collision.GetComponent<controller>().minAmpere;
+                    }
                 }
                 else
                 {
-                    collision.GetComponent<controller>().ampere -= cData.value2 * Time.deltaTime;
-                    decrementAmpere += cData.value2 * Time.deltaTime;
+                    if (collision.GetComponent<controller>().ampere - cData.value2 * Time.deltaTime >= collision.GetComponent<controller>().minAmpere)
+                    {
+
+                        collision.GetComponent<controller>().ampere -= cData.value2 * Time.deltaTime;
+                        decrementAmpere += cData.value2 * Time.deltaTime;
+                    } else
+                    {
+                        collision.GetComponent<controller>().ampere = collision.GetComponent <controller>().minAmpere;
+                    }
                 }
             }
         }

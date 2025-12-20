@@ -41,6 +41,7 @@ public class CircuitLoader : MonoBehaviour
         LoadData();
         BuildCircuit();
         SpawnPlayer();  // プレイヤーを生成
+        checkPointIds.Reverse();
     }
 
     public void LoadData()
