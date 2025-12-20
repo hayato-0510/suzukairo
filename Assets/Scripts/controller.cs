@@ -52,6 +52,8 @@ public class controller : MonoBehaviour
     [Header("コースアウト時の電流減少")]
     public float radiationSpeed=1.0f;  // コースアウト時の電流減少速度
     public float minAmpere = 0.01f;    // 電流の下限値
+    public bool firstTimeCourseOut = true;
+    public float courseOutTPtime = 3f;
 
     [Header("チェックポイントテレポート")]
     public float checkPointTPtime = 3.0f;
@@ -160,8 +162,8 @@ public class controller : MonoBehaviour
             }
         }
 
-        
         // 電圧計の針を更新
+
         UpdateVoltageNeedle();
         
         // 電流計の針を更新（滑らかに変化）
@@ -317,6 +319,7 @@ public class controller : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("conductor"))
         {
+            Invoke(nameof(ocTPcheckpoint), courseOutTPtime);
             moveSpeed = nonconductorMoveSpeed;
             isOnConductor = false;
 
@@ -327,6 +330,8 @@ public class controller : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("conductor"))
         {
+            CancelInvoke(nameof(ocTPcheckpoint));
+
             moveSpeed = conducutorMoveSpeed;
             isOnConductor = true;
         }
@@ -336,6 +341,8 @@ public class controller : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("conductor"))
         {
+            CancelInvoke(nameof(ocTPcheckpoint));
+
             moveSpeed = conducutorMoveSpeed;
             isOnConductor = true;
             
@@ -358,5 +365,11 @@ public class controller : MonoBehaviour
             }
             isTouchingComponent = true;
         }
+    }
+
+    private void ocTPcheckpoint()
+    {
+        CancelInvoke(nameof(ocTPcheckpoint));
+        transform.position = GetComponent<LapCounter>().getCheckpoint().position;
     }
 }
